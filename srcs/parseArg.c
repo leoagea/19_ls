@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 18:15:17 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/24 19:38:07 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,16 @@ int parseArg(int ac, char **av, t_arg *argList)
 		i++;
 	}
 	
+	if (!argList->path){
+		argList->all_path = malloc(2 * sizeof(char*));
+		if (!argList->all_path)
+			return 0;
+		argList->all_path[0] = malloc(2 * sizeof(char));
+		argList->all_path[0] = DEFAULT_PATH;
+		argList->all_path[1] = NULL;
+	}
+	else{
+		argList->all_path = ft_split(argList->path, ' ');
+	}
 	return 0;
 }

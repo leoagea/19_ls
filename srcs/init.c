@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 17:03:38 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/24 19:34:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void initArgStruct(t_arg *argStruct)
 {
 	argStruct->path = NULL;
+	argStruct->all_path = NULL;
 	argStruct->all = false;
 	argStruct->reverse = false;
 	argStruct->sort_time = false;

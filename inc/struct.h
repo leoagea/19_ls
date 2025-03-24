@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 17:28:23 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/24 19:34:07 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define __STRUCT_H__
 
 # include <stdbool.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 typedef struct s_arg
 {
@@ -23,6 +25,12 @@ typedef struct s_arg
 	bool	recurisve; //-R
 	bool	long_format; //-l
 	char*	path;
+	char**	all_path;
 }				t_arg;
+
+typedef struct s_ls_node
+{
+	struct stat *stat;
+}				t_ls_node;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 17:56:36 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/24 19:39:59 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,10 @@ void print_argList(t_arg argList)
 	ft_printf("\trecursive: %b\n", argList.recurisve);
 	ft_printf("\tlong_format: %b\n", argList.long_format);
 	ft_printf("\tpath: %s\n", argList.path);
+	ft_printf("\tall_path: \n");
+	int i = 0;
+	while (argList.all_path[i] != NULL){
+		ft_printf("\t\t%s\n", argList.all_path[i]);
+		i++;
+	}
 }
