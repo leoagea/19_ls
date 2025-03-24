@@ -2,7 +2,7 @@
 # Compiler & Flags
 ###############################################################################
 CC       = gcc
-CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP
+CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP #-fsanitize=address -g
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 
 ###############################################################################
@@ -21,7 +21,7 @@ LIBFT     = $(LIBFT_DIR)/$(LIBFT_LIB)/libft.a
 ###############################################################################
 # Sources / Objects
 ###############################################################################
-SRC_FILES = main.c init.c parseArg.c utils.c debug.c
+SRC_FILES = main.c init.c parseArg.c explore.c utils.c debug.c
 SRCS      = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJS      = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 19:34:07 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/24 20:53:10 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_arg
 
 typedef struct s_ls_node
 {
-	struct stat *stat;
+	struct dirent *entry;
 }				t_ls_node;
 
 #endif

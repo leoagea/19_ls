@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 19:28:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/24 22:08:36 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,18 @@
 #############################################################################*/
 # include "../libft/libft.h"
 # include "struct.h"
-# include <unistd.h>
-# include <stdlib.h>
+# include <stdlib.h>	// exit, EXIT_FAILURE
+# include <stdio.h>		// perror
+# include <stdlib.h>	// exit, EXIT_FAILURE
+# include <dirent.h>	// DIR, struct dirent, opendir, readdir, closedir
 
 /*#############################################################################
 # Defines
 #############################################################################*/
 
 # define DEFAULT_PATH "."
+# define DIRECTORY 4
+# define FILE 8
 
 /*#############################################################################
 # Init functions
@@ -39,12 +43,22 @@ void initArgStruct(t_arg *argStruct);
 #############################################################################*/
 
 void print_argList(t_arg argList);
+void	dll_print_backward(t_dll *dll);
+void	dll_print_forward(t_dll *dll);
+void print_dirent(struct dirent *entry);
 
 /*#############################################################################
 # ParseArg functions
 #############################################################################*/
 
 int parseArg(int ac, char **av, t_arg *argList);
+
+/*#############################################################################
+# Explore functions
+#############################################################################*/
+
+int explore_loop(t_dll *list, t_arg arglist);
+int exploreDirectories(t_dll *list, char *path);
 
 /*#############################################################################
 # Utils functions
