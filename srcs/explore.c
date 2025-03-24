@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 22:23:02 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/24 23:42:36 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,12 @@ int exploreDirectories(t_dll *list, char *path)
 	struct dirent *entry;
     while ((entry = readdir(dir)) != NULL)
     {
-        // d_name is the name of the file/dir within 'path'
-        // printf("%s			type:%u\n", entry->d_name, entry->d_type);
-		if (entry->d_type == DIRECTORY && ft_strncmp(".", path, INT_MAX) == 0
-			&& ft_strncmp("..", path, INT_MAX) == 0){
+		if (entry->d_type == DIRECTORY && ft_strncmp(".", entry->d_name, INT_MAX) != 0
+			&& ft_strncmp("..", entry->d_name, INT_MAX) != 0){
 				
 			char *suffix = ft_strjoin("/", entry->d_name);
 			char *newpath = ft_strjoin(path, suffix);
 			free(suffix);
-			printf("newpath: %s\n", newpath);
 			exploreDirectories(list, newpath);
 		}
 		else{
