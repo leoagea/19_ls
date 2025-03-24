@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 18:16:06 by lagea            ###   ########.fr       */
+/*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
+/*   Updated: 2025/03/24 18:09:45 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
-int main(int ac, char **av)
+void usage(char invalidOption)
 {
-	
-	t_arg argList; 
-	
-	initArgStruct(&argList);
-	if (ac != 1){
-		if (parseArg(ac - 1, av + 1, &argList))
-			return 1;
+	ft_printf("ls: invalid option -- %c\n", invalidOption);
+	ft_printf("usage: ls [-alrtR] [file ...]\n");	
+}
+
+void freeArgStruct(t_arg *argList)
+{
+	if (argList->path){
+		free(argList->path);
+		argList->path = NULL;
 	}
-	print_argList(argList);
-	freeArgStruct(&argList);
 }

@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 18:16:06 by lagea            ###   ########.fr       */
+/*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
+/*   Updated: 2025/03/24 17:28:23 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/ft_ls.h"
+#ifndef __STRUCT_H__
+# define __STRUCT_H__
 
-int main(int ac, char **av)
+# include <stdbool.h>
+
+typedef struct s_arg
 {
-	
-	t_arg argList; 
-	
-	initArgStruct(&argList);
-	if (ac != 1){
-		if (parseArg(ac - 1, av + 1, &argList))
-			return 1;
-	}
-	print_argList(argList);
-	freeArgStruct(&argList);
-}
+	bool	all; //-a
+	bool	reverse; //-r
+	bool	sort_time; //-t
+	bool	recurisve; //-R
+	bool	long_format; //-l
+	char*	path;
+}				t_arg;
+
+#endif
