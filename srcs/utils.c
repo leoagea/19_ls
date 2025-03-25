@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 01:48:28 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 17:56:47 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ t_ls_node *newLsNode(struct dirent *entry)
 
 char *extractTimeModified(struct stat info)
 {
-	time_t mod_sec = info.st_mtimespec.tv_sec;
+	// #ifdef __APPLE__
+	// 	time_t mod_sec = info.st_mtimespec.tv_sec;
+	// #elif __linux
+	// 	time_t mod_sec = info.st_mtime;
+	time_t mod_sec = info.st_mtime;
     char *full_time_str = ctime(&mod_sec);
 	printf("full time: %s\n",full_time_str);
     if (!full_time_str) {
