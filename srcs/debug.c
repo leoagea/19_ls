@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 22:08:05 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 01:08:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,18 @@ void	dll_print_forward(t_dll *dll)
 	current = dll->head;
 	while (current != NULL)
 	{
-		print_dirent(current->content);
+		printAllElementsLsNode(current->content);
 		current = current->next;
 	}
 }
 
+void printAllElementsLsNode(t_ls_node *node)
+{
+	print_dirent(node->entry);
+}
+
 void print_dirent(struct dirent *entry)
 {
-	ft_printf(1, "name: %s\n", entry->d_name);
+	ft_printf(1, "name: %s	type: %d\n", entry->d_name, entry->d_type);
+	// ft_printf(1, "name len: \n", entry->d_namlen);
 }

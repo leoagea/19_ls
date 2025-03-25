@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 22:08:36 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 01:15:42 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@
 #############################################################################*/
 
 # define DEFAULT_PATH "."
+# define UNKNOWN 0
 # define DIRECTORY 4
 # define FILE 8
+# define LINK 10
 
 /*#############################################################################
 # Init functions
@@ -43,8 +45,9 @@ void initArgStruct(t_arg *argStruct);
 #############################################################################*/
 
 void print_argList(t_arg argList);
-void	dll_print_backward(t_dll *dll);
-void	dll_print_forward(t_dll *dll);
+void dll_print_backward(t_dll *dll);
+void dll_print_forward(t_dll *dll);
+void printAllElementsLsNode(t_ls_node *node);
 void print_dirent(struct dirent *entry);
 
 /*#############################################################################
@@ -58,7 +61,7 @@ int parseArg(int ac, char **av, t_arg *argList);
 #############################################################################*/
 
 int explore_loop(t_dll *list, t_arg arglist);
-int exploreDirectories(t_dll *list, char *path);
+int exploreDirectories(t_arg argList, t_dll *list, char *path);
 
 /*#############################################################################
 # Utils functions
@@ -66,5 +69,6 @@ int exploreDirectories(t_dll *list, char *path);
 
 void usage(char invalidOption);
 void freeArgStruct(t_arg *argList);
+t_ls_node *newLsNode(struct dirent *entry);
 
 #endif
