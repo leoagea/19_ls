@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 01:11:56 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 01:48:28 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ t_ls_node *newLsNode(struct dirent *entry)
 	if (!node)
 		return NULL;
 
-	struct stat *info = NULL;
-	stat(node->name, info);
-	node->info = info;
+	struct stat info;
+	stat(node->name, &info);
+	node->info = &info;
 	
 	node->entry = entry;
 	node->name = entry->d_name;
+	node->last_mod = extractTimeModified(info);
 	
 	if (entry->d_type == LINK){
 		node->symbolic = true;
@@ -47,4 +48,21 @@ t_ls_node *newLsNode(struct dirent *entry)
 		node->symbolic = false;
 	
 	return node;
+}
+
+char *extractTimeModified(struct stat info)
+{
+	time_t mod_sec = info.st_mtimespec.tv_sec;
+    char *full_time_str = ctime(&mod_sec);
+	printf("full time: %s\n",full_time_str);
+    if (!full_time_str) {
+        perror("ctime");
+        return NULL;
+    }
+
+    char *time_str = malloc(13 * sizeof(char)); // 12 + 1 for '\0'
+    memcpy(time_str, &full_time_str[4], 12);
+    time_str[12] = '\0';
+
+    return time_str;
 }

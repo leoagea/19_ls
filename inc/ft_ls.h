@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 01:15:42 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 01:41:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdio.h>		// perror
 # include <stdlib.h>	// exit, EXIT_FAILURE
 # include <dirent.h>	// DIR, struct dirent, opendir, readdir, closedir
+# include <time.h>       // time_t, ctime
 
 /*#############################################################################
 # Defines
@@ -70,5 +71,6 @@ int exploreDirectories(t_arg argList, t_dll *list, char *path);
 void usage(char invalidOption);
 void freeArgStruct(t_arg *argList);
 t_ls_node *newLsNode(struct dirent *entry);
+char *extractTimeModified(struct stat info);
 
 #endif
