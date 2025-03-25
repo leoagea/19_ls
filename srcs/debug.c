@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 01:45:01 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 19:44:27 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,16 @@ void	dll_print_forward(t_dll *dll)
 
 void printAllElementsLsNode(t_ls_node *node)
 {
-	ft_printf(1, "date: %s	", node->last_mod);
+	ft_printf(1, "date: %s	sym:%b   ", node->last_mod, node->symbolic);
+	ft_printf(1, "size: %d   ", node->size_bytes);
 	print_dirent(node->entry);
+	if (node->symbolic)
+		ft_printf(1, "     sym name: %s   ", node->sym_name);
+	ft_printf(1, "\n");
 }
 
 void print_dirent(struct dirent *entry)
 {
-	ft_printf(1, "type: %d	name: %s\n", entry->d_type, entry->d_name);
+	ft_printf(1, "type: %d	name: %s", entry->d_type, entry->d_name);
 	// ft_printf(1, "name len: \n", entry->d_namlen);
 }

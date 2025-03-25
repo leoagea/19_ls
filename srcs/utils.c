@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 18:42:39 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 19:41:33 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,27 @@ t_ls_node *newLsNode(char *path, struct dirent *entry)
 	struct stat info;
 	if (stat(relPath, &info) == -1)
 		return (printf("stat failed\n"), free(relPath), NULL);
-	free(relPath);
-	
+
+	if (entry->d_type == DIRECTORY)
+		node->size_bytes = 4096; //linux, how macos handle ? not the same way as linux for sure
+	node->size_bytes = info.st_size;
 	node->info = &info;
 	node->entry = entry;
 	node->name = entry->d_name;
+	node->type = entry->d_type;
+	node->relative_path = relPath;
 	node->last_mod = extractTimeModified(info);
 
 	if (entry->d_type == LINK){
+		size_t size = sizeof(node->sym_name);
+		
 		node->symbolic = true;
-		readlink(node->name, node->sym_name, 256);
+		// if (lstat(entry->d_name, &info) == -1)
+		// 	return (printf("lstat failed\n"), NULL);
+		ft_memset(node->sym_name, 0, size);
+		if (readlink(node->relative_path, node->sym_name, size) == -1)
+			return (printf("readlink failed\n"), NULL);
+		node->size_bytes = ft_strlen(node->sym_name);
 	}
 	else
 		node->symbolic = false;

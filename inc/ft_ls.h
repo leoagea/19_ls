@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 18:31:38 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 19:10:52 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # include <stdio.h>		// perror
 # include <stdlib.h>	// exit, EXIT_FAILURE
 # include <dirent.h>	// DIR, struct dirent, opendir, readdir, closedir
-# include <time.h>       // time_t, ctime
+# include <time.h>      // time_t, ctime
+# include <unistd.h>    //readlink
 
 /*#############################################################################
 # Defines

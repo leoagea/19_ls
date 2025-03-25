@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 18:30:57 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 19:18:44 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ int exploreDirectories(t_arg argList, t_dll *list, char *path)
 		}
 		else{
 			if (!argList.all && (ft_strncmp(".", entry->d_name, INT_MAX) == 0
-				|| ft_strncmp("..", entry->d_name, INT_MAX) == 0)){
+				|| ft_strncmp("..", entry->d_name, INT_MAX) == 0))
 					continue;
-				}
+	
 			t_ls_node *new = newLsNode(path, entry);
 			if (!new)
 				return EXIT_FAILURE;
