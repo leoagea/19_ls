@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 17:56:19 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 18:31:38 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int exploreDirectories(t_arg argList, t_dll *list, char *path);
 
 void usage(char invalidOption);
 void freeArgStruct(t_arg *argList);
-t_ls_node *newLsNode(struct dirent *entry);
+t_ls_node *newLsNode(char *path, struct dirent *entry);
 char *extractTimeModified(struct stat info);
 
 #endif

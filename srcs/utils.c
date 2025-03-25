@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 17:56:47 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/25 18:42:39 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,26 @@ void freeArgStruct(t_arg *argList)
 	}
 }
 
-t_ls_node *newLsNode(struct dirent *entry)
+t_ls_node *newLsNode(char *path, struct dirent *entry)
 {
 	t_ls_node *node = malloc(sizeof(t_ls_node));
 	if (!node)
 		return NULL;
 
+	char *tmp = ft_strjoin(path, "/");
+	char *relPath = ft_strjoin(tmp, entry->d_name);
+	free(tmp);
+
 	struct stat info;
-	stat(node->name, &info);
-	node->info = &info;
+	if (stat(relPath, &info) == -1)
+		return (printf("stat failed\n"), free(relPath), NULL);
+	free(relPath);
 	
+	node->info = &info;
 	node->entry = entry;
 	node->name = entry->d_name;
 	node->last_mod = extractTimeModified(info);
-	
+
 	if (entry->d_type == LINK){
 		node->symbolic = true;
 		readlink(node->name, node->sym_name, 256);
@@ -52,13 +58,8 @@ t_ls_node *newLsNode(struct dirent *entry)
 
 char *extractTimeModified(struct stat info)
 {
-	// #ifdef __APPLE__
-	// 	time_t mod_sec = info.st_mtimespec.tv_sec;
-	// #elif __linux
-	// 	time_t mod_sec = info.st_mtime;
 	time_t mod_sec = info.st_mtime;
     char *full_time_str = ctime(&mod_sec);
-	printf("full time: %s\n",full_time_str);
     if (!full_time_str) {
         perror("ctime");
         return NULL;
