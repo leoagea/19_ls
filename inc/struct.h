@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/26 18:47:02 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/27 00:20:15 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ typedef struct s_ls_node
 	int				type;
 	char*			name;
 	bool			symbolic;
+	char			format[256];
 	
-	// Long Format
+	// Long Format Info
 	int				size_bytes;
 	char			sym_name[256];
 	char*			group_name;

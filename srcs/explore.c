@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   explore.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/26 19:15:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/27 00:35:42 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
-int explore_loop(t_dll *list, t_arg argList)
+int explore_loop(t_arg argList)
 {
 	int i = 0;
 	
 	while (argList.all_path[i] != NULL)
 	{
-		if (exploreDirectories(argList, list, argList.all_path[i]))
+		if (!exploreDirectories(argList, argList.all_path[i]))
 			return EXIT_FAILURE;
 		i++;
 	}
@@ -26,8 +26,11 @@ int explore_loop(t_dll *list, t_arg argList)
 	return EXIT_SUCCESS;
 }
 
-int exploreDirectories(t_arg argList, t_dll *list, char *path)
+int exploreDirectories(t_arg argList, char *path)
 {
+	t_dll list;
+	dll_init(&list);
+	
 	DIR *dir = opendir(path);
     if (dir == NULL)
     {
@@ -47,17 +50,24 @@ int exploreDirectories(t_arg argList, t_dll *list, char *path)
 			char *suffix = ft_strjoin("/", entry->d_name);
 			char *newpath = ft_strjoin(path, suffix);
 			free(suffix);
-			exploreDirectories(argList, list, newpath);
+			return exploreDirectories(argList, newpath);
 		}
 		else{
 			if (!argList.all && (ft_strncmp(".", entry->d_name, INT_MAX) == 0
 				|| ft_strncmp("..", entry->d_name, INT_MAX) == 0))
 					continue;
 	
-			t_ls_node *new = newLsNode(argList, path, entry);
-			if (!new)
+			t_ls_node *node = mallocLsNode();
+			if (!node)
+			return EXIT_FAILURE;
+			if (retrieveAllInfo(node, argList, path, entry)){
+				formatOutput(node, argList);	
+				dll_insert_tail(node, &list);
+			}
+			else{
+				free(node);
 				return EXIT_FAILURE;
-			dll_insert_tail(new, list);
+			}
 		}
     }
 	if (closedir(dir) == -1)
@@ -65,24 +75,20 @@ int exploreDirectories(t_arg argList, t_dll *list, char *path)
         perror("closedir");
         return EXIT_FAILURE;
     }
+	output(&list, argList);
 	return EXIT_SUCCESS;
 }
 
 
-t_ls_node *newLsNode(t_arg arg, char *path, struct dirent *entry)
+int retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry)
 {
-	t_ls_node *node = malloc(sizeof(t_ls_node));
-	if (!node)
-		return NULL;
-	initLsNode(node);
-	
 	char *tmp = ft_strjoin(path, "/");
 	char *relPath = ft_strjoin(tmp, entry->d_name);
 	free(tmp);
 
 	struct stat info;
 	if (stat(relPath, &info) == -1)
-		return (printf("stat failed\n"), free(relPath), NULL);
+		return (printf("stat failed\n"), free(relPath), 0);
 
 	if (arg.long_format){
 		if (entry->d_type == DIRECTORY)
@@ -120,12 +126,12 @@ t_ls_node *newLsNode(t_arg arg, char *path, struct dirent *entry)
 		ft_memset(node->sym_name, 0, size);
 		if (arg.long_format){
 			if (readlink(node->relative_path, node->sym_name, size) == -1)
-				return (printf("readlink failed\n"), NULL);
+				return (printf("readlink failed\n"), 0);
 			node->size_bytes = ft_strlen(node->sym_name);
 		}
 	}
 	else
 		node->symbolic = false;
 	
-	return node;
+	return 1;
 }

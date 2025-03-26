@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/26 22:33:44 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/27 00:43:17 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,26 @@ int     parseArg(int ac, char **av, t_arg *argList);
 # Explore functions
 #############################################################################*/
 
-int     explore_loop(t_dll *list, t_arg arglist);
-int     exploreDirectories(t_arg argList, t_dll *list, char *path);
-t_ls_node *newLsNode(t_arg arg, char *path, struct dirent *entry);
+int     explore_loop(t_arg arglist);
+int     exploreDirectories(t_arg argList, char *path);
+int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry);
+
+/*#############################################################################
+# FormatOutput functions
+#############################################################################*/
+
+void appendStr(char *str, char *append);
+void appendChar(char *str, char c);
+void formatLongFormat(t_ls_node *node);
+void formatOutput(t_ls_node *node, t_arg arg);
 
 /*#############################################################################
 # ConsoleOutput functions
 #############################################################################*/
 
 void    output(t_dll *list, t_arg arg);
-void    printShortFormat(t_dll *list);
-void    printLongFormat(t_dll *list, t_arg arg);
+void    print(void *content);
+
 
 /*#############################################################################
 # Utils functions
@@ -88,5 +97,8 @@ void    freeArgStruct(t_arg *argList);
 char    *extractTimeModified(struct stat info);
 void    extractPerm(char *perm, int mode);
 int     compareName(void *a, void *b);
+int     compareTime(void *a, void *b);
+t_ls_node *mallocLsNode(void);
+void    print(void *content);
 
 #endif

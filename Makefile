@@ -21,7 +21,15 @@ LIBFT     = $(LIBFT_DIR)/$(LIBFT_LIB)/libft.a
 ###############################################################################
 # Sources / Objects
 ###############################################################################
-SRC_FILES = main.c init.c parseArg.c explore.c consoleOutput.c utils.c debug.c
+SRC_FILES = main.c \
+			init.c \
+			parseArg.c \
+			explore.c \
+			formatOutput.c \
+			consoleOutput.c \
+			utils.c \
+			debug.c
+			
 SRCS      = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 OBJS      = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
