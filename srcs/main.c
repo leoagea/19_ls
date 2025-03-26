@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 00:33:21 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/26 19:15:05 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int main(int ac, char **av)
 	}
 	// print_argList(argList);
 	explore_loop(&list, argList);
+	output(&list, argList);
 	freeArgStruct(&argList);
+	dll_free(&list);
 	// system("leaks ft_ls");
 	return EXIT_SUCCESS;
 }

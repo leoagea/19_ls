@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 19:44:27 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/26 18:40:36 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ void	dll_print_forward(t_dll *dll)
 
 void printAllElementsLsNode(t_ls_node *node)
 {
+	ft_printf(1, "perm: %s   ", node->perm);
 	ft_printf(1, "date: %s	sym:%b   ", node->last_mod, node->symbolic);
-	ft_printf(1, "size: %d   ", node->size_bytes);
+	ft_printf(1, "size: %d   gid: %s   uid: %s   ", node->size_bytes, node->group_name, node->user_name);
 	print_dirent(node->entry);
 	if (node->symbolic)
 		ft_printf(1, "     sym name: %s   ", node->sym_name);

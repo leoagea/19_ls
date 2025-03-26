@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 19:41:33 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/26 19:25:08 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,47 +26,6 @@ void freeArgStruct(t_arg *argList)
 	}
 }
 
-t_ls_node *newLsNode(char *path, struct dirent *entry)
-{
-	t_ls_node *node = malloc(sizeof(t_ls_node));
-	if (!node)
-		return NULL;
-
-	char *tmp = ft_strjoin(path, "/");
-	char *relPath = ft_strjoin(tmp, entry->d_name);
-	free(tmp);
-
-	struct stat info;
-	if (stat(relPath, &info) == -1)
-		return (printf("stat failed\n"), free(relPath), NULL);
-
-	if (entry->d_type == DIRECTORY)
-		node->size_bytes = 4096; //linux, how macos handle ? not the same way as linux for sure
-	node->size_bytes = info.st_size;
-	node->info = &info;
-	node->entry = entry;
-	node->name = entry->d_name;
-	node->type = entry->d_type;
-	node->relative_path = relPath;
-	node->last_mod = extractTimeModified(info);
-
-	if (entry->d_type == LINK){
-		size_t size = sizeof(node->sym_name);
-		
-		node->symbolic = true;
-		// if (lstat(entry->d_name, &info) == -1)
-		// 	return (printf("lstat failed\n"), NULL);
-		ft_memset(node->sym_name, 0, size);
-		if (readlink(node->relative_path, node->sym_name, size) == -1)
-			return (printf("readlink failed\n"), NULL);
-		node->size_bytes = ft_strlen(node->sym_name);
-	}
-	else
-		node->symbolic = false;
-	
-	return node;
-}
-
 char *extractTimeModified(struct stat info)
 {
 	time_t mod_sec = info.st_mtime;
@@ -81,4 +40,25 @@ char *extractTimeModified(struct stat info)
     time_str[12] = '\0';
 
     return time_str;
+}
+
+void extractPerm(char *perm, int mode)
+{
+    perm[0] = (mode & S_IRUSR) ? 'r' : '-';
+    perm[1] = (mode & S_IWUSR) ? 'w' : '-';
+    perm[2] = (mode & S_IXUSR) ? 'x' : '-';
+    perm[3] = (mode & S_IRGRP) ? 'r' : '-';
+    perm[4] = (mode & S_IWGRP) ? 'w' : '-';
+    perm[5] = (mode & S_IXGRP) ? 'x' : '-';
+    perm[6] = (mode & S_IROTH) ? 'r' : '-';
+    perm[7] = (mode & S_IWOTH) ? 'w' : '-';
+    perm[8] = (mode & S_IXOTH) ? 'x' : '-';
+    perm[9] = '\0';
+}
+
+int compareName(void *a, void *b)
+{
+    t_ls_node *node_a = a;
+    t_ls_node *node_b = b;
+    return ft_strncmp(node_a->name, node_b->name, INT_MAX);
 }

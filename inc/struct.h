@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/25 19:26:21 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/26 18:47:02 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,20 @@ typedef struct s_arg
 
 typedef struct s_ls_node
 {
-	char			*relative_path;
+	char*			relative_path;
 	int				type;
-	
-	char			*name;
-	char			*last_mod;
+	char*			name;
 	bool			symbolic;
+	
+	// Long Format
 	int				size_bytes;
 	char			sym_name[256];
+	char*			group_name;
+	char*			user_name;
+	char			perm[10];
+	char*			last_mod;
+	int 			nlink;
+	
 	struct stat		*info;
 	struct dirent 	*entry;
 }				t_ls_node;
