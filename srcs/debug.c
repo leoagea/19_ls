@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/26 18:40:36 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/26 22:33:15 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,6 @@ void print_argList(t_arg argList)
 	while (argList.all_path[i] != NULL){
 		ft_printf(2, "\t\t%s\n", argList.all_path[i]);
 		i++;
-	}
-}
-
-void	dll_print_backward(t_dll *dll)
-{
-	t_node	*current;
-
-	current = dll->tail;
-	while (current != NULL)
-	{
-		// ft_printf("value : %s\n", current->str);
-		current = current->prev;
-	}
-}
-
-void	dll_print_forward(t_dll *dll)
-{
-	t_node	*current;
-
-	current = dll->head;
-	while (current != NULL)
-	{
-		printAllElementsLsNode(current->content);
-		current = current->next;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/26 19:26:48 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/26 22:33:44 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void    initLsNode(t_ls_node *node);
 #############################################################################*/
 
 void    print_argList(t_arg argList);
-void    dll_print_backward(t_dll *dll);
-void    dll_print_forward(t_dll *dll);
 void    printAllElementsLsNode(t_ls_node *node);
 void    print_dirent(struct dirent *entry);
 
