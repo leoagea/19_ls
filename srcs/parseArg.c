@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseArg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/24 19:38:07 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/27 14:01:03 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int parseArg(int ac, char **av, t_arg *argList)
 					break;
 				
 				case 'r':
-					argList->recurisve = true;
+					argList->reverse = true;
 					break;
 					
 				case 't':
