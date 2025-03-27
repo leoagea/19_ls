@@ -5,15 +5,7 @@ When -l flag is there:
 	- ~~Retrieve updated date~~
 	- retrieve permissions
 	- ~~retrieve size~~
-
-When -t flag is there:
-	sorting descending if 2 same date, sorting by name ascending
-	-retrieve update date
 	
-When no argument:
-	Sorting by ascending name
-		first maj
-		then min
 
 When this cmd :  make test ARGS="-R -lr libft"
 	duplicate
@@ -27,7 +19,6 @@ Sorting algo:
 
 Check perm link, hard-soft link
 
-Count the sub directories that i went to: 
-	store the parent dir
+Need to calculate the max width of format depending of links, username, groupname, size
 
-Ls -l, works just to do formatting that depends on the max size file in subdir
+Regarder pour la recursivite
