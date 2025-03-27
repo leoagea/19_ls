@@ -25,6 +25,7 @@ SRC_FILES = main.c \
 			init.c \
 			parseArg.c \
 			explore.c \
+			retrieveInfo.c \
 			formatOutput.c \
 			consoleOutput.c \
 			utils.c \

@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 16:15:32 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/27 17:51:07 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,13 @@ int     parseArg(int ac, char **av, t_arg *argList);
 int     explore_loop(t_arg arglist);
 int     exploreDirectories(t_arg argList, char *path);
 int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry);
+
+/*#############################################################################
+# RetrieveInfo functions
+#############################################################################*/
+
+// int retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry);
+int    retrieveSymInfo(t_ls_node *node, t_arg arg);
 
 /*#############################################################################
 # FormatOutput functions
