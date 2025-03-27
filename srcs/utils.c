@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 02:06:14 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/27 14:02:57 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int compareTime(void *a, void *b)
     int cmp = ft_strncmp(node_a->last_mod, node_b->last_mod, INT_MAX);
     if (cmp == 0)
         return compareName(a, b);
-    return ft_strncmp(node_a->last_mod, node_b->last_mod, INT_MAX);
+    return -ft_strncmp(node_a->last_mod, node_b->last_mod, INT_MAX);
 }
 
 t_ls_node *mallocLsNode(void)
