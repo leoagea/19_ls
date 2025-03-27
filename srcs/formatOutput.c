@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formatOutput.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 00:42:22 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/27 16:16:16 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,17 @@ void formatLongFormat(t_ls_node *node)
 	}
 }
 
+void formatOther(t_ls_node *node)
+{
+	appendStr(node->format, node->name);
+}
+
 void formatOutput(t_ls_node *node, t_arg arg)
 {
 	if (arg.long_format)
 	{
 		formatLongFormat(node);
 	}
+	else
+		formatOther(node);
 }

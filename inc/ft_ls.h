@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 01:01:41 by lagea            ###   ########.fr       */
+/*   Updated: 2025/03/27 16:15:32 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *e
 void appendStr(char *str, char *append);
 void appendChar(char *str, char c);
 void formatLongFormat(t_ls_node *node);
+void formatOther(t_ls_node *node);
 void formatOutput(t_ls_node *node, t_arg arg);
 
 /*#############################################################################
