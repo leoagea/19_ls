@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 17:51:07 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/01 18:52:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 
 void    initArgStruct(t_arg *argStruct);
 void    initLsNode(t_ls_node *node);
+void    initFormatStruct(t_format *format);
 
 /*#############################################################################
 # Debug functions
@@ -56,6 +57,7 @@ void    initLsNode(t_ls_node *node);
 void    print_argList(t_arg argList);
 void    printAllElementsLsNode(t_ls_node *node);
 void    print_dirent(struct dirent *entry);
+void    printFormatStruct(t_format *format);
 
 /*#############################################################################
 # ParseArg functions
@@ -69,7 +71,7 @@ int     parseArg(int ac, char **av, t_arg *argList);
 
 int     explore_loop(t_arg arglist);
 int     exploreDirectories(t_arg argList, char *path);
-int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry);
+int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry, t_format *format);
 
 /*#############################################################################
 # RetrieveInfo functions
@@ -84,9 +86,10 @@ int    retrieveSymInfo(t_ls_node *node, t_arg arg);
 
 void appendStr(char *str, char *append);
 void appendChar(char *str, char c);
-void formatLongFormat(t_ls_node *node);
+void getFormatLen(t_ls_node *node, t_format *format);
+void formatLongFormat(t_ls_node *node, t_format *format);
 void formatOther(t_ls_node *node);
-void formatOutput(t_ls_node *node, t_arg arg);
+void formatOutput(t_ls_node *node, t_arg arg, t_format *format);
 
 /*#############################################################################
 # ConsoleOutput functions
@@ -108,5 +111,6 @@ int     compareName(void *a, void *b);
 int     compareTime(void *a, void *b);
 t_ls_node *mallocLsNode(void);
 blkcnt_t calculateTotalBlocks(t_dll *list);
+int ft_max(int a, int b);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 18:45:56 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/01 19:28:46 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int explore_loop(t_arg argList)
 
 int exploreDirectories(t_arg argList, char *path)
 {
+    t_format format;
+    initFormatStruct(&format);
+    
     // First check if the input path itself is a symlink
     struct stat path_stat;
     if (lstat(path, &path_stat) == 0 && S_ISLNK(path_stat.st_mode)) {
@@ -56,8 +59,8 @@ int exploreDirectories(t_arg argList, char *path)
         else
             strcpy(parent_path, ".");
             
-        if (retrieveAllInfo(node, argList, parent_path, &entry)) {
-            formatOutput(node, argList);
+        if (retrieveAllInfo(node, argList, parent_path, &entry, &format)) {
+            formatOutput(node, argList, &format);
             dll_insert_tail(node, &list);
         }
         free(parent_path);
@@ -76,6 +79,7 @@ int exploreDirectories(t_arg argList, char *path)
         ft_printf(2, "ls: %s: %s\n", path, err_msg);
         return EXIT_FAILURE;
     }
+    
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL)
     {
@@ -104,8 +108,8 @@ int exploreDirectories(t_arg argList, char *path)
                 if (!node)
                     return EXIT_FAILURE;
                     
-                if (retrieveAllInfo(node, argList, path, entry)) {
-                    formatOutput(node, argList);
+                if (retrieveAllInfo(node, argList, path, entry, &format)) {
+                    formatOutput(node, argList, &format);
                     dll_insert_tail(node, &list);
                 } else {
                     free(node);
@@ -126,8 +130,8 @@ int exploreDirectories(t_arg argList, char *path)
             if (!node)
                 return EXIT_FAILURE;
                 
-            if (retrieveAllInfo(node, argList, path, entry)) {
-                formatOutput(node, argList);
+            if (retrieveAllInfo(node, argList, path, entry, &format)) {
+                formatOutput(node, argList, &format);
                 dll_insert_tail(node, &list);
             } else {
                 free(node);
@@ -141,11 +145,12 @@ int exploreDirectories(t_arg argList, char *path)
         return EXIT_FAILURE;
     }
     
+    // printFormatStruct(&format);
     output(&list, argList);
     return EXIT_SUCCESS;
 }
 
-int retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry)
+int retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry, t_format *format)
 {
 	char *tmp = ft_strjoin(path, "/");
 	char *relPath = ft_strjoin(tmp, entry->d_name);
@@ -187,6 +192,17 @@ int retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry
 	}
 	else
 		node->symbolic = false;
+    
+    char *tmp_nlink = ft_itoa(node->nlink);
+    char *tmp_size = ft_itoa(node->size_bytes);
+    node->nlink_len = ft_strlen(tmp_nlink);
+    node->user_name_len = ft_strlen(node->user_name);
+    node->group_name_len = ft_strlen(node->group_name);
+    node->size_bytes_len = ft_strlen(tmp_size);
+    free(tmp_nlink);
+    free(tmp_size);
+    
+    getFormatLen(node, format);
 	
 	return 1;
 }

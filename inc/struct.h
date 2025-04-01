@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 00:20:15 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/01 18:41:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,21 @@ typedef struct s_ls_node
 	char*			last_mod;
 	int 			nlink;
 	
+	// Len Info
+	int				nlink_len;
+	int 			user_name_len;
+	int 			group_name_len;
+	int 			size_bytes_len;
+	
 	struct stat		*info;
 	struct dirent 	*entry;
 }				t_ls_node;
 
+typedef struct s_format
+{
+	int 		max_user;
+	int 		max_group;
+	int 		max_link;
+	int 		max_size_bytes;
+}				t_format;	
 #endif

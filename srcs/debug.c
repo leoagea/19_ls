@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/26 22:33:15 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/01 18:48:54 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,12 @@ void print_dirent(struct dirent *entry)
 {
 	ft_printf(1, "type: %d	name: %s", entry->d_type, entry->d_name);
 	// ft_printf(1, "name len: \n", entry->d_namlen);
+}
+
+void printFormatStruct(t_format *format)
+{
+	ft_printf(1, "max_user: %d\n", format->max_user);
+	ft_printf(1, "max_group: %d\n", format->max_group);
+	ft_printf(1, "max_link: %d\n", format->max_link);
+	ft_printf(1, "max_size_bytes: %d\n", format->max_size_bytes);
 }

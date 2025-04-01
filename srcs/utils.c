@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 14:02:57 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/01 18:19:38 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,9 @@ blkcnt_t calculateTotalBlocks(t_dll *list)
     /* Return blocks in 1024-byte units to match ls behavior */
     return 64; //TODO: hardcoded value, fix this
     return total_blocks / 2;
+}
+
+int ft_max(int a, int b)
+{
+    return (a > b) ? a : b;
 }

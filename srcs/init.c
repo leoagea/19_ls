@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/03/27 00:32:20 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/01 18:22:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,17 @@ void initLsNode(t_ls_node *node)
 	
 	node->entry = NULL;
 	node->info = NULL;
+
+	node->nlink_len = 0;
+	node->user_name_len = 0;
+	node->group_name_len = 0;
+	node->size_bytes_len = 0;
+}
+
+void initFormatStruct(t_format *format)
+{
+	format->max_user = 0;
+	format->max_group = 0;
+	format->max_link = 0;
+	format->max_size_bytes = 0;
 }
