@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   explore.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/01 19:28:46 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/02 00:09:01 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,117 +26,107 @@ int explore_loop(t_arg argList)
 	return EXIT_SUCCESS;
 }
 
+static int handleSymlink(t_arg argList, char *path, t_format *format)
+{
+    t_dll list;
+    dll_init(&list);
+    
+    struct dirent entry;
+    char *basename = strrchr(path, '/');
+    basename = (basename == NULL) ? path : basename + 1;
+    ft_strlcpy(entry.d_name, basename, NAME_MAX);
+    entry.d_type = DT_LNK;
+    
+    t_ls_node *node = mallocLsNode();
+    if (!node)
+        return EXIT_FAILURE;
+        
+    char *parent_path = ft_strdup(path);
+    char *last_slash = ft_strrchr(parent_path, '/');
+    if (last_slash)
+        *last_slash = '\0';
+    else
+        ft_strlcpy(parent_path, ".", PATH_MAX);
+        
+    int success = retrieveAllInfo(node, argList, parent_path, &entry, format);
+    if (success) {
+        formatOutput(node, argList, format);
+        dll_insert_tail(node, &list);
+    }
+    free(parent_path);
+    output(&list, argList);
+    return EXIT_SUCCESS;
+}
+
+static int processEntry(t_dll *list, t_arg argList, char *path, 
+                       struct dirent *entry, t_format *format)
+{
+    char fullpath[PATH_MAX];
+    ft_memset(fullpath, 0, PATH_MAX);
+    appendStr(fullpath, path);
+    appendChar(fullpath, '/');
+    appendStr(fullpath, entry->d_name);
+    
+    struct stat st;
+    if (lstat(fullpath, &st) != 0)
+        return EXIT_SUCCESS;  // Skip on stat failure
+    
+    // Handle directories for recursive mode
+    if (S_ISDIR(st.st_mode) && 
+        ft_strncmp(".", entry->d_name, INT_MAX) != 0 &&
+        ft_strncmp("..", entry->d_name, INT_MAX) != 0 &&
+        argList.recurisve) {
+        
+        if (!S_ISLNK(st.st_mode)) {
+            ft_printf(1, "\n%s:\n", fullpath);
+            return exploreDirectories(argList, fullpath);
+        }
+    }
+    
+    // Skip hidden entries if not showing all
+    if (!argList.all && (ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
+        ft_strncmp("..", entry->d_name, INT_MAX) == 0))
+        return EXIT_SUCCESS;
+    
+    t_ls_node *node = mallocLsNode();
+    if (!node)
+        return EXIT_FAILURE;
+        
+    if (retrieveAllInfo(node, argList, path, entry, format)) {
+        formatOutput(node, argList, format);
+        dll_insert_tail(node, list);
+        return EXIT_SUCCESS;
+    }
+    
+    free(node);
+    return EXIT_FAILURE;
+}
+
 int exploreDirectories(t_arg argList, char *path)
 {
     t_format format;
     initFormatStruct(&format);
     
-    // First check if the input path itself is a symlink
+    // Handle symlinks at the top level
     struct stat path_stat;
-    if (lstat(path, &path_stat) == 0 && S_ISLNK(path_stat.st_mode)) {
-        // Process the path as a symlink entry and return
-        t_dll list;
-        dll_init(&list);
-        
-        struct dirent entry;
-        char *basename = strrchr(path, '/');
-        if (basename == NULL)
-            basename = path;
-        else
-            basename++; // Skip the '/'
-            
-        strcpy(entry.d_name, basename);
-        entry.d_type = DT_LNK;
-        
-        t_ls_node *node = mallocLsNode();
-        if (!node)
-            return EXIT_FAILURE;
-            
-        char *parent_path = ft_strdup(path);
-        char *last_slash = strrchr(parent_path, '/');
-        if (last_slash)
-            *last_slash = '\0';
-        else
-            strcpy(parent_path, ".");
-            
-        if (retrieveAllInfo(node, argList, parent_path, &entry, &format)) {
-            formatOutput(node, argList, &format);
-            dll_insert_tail(node, &list);
-        }
-        free(parent_path);
-        output(&list, argList);
-        return EXIT_SUCCESS;
-    }
+    if (lstat(path, &path_stat) == 0 && S_ISLNK(path_stat.st_mode))
+        return handleSymlink(argList, path, &format);
     
-    // Normal directory exploration
+    // Regular directory exploration
     t_dll list;
     dll_init(&list);
     
     DIR *dir = opendir(path);
-    if (dir == NULL)
-    {
-        char *err_msg = strerror(errno);
-        ft_printf(2, "ls: %s: %s\n", path, err_msg);
+    if (!dir) {
+        ft_printf(2, "ls: %s: %s\n", path, strerror(errno));
         return EXIT_FAILURE;
     }
     
     struct dirent *entry;
-    while ((entry = readdir(dir)) != NULL)
-    {
-        char fullpath[PATH_MAX];
-        ft_memset(fullpath, 0, PATH_MAX);
-        appendStr(fullpath, path);
-        appendChar(fullpath, '/');
-        appendStr(fullpath, entry->d_name);
-        
-        struct stat st;
-        if (lstat(fullpath, &st) != 0) {
-            // Handle stat failure
-            continue;
-        }
-        
-        // Check if it's a directory we need to recurse into
-        if (S_ISDIR(st.st_mode) 
-            && ft_strncmp(".", entry->d_name, INT_MAX) != 0
-            && ft_strncmp("..", entry->d_name, INT_MAX) != 0
-            && argList.recurisve) {
-            
-            // Don't recurse if it's a symlink to a directory
-            if (S_ISLNK(st.st_mode)) {
-                // Handle as a regular entry
-                t_ls_node *node = mallocLsNode();
-                if (!node)
-                    return EXIT_FAILURE;
-                    
-                if (retrieveAllInfo(node, argList, path, entry, &format)) {
-                    formatOutput(node, argList, &format);
-                    dll_insert_tail(node, &list);
-                } else {
-                    free(node);
-                    return EXIT_FAILURE;
-                }
-            } else {
-                // For real directories, recurse but don't return immediately
-                ft_printf(1, "\n%s:\n", fullpath);
-                exploreDirectories(argList, fullpath);
-            }
-        } else {
-            // Handle non-directory entries or those we don't recurse into
-            if (!argList.all && (ft_strncmp(".", entry->d_name, INT_MAX) == 0
-                || ft_strncmp("..", entry->d_name, INT_MAX) == 0))
-                continue;
-    
-            t_ls_node *node = mallocLsNode();
-            if (!node)
-                return EXIT_FAILURE;
-                
-            if (retrieveAllInfo(node, argList, path, entry, &format)) {
-                formatOutput(node, argList, &format);
-                dll_insert_tail(node, &list);
-            } else {
-                free(node);
-                return EXIT_FAILURE;
-            }
+    while ((entry = readdir(dir)) != NULL) {
+        if (processEntry(&list, argList, path, entry, &format) == EXIT_FAILURE) {
+            closedir(dir);
+            return EXIT_FAILURE;
         }
     }
     
@@ -145,7 +135,6 @@ int exploreDirectories(t_arg argList, char *path)
         return EXIT_FAILURE;
     }
     
-    // printFormatStruct(&format);
     output(&list, argList);
     return EXIT_SUCCESS;
 }
