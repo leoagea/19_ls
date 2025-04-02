@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/02 17:00:20 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/02 17:41:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@
 
 # ifdef __APPLE__
     #define st_mtime st_mtimespec.tv_sec
+    #define TOTAL_BLOCKS "total:"
+# elif __linux__
+    #define TOTAL_BLOCKS "total"
 # endif
 
 # define DEFAULT_PATH "."
