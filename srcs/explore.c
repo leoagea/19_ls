@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/02 16:59:56 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/02 17:35:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int processEntry(t_dll *list, t_arg argList, char *path,
         return EXIT_FAILURE;
         
     if (retrieveAllInfo(node, argList, path, entry, format)) {
-        formatOutput(node, argList, format);
+        // formatOutput(node, argList, format);
         dll_insert_tail(node, list);
         return EXIT_SUCCESS;
     }
@@ -133,6 +133,14 @@ int exploreDirectories(t_arg argList, char *path)
     if (closedir(dir) == -1) {
         perror("closedir");
         return EXIT_FAILURE;
+    }
+    
+    // printFormatStruct(&format);
+    t_node *node = list.head;
+    while (node != NULL) {
+        t_ls_node *ls = node->content;
+        formatOutput(ls, argList, &format);
+        node = node->next;
     }
     
     output(&list, argList);
