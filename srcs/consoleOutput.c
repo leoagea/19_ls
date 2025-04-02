@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/02 17:41:48 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/02 18:14:25 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void output(t_dll *list, t_arg arg)
         dll_bubble_sort(list->head, list->tail, compareName);
         
     if (arg.long_format)
-       ft_printf(1, "%s %lld\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
+       ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
         
     if (arg.reverse)
         dll_print_backward(list, print);

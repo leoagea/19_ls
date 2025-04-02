@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/01 18:19:38 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/02 18:15:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,19 @@ t_ls_node *mallocLsNode(void)
     return node;
 }
 
-blkcnt_t calculateTotalBlocks(t_dll *list)
+int calculateTotalBlocks(t_dll *list)
 {
-    blkcnt_t total_blocks = 0;
+    int total_blocks = 0;
     t_node *curr = list->head;
     
     while (curr != NULL) {
+        struct stat info;
         t_ls_node *node = (t_ls_node *)curr->content;
-        /* st_blocks counts in 512-byte blocks, ls displays in 1024-byte blocks */
-        // printf("st_blocks: %lld\n", node->info->st_blocks / 32768);
-        total_blocks += node->info->st_blocks / 32768;
+        if (lstat(node->relative_path, &info) == 0)
+            total_blocks += (int)info.st_blocks;
         curr = curr->next;
     }
 
-    /* Return blocks in 1024-byte units to match ls behavior */
-    return 64; //TODO: hardcoded value, fix this
     return total_blocks / 2;
 }
 

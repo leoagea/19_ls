@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/02 17:41:35 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/02 18:14:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void    extractPerm(char *perm, int mode);
 int     compareName(void *a, void *b);
 int     compareTime(void *a, void *b);
 t_ls_node *mallocLsNode(void);
-blkcnt_t calculateTotalBlocks(t_dll *list);
+int     calculateTotalBlocks(t_dll *list);
 int ft_max(int a, int b);
 
 #endif
