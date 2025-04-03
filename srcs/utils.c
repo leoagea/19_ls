@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/17 18:36:41 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/18 17:19:34 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,6 @@ int calculateTotalBlocks(t_dll *list)
     // Divide by 2 to convert to KB
     // Assuming 512 bytes per block
     return total_blocks / 2;
-}
-
-int ft_max(int a, int b)
-{
-    return (a > b) ? a : b;
 }
 
 t_ls *mallocLs()

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formatOutput.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/17 17:37:44 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/18 17:20:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void appendChar(char *str, char c)
 
 void getFormatLen(t_ls *node, t_format *format)
 {
-	format->max_group = ft_max(format->max_group, node->info->group_name_len);
-	format->max_user = ft_max(format->max_user, node->info->user_name_len);
-	format->max_link = ft_max(format->max_link, node->info->nlink_len);
-	format->max_size_bytes = ft_max(format->max_size_bytes, node->info->size_bytes_len);
+	format->max_group = MAX(format->max_group, node->group_name_len);
+	format->max_user = MAX(format->max_user, node->user_name_len);
+	format->max_link = MAX(format->max_link, node->nlink_len);
+	format->max_size_bytes = MAX(format->max_size_bytes, node->size_bytes_len);
 }
 
 static void fillInSpace(t_ls_node *node, t_format *format)

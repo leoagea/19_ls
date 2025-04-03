@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/17 18:56:31 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/18 17:19:01 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ int     compareName(void *a, void *b);
 int     compareTime(void *a, void *b);
 t_ls_node *mallocLsNode(void);
 int     calculateTotalBlocks(t_dll *list);
-int ft_max(int a, int b);
 t_ls *mallocLs();
 
 #endif
