@@ -3,5 +3,6 @@
 		"__locale": "c",
 		"bitset": "c",
 		"test.C": "cpp"
-	}
+	},
+	"C_Cpp.errorSquiggles": "disabled"
 }
