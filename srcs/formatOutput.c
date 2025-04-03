@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/02 17:34:33 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/03 16:27:40 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void appendStr(char *str, char *append)
 {
+	if (!str || !append)
+		return;
 	while (*str)
 		str++;
 	while (*append)

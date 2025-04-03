@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/02 16:59:52 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/03 16:22:06 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ int retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry
 	
 	node->info = &info;
 	node->entry = entry;
-	node->name = entry->d_name;
+	node->name = ft_strdup(entry->d_name);
 	node->type = entry->d_type;
-	node->relative_path = relPath;
+	node->relative_path = ft_strdup(relPath);
+	free(relPath);
 	node->last_mod = extractTimeModified(info);
 
 	if (entry->d_type == LINK){

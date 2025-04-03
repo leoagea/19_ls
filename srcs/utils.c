@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/02 18:15:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/03 15:49:05 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char *extractTimeModified(struct stat info)
     }
 
     char *time_str = malloc(13 * sizeof(char)); // 12 + 1 for '\0'
-    memcpy(time_str, &full_time_str[4], 12);
+    ft_memcpy(time_str, &full_time_str[4], 12);
     time_str[12] = '\0';
 
     return time_str;
@@ -95,6 +95,8 @@ int calculateTotalBlocks(t_dll *list)
         curr = curr->next;
     }
 
+    // Divide by 2 to convert to KB
+    // Assuming 512 bytes per block
     return total_blocks / 2;
 }
 

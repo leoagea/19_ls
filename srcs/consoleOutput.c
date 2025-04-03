@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/02 18:14:25 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/03 17:17:00 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 void output(t_dll *list, t_arg arg)
 {
+    if (list->head == NULL){
+        printf("null output\n");
+        return;
+    }
     if (arg.sort_time)
         dll_bubble_sort(list->head, list->tail, compareTime);
     else
@@ -32,6 +36,6 @@ void output(t_dll *list, t_arg arg)
 void print(void *content)
 {
     t_ls_node *node = content;
-    
+
 	ft_printf(1, "%s\n", node->format);
 }
