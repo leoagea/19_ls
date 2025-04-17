@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/03 15:49:05 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/17 18:36:41 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,19 @@ void extractPerm(char *perm, int mode)
 
 int compareName(void *a, void *b)
 {
-    t_ls_node *node_a = a;
-    t_ls_node *node_b = b;
+    t_ls *node_a = a;
+    t_ls *node_b = b;
     return ft_strncmp(node_a->name, node_b->name, INT_MAX);
 }
 
 int compareTime(void *a, void *b)
 {
-    t_ls_node *node_a = a;
-    t_ls_node *node_b = b;
-    int cmp = ft_strncmp(node_a->last_mod, node_b->last_mod, INT_MAX);
+    t_ls *node_a = a;
+    t_ls *node_b = b;
+    int cmp = ft_strncmp(node_a->info->last_mod, node_b->info->last_mod, INT_MAX);
     if (cmp == 0)
         return compareName(a, b);
-    return -ft_strncmp(node_a->last_mod, node_b->last_mod, INT_MAX);
+    return -ft_strncmp(node_a->info->last_mod, node_b->info->last_mod, INT_MAX);
 }
 
 t_ls_node *mallocLsNode(void)
@@ -103,4 +103,18 @@ int calculateTotalBlocks(t_dll *list)
 int ft_max(int a, int b)
 {
     return (a > b) ? a : b;
+}
+
+t_ls *mallocLs()
+{
+    t_ls *node;
+    node = malloc(sizeof(t_ls));
+    if (!node)
+        return NULL;
+    ft_memset(node, 0, sizeof(t_ls));
+    
+    t_dll sub;
+    dll_init(&sub);
+    node->subdir = &sub;
+    return node;
 }

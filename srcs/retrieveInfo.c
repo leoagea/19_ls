@@ -1,72 +1,65 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   retrieveInfo.c                                     :+:      :+:    :+:   */
+/*   retrieveInfo_refactor.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/03 16:22:06 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/17 17:43:08 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
-int retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry, t_format *format)
+int retrieveAllInfo(t_data *data, t_ls *node)
 {
-	char *tmp = ft_strjoin(path, "/");
-	char *relPath = ft_strjoin(tmp, entry->d_name);
-	free(tmp);
+	t_info info_tmp;
 
 	struct stat info;
-	if (stat(relPath, &info) == -1)
-		return (printf("stat failed\n"), free(relPath), 0);
+	if (stat(node->relative_path, &info) == -1)
+		return (printf("stat failed\n"), 0);
 
-	if (arg.long_format){
-		if (entry->d_type == DIRECTORY)
-			node->size_bytes = 4096; //linux, how macos handle ? not the same way as linux for sure
-		node->size_bytes = info.st_size;
-		node->nlink = info.st_nlink;
+	if (data->arg.long_format){
+		if (node->type == DIRECTORY)
+			info_tmp.size_bytes = 4096; //linux, how macos handle ? not the same way as linux for sure
+		info_tmp.size_bytes = info.st_size;
+		info_tmp.nlink = info.st_nlink;
 		
 		struct passwd *pwd = getpwuid(info.st_uid);
 		struct group *grp = getgrgid(info.st_gid);
 		if (pwd && grp){
-			node->user_name = ft_strdup(pwd->pw_name);
-			node->group_name = ft_strdup(grp->gr_name);
+			info_tmp.user_name = ft_strdup(pwd->pw_name);
+			info_tmp.group_name = ft_strdup(grp->gr_name);
 	
 		}
 		else{
-			node->user_name = ft_strdup("unknown");
-			node->group_name = ft_strdup("unknown");
+			info_tmp.user_name = ft_strdup("unknown");
+			info_tmp.group_name = ft_strdup("unknown");
 		}
-		extractPerm(node->perm, info.st_mode);
+		extractPerm(info_tmp.perm, info.st_mode);
 	}
 	
-	node->info = &info;
-	node->entry = entry;
-	node->name = ft_strdup(entry->d_name);
-	node->type = entry->d_type;
-	node->relative_path = ft_strdup(relPath);
-	free(relPath);
-	node->last_mod = extractTimeModified(info);
+	info_tmp.last_mod = extractTimeModified(info);
 
-	if (entry->d_type == LINK){
-		retrieveSymInfo(node, arg);
-	}
-	else
-		node->symbolic = false;
+	// if (node->d_type == LINK){
+	// 	retrieveSymInfo(node, arg);
+	// }
+	// else
+	// 	node->symbolic = false;
     
-    char *tmp_nlink = ft_itoa(node->nlink);
-    char *tmp_size = ft_itoa(node->size_bytes);
-    node->nlink_len = ft_strlen(tmp_nlink);
-    node->user_name_len = ft_strlen(node->user_name);
-    node->group_name_len = ft_strlen(node->group_name);
-    node->size_bytes_len = ft_strlen(tmp_size);
+    char *tmp_nlink = ft_itoa(info_tmp.nlink);
+    char *tmp_size = ft_itoa(info_tmp.size_bytes);
+    info_tmp.nlink_len = ft_strlen(tmp_nlink);
+    info_tmp.user_name_len = ft_strlen(info_tmp.user_name);
+    info_tmp.group_name_len = ft_strlen(info_tmp.group_name);
+    info_tmp.size_bytes_len = ft_strlen(tmp_size);
     free(tmp_nlink);
     free(tmp_size);
     
-    getFormatLen(node, format);
+    // getFormatLen(node, node->format);
 	
+	node->info = &info_tmp;
 	return 1;
 }
 
