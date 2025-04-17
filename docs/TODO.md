@@ -14,3 +14,6 @@ Sorting algo:
 	- second check if quick or merge is better to optimize
 
 Check perm link, hard-soft link
+
+formatOuput need refactor et reimplementation into the code 
+
