@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formatOutput.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/03 16:27:40 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/17 14:33:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,17 @@ void getFormatLen(t_ls_node *node, t_format *format)
 	format->max_size_bytes = ft_max(format->max_size_bytes, node->size_bytes_len);
 }
 
-void formatLongFormat(t_ls_node *node, t_format *format)
+static void fillInSpace(t_ls_node *node, t_format *format)
 {
 	int i = 0;
 	
+	appendChar(node->format, ' ');
+	while (++i <= format->max_link - node->nlink_len)
+		appendChar(node->format, ' ');
+}
+
+void formatLongFormat(t_ls_node *node, t_format *format)
+{
 	if (node->type == DIRECTORY)
 		appendChar(node->format, 'd');
 	else if (node->type == FILE)
@@ -52,29 +59,21 @@ void formatLongFormat(t_ls_node *node, t_format *format)
 		
 	appendStr(node->format, node->perm);
 	
+	fillInSpace(node, format);
 	appendChar(node->format, ' ');
-	while (++i <= format->max_link - node->nlink_len)
-		appendChar(node->format, ' ');
 	char *tmp = ft_itoa(node->nlink);
 	appendStr(node->format, tmp);
 	free(tmp);
 	
-	appendChar(node->format, ' ');
-	i = 0;
-	while (++i <= format->max_user - node->user_name_len)
-		appendChar(node->format, ' ');
+	fillInSpace(node, format);
 	appendStr(node->format, node->user_name);
-	appendChar(node->format, ' ');
-
-	i = 0;
-	while (++i <= format->max_group - node->group_name_len)
-		appendChar(node->format, ' ');
-	appendStr(node->format, node->group_name);
-	appendChar(node->format, ' ');
 	
-	i = 0;
-	while (++i <= format->max_size_bytes - node->size_bytes_len)
-		appendChar(node->format, ' ');
+	fillInSpace(node, format);
+	appendChar(node->format, ' ');
+	appendStr(node->format, node->group_name);
+	
+	fillInSpace(node, format);
+	appendChar(node->format, ' ');
 	tmp = ft_itoa(node->size_bytes);
 	appendStr(node->format, tmp);
 	free(tmp);
