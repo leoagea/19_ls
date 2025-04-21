@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   consoleOutput.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/17 19:11:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/21 16:37:55 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,16 @@ static void print_direct(t_data *data, t_dll *list)
     while (node != NULL) {
         t_ls *ls = node->content;
         ft_printf(1, "%s\n", ls->format);
-        if (ls->type == DIRECTORY){
-            dll_insert_tail(ls->subdir, &subdir);
-        }
+        // if (ls->type == DIRECTORY){
+        //     dll_insert_tail(ls->subdir, &subdir);
+        // }
         node = node->next;
     } 
-    if (subdir.head != NULL){
-        ft_printf(1, "\n");
-        output(data, &subdir);
-    }
+    (void)data;
+    // if (subdir.head != NULL){
+    //     ft_printf(1, "\n");
+    //     output(data, &subdir);
+    // }
 }
 
 void output(t_data *data, t_dll *list)

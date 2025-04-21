@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   explore_refactor.c                                 :+:      :+:    :+:   */
+/*   explore.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/17 19:10:01 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/21 18:44:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int explore_loop(t_data *data)
 	int i = 0;
 	
     ft_bubble_sort_string_arr(data->arg.all_path, ft_arr_len((void **)data->arg.all_path));
-    if (data->arg.reverse)
+    if (data->arg.reverse){
         ft_arr_revert((void **)data->arg.all_path);
+        
+    }
     
     // for (i = 0; data->arg.all_path[i] != NULL; i++)
     // {
@@ -26,18 +28,16 @@ int explore_loop(t_data *data)
     // }
 	while (data->arg.all_path[i] != NULL)
 	{
-        t_dll list;
-        dll_init(&list);
-        dll_insert_tail(&list, data->list);
+        t_dll *list = malloc(sizeof(t_dll));
+        dll_init(list);
+        dll_insert_tail(list, data->list);
 		if (exploreDirectories(data, data->list->tail->content, data->arg.all_path[i])){
             printf("exploreDirectories failed\n");
 			return EXIT_FAILURE;
         }
 		i++;
 	}
-    printf("seg fault\n");
     t_node *node = data->list->head;
-    printf("seg fault 1\n");
     while (node != NULL) {
         t_dll *dll = node->content;
         output(data, dll);
@@ -116,9 +116,14 @@ static int processEntry(t_data *data, t_ls *node, struct dirent *entry)
     
     if (node->is_dir){
         printf("recursive directory\n");
+        // ft_printf(2, "\n%s:\n", "recursive directory");
+        // ft_printf(2, "\n%s:\n", node->relative_path);
         exploreDirectories(data, node->subdir, node->relative_path);
     }
-    retrieveAllInfo(data, node);
+    if (retrieveAllInfo(data, node) == EXIT_FAILURE){
+        printf("retrieveAllInfo failed\n");
+        return EXIT_FAILURE;
+    }
     
     return EXIT_SUCCESS;
 }
@@ -138,13 +143,15 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
         return EXIT_FAILURE;
     }
     
+    t_format *format = malloc(sizeof(t_format));
+    initFormatStruct(format);
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
         if (ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
             ft_strncmp("..", entry->d_name, INT_MAX) == 0)
             continue;
         
-        t_ls *node = mallocLs();
+        t_ls *node = mallocLs(format);
         if (!node) {
             closedir(dir);
             return EXIT_FAILURE;
@@ -170,13 +177,28 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
         return EXIT_FAILURE;
     }
     
-    // // printFormatStruct(&format);
-    // t_node *node = list.head;
-    // while (node != NULL) {
-    //     t_ls_node *ls = node->content;
-    //     formatOutput(ls, argList, &format);
-    //     node = node->next;
-    // }
+    t_node *node = list->head;
+    while (node != NULL) {
+        // if (sizeof(node->content) == sizeof(t_ls)){
+        //     printf("node t_ls\n");
+        //     t_ls *ls = node->content;
+        //     formatOutput(ls, data->arg);
+        // }
+        // else if (sizeof(node->content) == sizeof(t_dll)){
+        //     printf("node t_dll\n");
+        // }
+        // else
+        //     printf("node unknown\n");
+        if (node->content == NULL){
+            printf("node content is null\n");
+            return EXIT_FAILURE;
+        }
+        // TODO: SEGV when there is a subdir
+        t_ls *ls = node->content;
+        // printNodeLs(ls);
+        formatOutput(ls, data->arg);
+        node = node->next;
+    }
     
     // output(list, data->arg);
     return EXIT_SUCCESS;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/17 16:43:22 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/21 18:33:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ void printFormatStruct(t_format *format)
 	ft_printf(1, "max_size_bytes: %d\n", format->max_size_bytes);
 }
 
+void printInfoStruct(t_info *info)
+{
+	ft_printf(1, "user_name: %s\n", info->user_name);
+	ft_printf(1, "group_name: %s\n", info->group_name);
+	ft_printf(1, "perm: %s\n", info->perm);
+	ft_printf(1, "last_mod: %s\n", info->last_mod);
+	ft_printf(1, "nlink: %d\n", info->nlink);
+	ft_printf(1, "size_bytes: %d\n", info->size_bytes);
+}
+
 void printNodeLs(t_ls *node)
 {
 	ft_printf(1, "relative_path: %s\n", node->relative_path);
@@ -62,4 +72,16 @@ void printNodeLs(t_ls *node)
 	ft_printf(1, "symbolic: %b\n", node->is_symbolic);
 	ft_printf(1, "directory: %b\n", node->is_dir);
 	ft_printf(1, "format: %s\n", node->format);
+	printInfoStruct(node->info);
+	printFormatStruct(node->format_info);
+	if (node->subdir->head != NULL){
+		ft_printf(1, "subdir: \n");
+		t_node *sub = node->subdir->head;
+		while (sub != NULL){
+			// printNodeLs(sub->content);
+			sub = sub->next;
+		}
+	}
+	else
+		ft_printf(1, "no subdir\n");
 }

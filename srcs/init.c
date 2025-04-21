@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/01 18:22:24 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/21 16:48:39 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,25 @@ void initLsNode(t_ls_node *node)
 
 void initFormatStruct(t_format *format)
 {
-	format->max_user = 0;
-	format->max_group = 0;
-	format->max_link = 0;
-	format->max_size_bytes = 0;
+	// format->max_user = 0;
+	// format->max_group = 0;
+	// format->max_link = 0;
+	// format->max_size_bytes = 0;
+	ft_memset(format, 0, sizeof(t_format));
+}
+
+void initInfoStruct(t_info *info)
+{
+	info->size_bytes = 0;
+	info->group_name = NULL;
+	info->user_name = NULL;
+	info->last_mod = NULL;
+	info->nlink = 0;
+	ft_memset(info->perm, 0, sizeof(info->perm));
+	ft_memset(info->sym_name, 0, sizeof(info->sym_name));
+
+	info->nlink_len = 0;
+	info->user_name_len = 0;
+	info->group_name_len = 0;
+	info->size_bytes_len = 0;
 }

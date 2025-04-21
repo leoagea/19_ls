@@ -2,7 +2,7 @@
 # Compiler & Flags
 ###############################################################################
 CC       = clang
-CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP #-fsanitize=address -g
+CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP -fsanitize=address -g
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 
 ###############################################################################
@@ -47,7 +47,7 @@ all: $(TARGET)
 ###############################################################################
 test: all
 	@echo "Running tests with args: $(ARGS)"
-	@./$(TARGET) $(ARGS)
+	@ASAN_OPTIONS=detect_leaks=0 ./$(TARGET) $(ARGS)
 
 ###############################################################################
 # Linking

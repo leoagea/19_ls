@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/18 17:19:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/21 16:49:52 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int calculateTotalBlocks(t_dll *list)
     return total_blocks / 2;
 }
 
-t_ls *mallocLs()
+t_ls *mallocLs(t_format *format)
 {
     t_ls *node;
     node = malloc(sizeof(t_ls));
@@ -111,5 +111,7 @@ t_ls *mallocLs()
     t_dll sub;
     dll_init(&sub);
     node->subdir = &sub;
-    return node;
+
+    node->format_info = format;
+    return node; 
 }

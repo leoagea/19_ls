@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/18 17:19:01 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/21 17:56:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 void    initArgStruct(t_arg *argStruct);
 void    initLsNode(t_ls_node *node);
 void    initFormatStruct(t_format *format);
+void    initInfoStruct(t_info *info);
 
 /*#############################################################################
 # Debug functions
@@ -61,7 +62,8 @@ void    print_argList(t_arg argList);
 void    printAllElementsLsNode(t_ls_node *node);
 void    print_dirent(struct dirent *entry);
 void    printFormatStruct(t_format *format);
-void printNodeLs(t_ls *node);
+void    printInfoStruct(t_info *info);
+void    printNodeLs(t_ls *node);
 
 /*#############################################################################
 # ParseArg functions
@@ -93,9 +95,9 @@ int     retrieveSymInfo(t_ls_node *node, t_arg arg);
 void appendStr(char *str, char *append);
 void appendChar(char *str, char c);
 void getFormatLen(t_ls *node, t_format *format);
-void formatLongFormat(t_ls_node *node, t_format *format);
-void formatOther(t_ls_node *node);
-void formatOutput(t_ls_node *node, t_arg arg, t_format *format);
+void formatLongFormat(t_ls *node, t_format *format);
+void formatOther(t_ls*node);
+void formatOutput(t_ls *node, t_arg arg);
 
 /*#############################################################################
 # ConsoleOutput functions
@@ -118,6 +120,6 @@ int     compareName(void *a, void *b);
 int     compareTime(void *a, void *b);
 t_ls_node *mallocLsNode(void);
 int     calculateTotalBlocks(t_dll *list);
-t_ls *mallocLs();
+t_ls *mallocLs(t_format *format);
 
 #endif
