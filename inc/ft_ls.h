@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/21 17:56:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 15:29:25 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void    print_dirent(struct dirent *entry);
 void    printFormatStruct(t_format *format);
 void    printInfoStruct(t_info *info);
 void    printNodeLs(t_ls *node);
+void    print_subdir(void *content);
 
 /*#############################################################################
 # ParseArg functions
@@ -118,8 +119,10 @@ char    *extractTimeModified(struct stat info);
 void    extractPerm(char *perm, int mode);
 int     compareName(void *a, void *b);
 int     compareTime(void *a, void *b);
+int     compareSubdirName(void *a, void *b);
 t_ls_node *mallocLsNode(void);
 int     calculateTotalBlocks(t_dll *list);
 t_ls *mallocLs(t_format *format);
+t_subdir *mallocSubdir(void);
 
 #endif

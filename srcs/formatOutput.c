@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/21 18:42:03 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 14:30:16 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,21 @@ void formatOther(t_ls*node)
 
 void formatOutput(t_ls *node, t_arg arg)
 {
+	if (!node)
+	{
+		printf("Error: Null node passed to formatOutput\n");
+        return;
+	}
+	
 	if (arg.long_format)
 	{
 		// printFormatStruct(node->format_info);
-		if (node->format_info == NULL){
-			printf("format_info null\n");
+		if (!node->format_info){
+			printf("Error: Null format_info in node passed to formatOutput\n");
+			return;
+		}
+		if (!node->info){
+			printf("Error: Null info in node passed to formatOutput\n");
 			return;
 		}
 		formatLongFormat(node, node->format_info);

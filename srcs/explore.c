@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/21 18:44:35 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 17:19:46 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,15 @@ int explore_loop(t_data *data)
         }
 		i++;
 	}
+    i = 0;
     t_node *node = data->list->head;
     while (node != NULL) {
         t_dll *dll = node->content;
+        printf("%s:\n", data->arg.all_path[i]);
         output(data, dll);
         node = node->next;
+        i++;
+        // printf("ici \n");
     }
     // output(data, data->list);
 	// dll_print_forward(list);
@@ -116,6 +120,9 @@ static int processEntry(t_data *data, t_ls *node, struct dirent *entry)
     
     if (node->is_dir){
         printf("recursive directory\n");
+        t_dll *sub = malloc(sizeof(t_dll));
+        dll_init(sub);
+        node->subdir = sub;
         // ft_printf(2, "\n%s:\n", "recursive directory");
         // ft_printf(2, "\n%s:\n", node->relative_path);
         exploreDirectories(data, node->subdir, node->relative_path);
@@ -165,6 +172,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
         // printNodeLs(node);
        
         dll_insert_tail(node, list);
+        // printf("inserted %s\n", node->name);
         if (processEntry(data, node, entry) == EXIT_FAILURE) {
             printf("processEntry failed\n");
             closedir(dir);
@@ -197,6 +205,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
         t_ls *ls = node->content;
         // printNodeLs(ls);
         formatOutput(ls, data->arg);
+        // printf("format: %s\n", ls->format);
         node = node->next;
     }
     

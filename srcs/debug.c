@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/21 18:33:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 15:29:00 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,10 @@ void printNodeLs(t_ls *node)
 	}
 	else
 		ft_printf(1, "no subdir\n");
+}
+
+void print_subdir(void *content)
+{
+	t_subdir *subdir = content;
+	ft_printf(1, "subdir name: %s\n", subdir->name);
 }

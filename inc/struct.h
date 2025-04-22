@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/17 15:32:32 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 16:21:51 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,13 @@ typedef struct s_ls
 	t_format *format_info;
 	t_dll *subdir;
 }				t_ls;
+
+typedef struct s_subdir
+{
+	char *name;
+	char *path;
+	t_dll *subdir_list;
+}				t_subdir;
 
 typedef struct s_data
 {

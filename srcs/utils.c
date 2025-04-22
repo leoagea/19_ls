@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/21 16:49:52 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 16:21:59 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,13 @@ int compareTime(void *a, void *b)
     return -ft_strncmp(node_a->info->last_mod, node_b->info->last_mod, INT_MAX);
 }
 
+int compareSubdirName(void *a, void *b)
+{
+    t_subdir *node_a = a;
+    t_subdir *node_b = b;
+    return ft_strncmp(node_a->name, node_b->name, INT_MAX);
+}
+
 t_ls_node *mallocLsNode(void)
 {
     t_ls_node *node = malloc(sizeof(t_ls_node));
@@ -108,10 +115,20 @@ t_ls *mallocLs(t_format *format)
         return NULL;
     ft_memset(node, 0, sizeof(t_ls));
     
-    t_dll sub;
-    dll_init(&sub);
-    node->subdir = &sub;
+    node->subdir = NULL;
 
     node->format_info = format;
     return node; 
+}
+
+
+t_subdir *mallocSubdir(void)
+{
+    t_subdir *subdir = malloc(sizeof(t_subdir));
+    if (!subdir)
+        return NULL;
+    subdir->name = NULL;
+    subdir->path = NULL;
+    subdir->subdir_list = NULL;
+    return subdir;
 }
