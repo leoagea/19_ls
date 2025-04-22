@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 18:07:36 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 18:14:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ static void print_recursive(t_data *data, t_dll *list)
     }
     dll_init(printsubdir);
     
-
-     if (data->arg.long_format)
+    if (data->arg.long_format)
        ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
        
     t_node *node = list->head;
@@ -78,13 +77,16 @@ static void print_recursive(t_data *data, t_dll *list)
     
 }
 
-static void print_direct(t_dll *list)
+static void print_direct(t_data *data, t_dll *list)
 {
     if (!list) {
         printf("Error: NULL list passed to print_direct\n");
         return;
     }
 
+    if (data->arg.long_format)
+        ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
+    
     t_node *node = list->head;
     while (node != NULL) {
         if (!node->content) {
@@ -125,12 +127,5 @@ void output(t_data *data, t_dll *list)
     if (data->arg.recurisve)
         print_recursive(data, list);
     else
-        print_direct(list);
-}
-
-void print(void *content)
-{
-    t_ls_node *node = content;
-
-	ft_printf(1, "%s\n", node->format);
+        print_direct(data, list);
 }

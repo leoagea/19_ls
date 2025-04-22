@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 16:21:51 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 18:09:00 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,6 @@ typedef struct s_arg
 	char*	path;
 	char**	all_path;
 }				t_arg;
-
-typedef struct s_ls_node
-{
-	char*			relative_path;
-	int				type;
-	char*			name;
-	bool			symbolic;
-	char			format[256];
-	
-	// Long Format Info
-	int				size_bytes;
-	char			sym_name[256];
-	char*			group_name;
-	char*			user_name;
-	char			perm[10];
-	char*			last_mod;
-	int 			nlink;
-	
-	// Len Info
-	int				nlink_len;
-	int 			user_name_len;
-	int 			group_name_len;
-	int 			size_bytes_len;
-	
-	struct stat		*info;
-	struct dirent 	*entry;
-}				t_ls_node;
 
 typedef struct s_format
 {

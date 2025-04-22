@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 15:29:00 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 18:09:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,6 @@ void print_argList(t_arg argList)
 		ft_printf(2, "\t\t%s\n", argList.all_path[i]);
 		i++;
 	}
-}
-
-void printAllElementsLsNode(t_ls_node *node)
-{
-	ft_printf(1, "perm: %s   ", node->perm);
-	ft_printf(1, "date: %s	sym:%b   ", node->last_mod, node->symbolic);
-	ft_printf(1, "size: %d   gid: %s   uid: %s   ", node->size_bytes, node->group_name, node->user_name);
-	print_dirent(node->entry);
-	if (node->symbolic)
-		ft_printf(1, "     sym name: %s   ", node->sym_name);
-	ft_printf(1, "\n");
 }
 
 void print_dirent(struct dirent *entry)

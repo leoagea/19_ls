@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 16:21:59 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 18:10:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,6 @@ int compareSubdirName(void *a, void *b)
     return ft_strncmp(node_a->name, node_b->name, INT_MAX);
 }
 
-t_ls_node *mallocLsNode(void)
-{
-    t_ls_node *node = malloc(sizeof(t_ls_node));
-    if (!node)
-        return NULL;
-    initLsNode(node);
-    return node;
-}
-
 int calculateTotalBlocks(t_dll *list)
 {
     int total_blocks = 0;
@@ -96,7 +87,7 @@ int calculateTotalBlocks(t_dll *list)
     
     while (curr != NULL) {
         struct stat info;
-        t_ls_node *node = (t_ls_node *)curr->content;
+        t_ls *node = (t_ls *)curr->content;
         if (lstat(node->relative_path, &info) == 0)
             total_blocks += (int)info.st_blocks;
         curr = curr->next;

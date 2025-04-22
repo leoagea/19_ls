@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 17:37:27 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 18:13:17 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static int processEntry(t_data *data, t_ls *node, struct dirent *entry)
         ft_strncmp("..", entry->d_name, INT_MAX) == 0)
         return EXIT_SUCCESS;
     
-    if (node->is_dir){
+    if (node->is_dir && data->arg.recurisve){
         printf("recursive directory\n");
         t_dll *sub = malloc(sizeof(t_dll));
         dll_init(sub);

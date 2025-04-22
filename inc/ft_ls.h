@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 15:29:25 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 18:11:31 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@
 #############################################################################*/
 
 void    initArgStruct(t_arg *argStruct);
-void    initLsNode(t_ls_node *node);
 void    initFormatStruct(t_format *format);
 void    initInfoStruct(t_info *info);
 
@@ -59,7 +58,6 @@ void    initInfoStruct(t_info *info);
 #############################################################################*/
 
 void    print_argList(t_arg argList);
-void    printAllElementsLsNode(t_ls_node *node);
 void    print_dirent(struct dirent *entry);
 void    printFormatStruct(t_format *format);
 void    printInfoStruct(t_info *info);
@@ -87,7 +85,6 @@ int exploreDirectories(t_data *data, t_dll *list, char *path);
 
 // int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry, t_format *format);
 int retrieveAllInfo(t_data *data, t_ls *node);
-int     retrieveSymInfo(t_ls_node *node, t_arg arg);
 
 /*#############################################################################
 # FormatOutput functions
@@ -97,7 +94,7 @@ void appendStr(char *str, char *append);
 void appendChar(char *str, char c);
 void getFormatLen(t_ls *node, t_format *format);
 void formatLongFormat(t_ls *node, t_format *format);
-void formatOther(t_ls*node);
+void formatOther(t_ls *node);
 void formatOutput(t_ls *node, t_arg arg);
 
 /*#############################################################################
@@ -120,7 +117,6 @@ void    extractPerm(char *perm, int mode);
 int     compareName(void *a, void *b);
 int     compareTime(void *a, void *b);
 int     compareSubdirName(void *a, void *b);
-t_ls_node *mallocLsNode(void);
 int     calculateTotalBlocks(t_dll *list);
 t_ls *mallocLs(t_format *format);
 t_subdir *mallocSubdir(void);
