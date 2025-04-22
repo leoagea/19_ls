@@ -6,13 +6,13 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 16:42:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 18:07:36 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
-static void print_direct(t_data *data, t_dll *list)
+static void print_recursive(t_data *data, t_dll *list)
 {
     if (!list) {
         printf("Error: NULL list passed to print_direct\n");
@@ -71,11 +71,32 @@ static void print_direct(t_data *data, t_dll *list)
         t_subdir *tmp = current->content;
         if (tmp && tmp->subdir_list) {
             ft_printf(1, "\n%s:\n", tmp->path);
-            print_direct(data, tmp->subdir_list);
+            print_recursive(data, tmp->subdir_list);
         }
         current = current->next;
     }
     
+}
+
+static void print_direct(t_dll *list)
+{
+    if (!list) {
+        printf("Error: NULL list passed to print_direct\n");
+        return;
+    }
+
+    t_node *node = list->head;
+    while (node != NULL) {
+        if (!node->content) {
+            printf("Warning: Skipping NULL content node\n");
+            node = node->next;
+            continue;
+        }
+
+        t_ls *ls = node->content;
+        ft_printf(1, "%s\n", ls->format);
+        node = node->next;
+    }
 }
 
 void output(t_data *data, t_dll *list)
@@ -100,8 +121,11 @@ void output(t_data *data, t_dll *list)
     //     print_direct(data, list);
     //     node = node->next;
     // }
-    print_direct(data, list);
 
+    if (data->arg.recurisve)
+        print_recursive(data, list);
+    else
+        print_direct(list);
 }
 
 void print(void *content)

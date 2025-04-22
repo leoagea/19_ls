@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 17:19:46 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/22 17:37:27 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ int explore_loop(t_data *data)
         printf("%s:\n", data->arg.all_path[i]);
         output(data, dll);
         node = node->next;
+        if (node == NULL)
+            break;
+        printf("\n");
         i++;
         // printf("ici \n");
     }
