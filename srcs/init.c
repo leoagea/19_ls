@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 18:09:35 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 17:05:42 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ void initArgStruct(t_arg *argStruct)
 
 void initFormatStruct(t_format *format)
 {
-	// format->max_user = 0;
-	// format->max_group = 0;
-	// format->max_link = 0;
-	// format->max_size_bytes = 0;
 	ft_memset(format, 0, sizeof(t_format));
 }
 

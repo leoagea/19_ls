@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 18:10:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 17:05:52 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ int calculateTotalBlocks(t_dll *list)
         curr = curr->next;
     }
 
-    // Divide by 2 to convert to KB
-    // Assuming 512 bytes per block
     return total_blocks / 2;
 }
 

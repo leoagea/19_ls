@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 18:14:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 17:05:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,15 +114,6 @@ void output(t_data *data, t_dll *list)
         
     if (data->arg.reverse)
         dll_revert(list);
-    // else
-    //     dll_print_forward(list, print);
-
-    // t_dll *dll = list->head->content;
-    // t_node *node = list->head;
-    // while (node != NULL) {
-    //     print_direct(data, list);
-    //     node = node->next;
-    // }
 
     if (data->arg.recurisve)
         print_recursive(data, list);

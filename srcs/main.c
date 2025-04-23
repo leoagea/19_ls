@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/17 15:45:04 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 16:07:54 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ int main(int ac, char **av)
 	
 	t_arg argList; 
 	initArgStruct(&argList);
-	if (ac != 1){
-		if (parseArg(ac - 1, av + 1, &argList))
-			return EXIT_FAILURE;
-	}
+	if (parseArg(ac - 1, av + 1, &argList))
+		return EXIT_FAILURE;
 	data.arg = argList;
 	t_dll list;
 	dll_init(&list);
