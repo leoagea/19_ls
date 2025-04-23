@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 18:13:17 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 14:28:36 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ int explore_loop(t_data *data)
 // }
 static void checkEntryType(t_ls *node, struct dirent *entry)
 {
-    node->name = ft_strdup(entry->d_name);
     if (entry->d_type == DT_DIR){
         node->type = DIRECTORY;
         node->is_dir = true;
@@ -115,13 +114,12 @@ static void checkEntryType(t_ls *node, struct dirent *entry)
         node->type = UNKNOWN;
 }
 
-static int processEntry(t_data *data, t_ls *node, struct dirent *entry)
+static int processEntry(t_data *data, t_ls *node)
 {
-    if (ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
-        ft_strncmp("..", entry->d_name, INT_MAX) == 0)
-        return EXIT_SUCCESS;
-    
-    if (node->is_dir && data->arg.recurisve){
+    if (node->is_dir && data->arg.recurisve && 
+        (ft_strncmp(".", node->name, INT_MAX) != 0 &&
+        ft_strncmp("..", node->name, INT_MAX) != 0))
+    {
         printf("recursive directory\n");
         t_dll *sub = malloc(sizeof(t_dll));
         dll_init(sub);
@@ -130,6 +128,7 @@ static int processEntry(t_data *data, t_ls *node, struct dirent *entry)
         // ft_printf(2, "\n%s:\n", node->relative_path);
         exploreDirectories(data, node->subdir, node->relative_path);
     }
+    
     if (retrieveAllInfo(data, node) == EXIT_FAILURE){
         printf("retrieveAllInfo failed\n");
         return EXIT_FAILURE;
@@ -157,8 +156,9 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
     initFormatStruct(format);
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
-        if (ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
-            ft_strncmp("..", entry->d_name, INT_MAX) == 0)
+        if ((ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
+            ft_strncmp("..", entry->d_name, INT_MAX) == 0) &&
+            !data->arg.all)
             continue;
         
         t_ls *node = mallocLs(format);
@@ -167,6 +167,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
             return EXIT_FAILURE;
         }
         
+        node->name = ft_strdup(entry->d_name);
         node->relative_path = ft_join_path(path, entry->d_name);
         
         checkEntryType(node, entry);
@@ -176,7 +177,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
        
         dll_insert_tail(node, list);
         // printf("inserted %s\n", node->name);
-        if (processEntry(data, node, entry) == EXIT_FAILURE) {
+        if (processEntry(data, node) == EXIT_FAILURE) {
             printf("processEntry failed\n");
             closedir(dir);
             return EXIT_FAILURE;
