@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 16:45:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:06:34 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 	}
     
 	node->info = info_tmp;
+	
+    if (node->is_symbolic)
+		handleSymlink(node);
+	
     getFormatLen(node, node->format_info);
 
 	return EXIT_SUCCESS;

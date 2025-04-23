@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 17:05:22 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:07:19 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,26 @@ static void checkEntryType(t_ls *node, struct dirent *entry)
         node->is_dir = true;
     }
     else if (entry->d_type == DT_REG)
-        node->type = FILE;
+        node->type = REGFILE;
     else if (entry->d_type == DT_LNK){
         node->type = LINK;
         node->is_symbolic = true;
     }
+    else if (entry->d_type == DT_CHR)
+        node->type = CHARFILE;
+    else if (entry->d_type == DT_WHT)
+        node->type = CFS;
+    else if (entry->d_type == DT_BLK)
+        node->type = BLKFILE;
+    else if (entry->d_type == DT_FIFO)
+        node->type = FIFO;
+    else if (entry->d_type == DT_SOCK)
+        node->type = SOCKET;
     else
         node->type = UNKNOWN;
 }
 
-static int handleSymlink(t_ls *node)
+int handleSymlink(t_ls *node)
 {
     char *link_path = node->relative_path[0] == '/' ? 
         ft_strdup(node->relative_path) : 
@@ -98,9 +108,9 @@ static int handleSymlink(t_ls *node)
 
 static int processEntry(t_data *data, t_ls *node)
 {
-    struct stat path_stat;
-    if (lstat(node->relative_path, &path_stat) == 0 && S_ISLNK(path_stat.st_mode))
-        return retrieveAllInfo(data, node) || handleSymlink(node);
+    // struct stat path_stat;
+    if (node->is_symbolic)
+        return retrieveAllInfo(data, node);
     
     if (node->is_dir && data->arg.recurisve && 
         (ft_strncmp(".", node->name, INT_MAX) != 0 &&

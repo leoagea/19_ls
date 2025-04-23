@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 14:30:16 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:07:40 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,43 @@ static void fillInSpace(t_ls *node, int max_len, int len)
 		appendChar(node->format, ' ');
 }
 
+static void appendType(char *format, int type)
+{
+	switch (type)
+	{
+		case DIRECTORY:
+			appendChar(format, 'd');
+			break;
+		case REGFILE:
+			appendChar(format, '-');
+			break;
+		case LINK:
+			appendChar(format, 'l');
+			break;
+		case FIFO:
+			appendChar(format, 'p');
+			break;
+		case SOCKET:
+			appendChar(format, 's');
+			break;
+		case CFS:
+			appendChar(format, 'n');
+			break;
+		case CHARFILE:
+			appendChar(format, 'c');
+			break;
+		case BLKFILE:
+			appendChar(format, 'b');
+			break;
+		default:
+			appendChar(format, 'u');
+			break;
+	}
+}
+
 void formatLongFormat(t_ls *node, t_format *format)
 {
-	if (node->type == DIRECTORY)
-		appendChar(node->format, 'd');
-	else if (node->type == FILE)
-		appendChar(node->format, '-');
-	else if (node->type == LINK)
-		appendChar(node->format, 'l');
-	else
-		appendChar(node->format, 'u');
+	appendType(node->format, node->type);
 	
 	appendStr(node->format, node->info->perm);
 	fillInSpace(node, format->max_link, node->info->nlink_len);

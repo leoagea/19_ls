@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 18:09:00 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/23 18:42:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@
 # include <stdbool.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+
+enum e_type
+{
+	UNKNOWN = 0,
+	FIFO = 1,
+	CHARFILE = 2, //Character special file
+	DIRECTORY = 4,
+	BLKFILE = 6, //Block special file
+	REGFILE = 8,
+	LINK = 10,
+	SOCKET = 12,
+	CFS = 14, //Network file system
+};
 
 typedef struct s_arg
 {
