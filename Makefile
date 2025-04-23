@@ -49,6 +49,10 @@ test: all
 	@echo "Running tests with args: $(ARGS)"
 	@ASAN_OPTIONS=detect_leaks=0 ./$(TARGET) $(ARGS)
 
+testfiletype: all
+	@mkdir -p tests
+	@cd tests && bash Filetypes.sh
+
 ###############################################################################
 # Linking
 ###############################################################################
