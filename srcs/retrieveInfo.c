@@ -6,21 +6,11 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 19:06:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/28 19:00:19 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
-
-static int getLinkCount(t_ls *node)
-{
-	struct stat st;
-	if (node->is_symbolic ? lstat(node->relative_path, &st) : stat(node->relative_path, &st) == -1) {
-        perror("stat");
-        return EXIT_FAILURE;
-    }
-	return st.st_nlink;
-}
 
 int retrieveAllInfo(t_data *data, t_ls *node)
 {
@@ -28,7 +18,7 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 	initInfoStruct(info_tmp);
 	
 	struct stat info;
-	if (stat(node->relative_path, &info) == -1)
+	if (node->is_symbolic ? lstat(node->relative_path, &info) : stat(node->relative_path, &info) == -1)
 		return (printf("stat failed\n"), EXIT_FAILURE);
 
 	if (data->arg.long_format){
@@ -37,7 +27,7 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 	
 		info_tmp->size_bytes = info.st_size;
 			
-		info_tmp->nlink = getLinkCount(node);
+		info_tmp->nlink = info.st_nlink;
 		
 		struct passwd *pwd = getpwuid(info.st_uid);
 		struct group *grp = getgrgid(info.st_gid);
