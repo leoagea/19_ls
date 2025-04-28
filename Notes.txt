@@ -1,3 +1,0 @@
-CHeck time files older than 6 months
-Test file type: n, network files; s, socket; p, named pipe (FIFO); c, character special file; b, block special file.
-
