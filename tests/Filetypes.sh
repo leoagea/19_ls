@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Color definitions
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+BLUE=$(tput setaf 4)
+RESET=$(tput sgr0)
+
+echo -e "\n${RED}Filetypes.sh${RESET}\n"
+
 # Get the directory where the script is located
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 PROJECT_DIR=$(dirname "$SCRIPT_DIR")
@@ -22,10 +30,15 @@ mkfifo testpipe
 python3 -c "import socket; s = socket.socket(socket.AF_UNIX); s.bind('testsock')"
 
 # Test with ls
-ASAN_OPTIONS=detect_leaks=0 ./myls -l
+echo -e "${BLUE}Testing with real ls:${RESET}"
 ls -l
+echo -e "${GREEN}Testing with my ls:${RESET}"
+ASAN_OPTIONS=detect_leaks=0 ./myls -l
 
 # Clean up
-rm testpipe testsock myls #testchar testblock 
-cd -
-rmdir /tmp/ls_test
+cleanup() {
+    cd - > /dev/null 2>&1
+    rm -f /tmp/ls_test/*
+    rmdir /tmp/ls_test 2>/dev/null
+}
+trap cleanup EXIT
