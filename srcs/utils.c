@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 17:05:52 by lagea            ###   ########.fr       */
+/*   Updated: 2025/04/28 17:09:01 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,28 @@ void freeArgStruct(t_arg *argList)
 
 char *extractTimeModified(struct stat info)
 {
-	time_t mod_sec = info.st_mtime;
+    time_t now = time(NULL);
+    time_t mod_sec = info.st_mtime;
+    time_t six_months = 15552000;
     char *full_time_str = ctime(&mod_sec);
+    
     if (!full_time_str) {
         perror("ctime");
         return NULL;
     }
 
-    char *time_str = malloc(13 * sizeof(char)); // 12 + 1 for '\0'
-    ft_memcpy(time_str, &full_time_str[4], 12);
-    time_str[12] = '\0';
+    char *time_str = malloc(13 * sizeof(char));
+    if (!time_str)
+        return NULL;
+    ft_memset(time_str, 0, 13);
+    
+    if ((now - mod_sec > six_months) || (mod_sec > now)) {
+        ft_memcpy(time_str, &full_time_str[4], 7);
+        ft_memcpy(time_str + 7, &full_time_str[19], 5);
+    } else {
+        ft_memcpy(time_str, &full_time_str[4], 12);
+        time_str[12] = '\0';
+    }
 
     return time_str;
 }
