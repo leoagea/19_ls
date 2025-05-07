@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 18:07:16 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/07 23:18:09 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@ void usage(char invalidOption)
 {
 	ft_printf(2, "ls: invalid option -- %c\n", invalidOption);
 	ft_printf(2, "usage: ls [-alrtR] [file ...]\n");	
+}
+
+void help(void)
+{
+    ft_printf(1, DESCIPTION);
+    ft_printf(1, OPTIONS);
+    ft_printf(1, AFLAG);
+    ft_printf(1, RFLAG);
+    ft_printf(1, TFLAG);
+    ft_printf(1, LFLAG);
+    ft_printf(1, EXIT);
 }
 
 char *extractTimeModified(struct stat info)

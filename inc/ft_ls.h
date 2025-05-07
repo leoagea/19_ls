@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 18:27:01 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/07 23:42:05 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@
 /*#############################################################################
 # Includes
 #############################################################################*/
+
 # include "../libft/libft.h"
 # include "struct.h"
+# include "define.h"
+
 # include <stdlib.h>	// exit, EXIT_FAILURE
 # include <stdio.h>		// perror
 # include <stdlib.h>	// exit, EXIT_FAILURE
@@ -27,19 +30,6 @@
 # include <unistd.h>    //readlink
 # include <pwd.h>        //getpwuid
 # include <grp.h>        //getgrgid
-
-/*#############################################################################
-# Defines
-#############################################################################*/
-
-# ifdef __APPLE__
-    #define st_mtime st_mtimespec.tv_sec
-    #define TOTAL_BLOCKS "total:"
-# elif __linux__
-    #define TOTAL_BLOCKS "total"
-# endif
-
-# define DEFAULT_PATH "."
 
 /*#############################################################################
 # Init functions
@@ -108,6 +98,7 @@ void    print(void *content);
 #############################################################################*/
 
 void    usage(char invalidOption);
+void    help(void);
 char    *extractTimeModified(struct stat info);
 void    extractPerm(char *perm, int mode);
 int     compareName(void *a, void *b);
