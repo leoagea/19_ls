@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 19:05:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/07 18:27:01 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void    print(void *content);
 #############################################################################*/
 
 void    usage(char invalidOption);
-void    freeArgStruct(t_arg *argList);
 char    *extractTimeModified(struct stat info);
 void    extractPerm(char *perm, int mode);
 int     compareName(void *a, void *b);
@@ -118,4 +117,12 @@ int     calculateTotalBlocks(t_dll *list);
 t_ls *mallocLs(t_format *format);
 t_subdir *mallocSubdir(void);
 
+/*#############################################################################
+# Free functions
+#############################################################################*/
+
+void    freeArgStruct(t_arg *argList);
+void    freeLsNode(void *content);
+void    freeStr(char **info);
+void    freeList(void *content);
 #endif

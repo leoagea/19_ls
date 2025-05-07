@@ -2,7 +2,7 @@
 # Compiler & Flags
 ###############################################################################
 CC       = clang
-CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP -fsanitize=address -g
+CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP #-fsanitize=address -g
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 
 ###############################################################################
@@ -29,6 +29,7 @@ SRC_FILES = main.c \
 			formatOutput.c \
 			consoleOutput.c \
 			utils.c \
+			free.c \
 			debug.c
 			
 SRCS      = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

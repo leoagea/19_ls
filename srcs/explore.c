@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 19:07:19 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/07 18:46:10 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
         node = node->next;
     }
     
+    free(format);
     // output(list, data->arg);
     return EXIT_SUCCESS;
 }

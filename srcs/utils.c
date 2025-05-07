@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/28 17:09:01 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/07 18:07:16 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,6 @@ void usage(char invalidOption)
 {
 	ft_printf(2, "ls: invalid option -- %c\n", invalidOption);
 	ft_printf(2, "usage: ls [-alrtR] [file ...]\n");	
-}
-
-void freeArgStruct(t_arg *argList)
-{
-	if (argList->path){
-		free(argList->path);
-		argList->path = NULL;
-	}
 }
 
 char *extractTimeModified(struct stat info)
@@ -117,7 +109,7 @@ t_ls *mallocLs(t_format *format)
     ft_memset(node, 0, sizeof(t_ls));
     
     node->subdir = NULL;
-
+    node->info = NULL;
     node->format_info = format;
     return node; 
 }

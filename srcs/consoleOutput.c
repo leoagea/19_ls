@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 17:05:35 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/07 15:44:11 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static void print_recursive(t_data *data, t_dll *list)
     
     if (printsubdir->head == NULL) {
         free(printsubdir);
+        printsubdir = NULL;
         return;
     }
     dll_bubble_sort(printsubdir->head, printsubdir->tail, compareSubdirName);
