@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 23:44:32 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/08 15:39:33 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ int main(int ac, char **av)
 {
     t_data data;
     initArgStruct(&data.arg);
+
+    t_dll list;
+    data.list = &list;
     dll_init(data.list);
     
     int parse_result = parseArg(ac, av, &data.arg);

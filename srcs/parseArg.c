@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseArg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 23:41:01 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/08 15:39:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ static int getAllPath(int ac, char **av, t_arg *argList, int i)
 		argList->all_path = malloc(2 * sizeof(char*));
 		if (!argList->all_path)
 			return EXIT_FAILURE;
-		argList->all_path[0] = malloc(2 * sizeof(char));
-		argList->all_path[0] = DEFAULT_PATH;
+		argList->all_path[0] = ft_strdup(DEFAULT_PATH);
 		argList->all_path[1] = NULL;
 	}
 	else{
@@ -45,7 +44,7 @@ static int getAllPath(int ac, char **av, t_arg *argList, int i)
 
 int parseArg(int ac, char **av, t_arg *argList)
 {
-	int i = -1;
+	int i = 0;
 	
 	//Parse all options
 	while (++i < ac && av[i][0] == '-'){
