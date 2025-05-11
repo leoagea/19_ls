@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   explore.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 18:46:10 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 16:33:47 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,11 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
     initFormatStruct(format);
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
-        if ((ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
-            ft_strncmp("..", entry->d_name, INT_MAX) == 0) &&
-            !data->arg.all)
+        // if ((ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
+        //     ft_strncmp("..", entry->d_name, INT_MAX) == 0) &&
+        //     !data->arg.all)
+        //     continue;
+        if (entry->d_name[0] == '.' && !data->arg.all)
             continue;
         
         t_ls *node = mallocLs(format);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/08 15:39:33 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 16:37:37 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int main(int ac, char **av)
         return EXIT_FAILURE;
     if (parse_result == EXIT_CLEAN)
         return EXIT_SUCCESS;
-
+        
+    // print_argList(data.arg);
     explore_loop(&data);
     freeArgStruct(&data.arg);
     dll_free(data.list, freeList); 
