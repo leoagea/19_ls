@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 23:42:05 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 22:03:33 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@
 # include <dirent.h>	// DIR, struct dirent, opendir, readdir, closedir
 # include <time.h>      // time_t, ctime
 # include <unistd.h>    //readlink
-# include <pwd.h>        //getpwuid
-# include <grp.h>        //getgrgid
+# include <pwd.h>       //getpwuid
+# include <grp.h>       //getgrgid
+# include <sys/ioctl.h>	// ioctl
 
 /*#############################################################################
 # Init functions
@@ -90,7 +91,7 @@ void formatOutput(t_ls *node, t_arg arg);
 
 // void    output(t_dll *list, t_arg arg);
 void output(t_data *data, t_dll *list);
-void    print(void *content);
+void print_recursive(t_data *data, t_dll *list);
 
 
 /*#############################################################################

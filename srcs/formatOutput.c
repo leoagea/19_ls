@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formatOutput.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 19:07:40 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 21:53:36 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void getFormatLen(t_ls *node, t_format *format)
 	format->max_user = MAX(format->max_user, node->info->user_name_len);
 	format->max_link = MAX(format->max_link, node->info->nlink_len);
 	format->max_size_bytes = MAX(format->max_size_bytes, node->info->size_bytes_len);
+	format->max_name = MAX(format->max_name, node->info->name_len);
 }
 
 static void fillInSpace(t_ls *node, int max_len, int len)
@@ -114,9 +115,13 @@ void formatLongFormat(t_ls *node, t_format *format)
 	}
 }
 
-void formatOther(t_ls*node)
+void formatOther(t_ls *node)
 {
 	appendStr(node->format, node->name);
+
+	int space = node->format_info->max_name - node->info->name_len + 1;
+	for (int i = 0; i < space; i++)
+		appendChar(node->format, ' ');
 }
 
 void formatOutput(t_ls *node, t_arg arg)

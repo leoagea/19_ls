@@ -3,68 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   consoleOutput.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 15:44:11 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 22:03:56 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
-static void print_recursive(t_data *data, t_dll *list)
+static void print_column(t_data *data, t_dll *list)
 {
-    if (!list) {
-        printf("Error: NULL list passed to print_direct\n");
-        return;
-    }
-
-    t_dll *printsubdir = malloc(sizeof(t_dll));
-    if (!printsubdir) {
-        printf("Error: Failed to allocate printsubdir\n");
-        return;
-    }
-    dll_init(printsubdir);
-    
-    if (data->arg.long_format)
-       ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
-       
     t_node *node = list->head;
-    while (node != NULL) {
-        if (!node->content) {
-            printf("Warning: Skipping NULL content node\n");
-            node = node->next;
-            continue;
-        }
-
-        t_ls *ls = node->content;
-        ft_printf(1, "%s\n", ls->format);
+    if (!node || !node->content)
+        return;
         
-        // printf("ls->name: %s\n", ls->name);
-        if (ls->is_dir && ls->subdir){
-            t_subdir *subdir = mallocSubdir();
-            if (!subdir) {
-                printf("Error: Failed to allocate subdir\n");
-                node = node->next;
-                continue;
-            }
-            subdir->name = ft_strdup(ls->name);
-            subdir->path = ft_strdup(ls->relative_path);
-            subdir->subdir_list = ls->subdir;
-            dll_insert_tail(subdir, printsubdir);
+    t_ls *ls = node->content;
+    if (!ls->format_info)
+        return;
+        
+    int max_name = ls->format_info->max_name;
+    if (max_name == 0)
+        max_name = 1;
+    int nb_col = data->w.ws_col / max_name;
+    if (nb_col == 0)
+        nb_col = 1;
+
+    size_t rows = (list->size + nb_col - 1) / nb_col;  // Round up division
+    
+    for (size_t i = 0; i < rows; i++) {
+        t_node *current = node;
+        for (int j = 0; j < nb_col && current; j++) {
+            ls = current->content;
+            if (ls)
+                printf("%s", ls->format);
+            
+            // Skip nb_col nodes ahead, but check for NULL
+            for (size_t k = 0; k < rows && current; k++)
+                current = current->next;
         }
         node = node->next;
-    } 
-    
-    if (printsubdir->head == NULL) {
-        free(printsubdir);
-        printsubdir = NULL;
-        return;
+        printf("\n");
     }
+}
+
+static void handle_subdirs(t_data *data, t_dll *printsubdir)
+{
+    if (!printsubdir->head)
+        return;
+        
     dll_bubble_sort(printsubdir->head, printsubdir->tail, compareSubdirName);
     if (data->arg.reverse)
         dll_revert(printsubdir);
-    // dll_print_forward(printsubdir, print_subdir);
     
     t_node *current = printsubdir->head;
     while (current) {
@@ -75,7 +65,61 @@ static void print_recursive(t_data *data, t_dll *list)
         }
         current = current->next;
     }
+}
+
+void print_recursive(t_data *data, t_dll *list)
+{
+    if (!list) {
+        printf("Error: NULL list passed to print_recursive\n");
+        return;
+    }
+
+    t_dll *printsubdir = malloc(sizeof(t_dll));
+    if (!printsubdir) {
+        printf("Error: Failed to allocate printsubdir\n");
+        return;
+    }
+    dll_init(printsubdir);
     
+    // Print current directory contents
+    if (data->arg.long_format) {
+        ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
+        // Print in long format
+        t_node *node = list->head;
+        while (node) {
+            if (node->content) {
+                t_ls *ls = node->content;
+                ft_printf(1, "%s\n", ls->format);
+            }
+            node = node->next;
+        }
+    } else {
+        // Print in column format
+        print_column(data, list);
+    }
+    
+    // Collect subdirectories
+    t_node *node = list->head;
+    while (node) {
+        if (node->content) {
+            t_ls *ls = node->content;
+            if (ls->is_dir && ls->subdir) {
+                t_subdir *subdir = mallocSubdir();
+                if (subdir) {
+                    subdir->name = ft_strdup(ls->name);
+                    subdir->path = ft_strdup(ls->relative_path);
+                    subdir->subdir_list = ls->subdir;
+                    dll_insert_tail(subdir, printsubdir);
+                }
+            }
+        }
+        node = node->next;
+    }
+    
+    // Handle subdirectories recursively
+    handle_subdirs(data, printsubdir);
+    
+    free(printsubdir);
 }
 
 static void print_direct(t_data *data, t_dll *list)
@@ -118,6 +162,11 @@ void output(t_data *data, t_dll *list)
 
     if (data->arg.recurisve)
         print_recursive(data, list);
-    else
-        print_direct(data, list);
+    else{
+        if (data->arg.long_format)
+            print_direct(data, list);
+        else
+            print_column(data, list);
+    }
+    // print_column(data, list);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   retrieveInfo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/28 19:00:19 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 19:48:53 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 		free(tmp_nlink);
 		free(tmp_size);
 		info_tmp->last_mod = extractTimeModified(info);
+	}
+	else{
+		info_tmp->name_len = ft_strlen(node->name) + 1;
 	}
     
 	node->info = info_tmp;

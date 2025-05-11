@@ -2,7 +2,7 @@
 # Compiler & Flags
 ###############################################################################
 CC       = clang
-CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP #-fsanitize=address -g
+CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP -fsanitize=address -g
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 
 ###############################################################################

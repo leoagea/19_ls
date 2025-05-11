@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 18:42:24 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 19:50:16 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdbool.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>	// struct winsize
 
 enum e_type
 {
@@ -47,6 +48,7 @@ typedef struct s_format
 	int 		max_group;
 	int 		max_link;
 	int 		max_size_bytes;
+	int			max_name;
 }				t_format;	
 
 typedef struct s_info
@@ -65,6 +67,7 @@ typedef struct s_info
 	int 			user_name_len;
 	int 			group_name_len;
 	int 			size_bytes_len;
+	int				name_len;
 }			t_info;
 
 typedef struct s_ls
@@ -92,6 +95,7 @@ typedef struct s_data
 {
 	t_dll *list;
 	t_arg arg;
+	struct winsize w;
 }				t_data;
 
 #endif

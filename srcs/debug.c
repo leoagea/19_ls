@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/22 18:09:24 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 19:51:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void printNodeLs(t_ls *node)
 	ft_printf(1, "format: %s\n", node->format);
 	printInfoStruct(node->info);
 	printFormatStruct(node->format_info);
-	if (node->subdir->head != NULL){
+	if (node->subdir && node->subdir->head != NULL){
 		ft_printf(1, "subdir: \n");
 		t_node *sub = node->subdir->head;
 		while (sub != NULL){

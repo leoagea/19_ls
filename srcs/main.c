@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/11 16:37:37 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/11 19:21:15 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int main(int ac, char **av)
 {
     t_data data;
     initArgStruct(&data.arg);
-
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &data.w);
+    
     t_dll list;
     data.list = &list;
     dll_init(data.list);
