@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:59:00 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 01:28:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,10 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 		return (printf("stat failed\n"), EXIT_FAILURE);
             info_tmp->block_size = (int)info.st_blocks;
             
-    char *tmp_block_size = ft_itoa(info_tmp->block_size);
-    info_tmp->block_size_len = ft_strlen(tmp_block_size);
-    free(tmp_block_size);
+    info_tmp->block_size_len = ft_intlen(info_tmp->block_size);
     
     info_tmp->size_bytes = info.st_size;
-    char *tmp_size = ft_itoa(info_tmp->size_bytes);
-	info_tmp->size_bytes_len = ft_strlen(tmp_size);
-	free(tmp_size);
+	info_tmp->size_bytes_len = ft_intlen(info_tmp->size_bytes);
     
 	extractPerm(info_tmp->perm, info.st_mode);
     
@@ -123,25 +119,19 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 		struct group *grp = getgrgid(info.st_gid);
 		if (pwd && grp){
             info_tmp->user_id = pwd->pw_uid;
-            char *tmp_id = ft_itoa(info_tmp->user_id);
-            info_tmp->user_id_len = ft_strlen(tmp_id);
-            free(tmp_id);
+            info_tmp->user_id_len = ft_intlen(info_tmp->user_id);
 			info_tmp->user_name = ft_strdup(pwd->pw_name);
+            
             info_tmp->group_id = grp->gr_gid;
-            tmp_id = ft_itoa(info_tmp->group_id);
-            info_tmp->group_id_len = ft_strlen(tmp_id);
-            free(tmp_id);
+            info_tmp->group_id_len = ft_intlen(info_tmp->group_id);
 			info_tmp->group_name = ft_strdup(grp->gr_name);
-	
 		}
 		else{
 			info_tmp->user_name = ft_strdup("unknown");
 			info_tmp->group_name = ft_strdup("unknown");
 		}
     
-		char *tmp_nlink = ft_itoa(info_tmp->nlink);
-		info_tmp->nlink_len = ft_strlen(tmp_nlink);
-		free(tmp_nlink);
+		info_tmp->nlink_len = ft_intlen(info_tmp->nlink);
         
 		info_tmp->user_name_len = ft_strlen(info_tmp->user_name);
 		info_tmp->group_name_len = ft_strlen(info_tmp->group_name);
