@@ -6,11 +6,25 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/11 22:03:56 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 17:19:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
+
+static void print_format(t_data *data, t_ls *ls)
+{
+    char *color = get_color_for_file(ls);
+    if (data->arg.long_format) {
+        ft_printf(1, "%s", ls->format);
+        ft_printf(1, "%s%s%s", color, ls->name, COLOR_RESET);
+        if (ls->is_symbolic){
+            ft_printf(1, " -> %s", ls->info->sym_name);
+        }
+    } else {
+        ft_printf(1, "%s%s%s", color, ls->format, COLOR_RESET);
+    }
+}
 
 static void print_column(t_data *data, t_dll *list)
 {
@@ -35,8 +49,9 @@ static void print_column(t_data *data, t_dll *list)
         t_node *current = node;
         for (int j = 0; j < nb_col && current; j++) {
             ls = current->content;
-            if (ls)
-                printf("%s", ls->format);
+            if (ls){
+                print_format(data, ls);
+            }
             
             // Skip nb_col nodes ahead, but check for NULL
             for (size_t k = 0; k < rows && current; k++)
@@ -89,7 +104,8 @@ void print_recursive(t_data *data, t_dll *list)
         while (node) {
             if (node->content) {
                 t_ls *ls = node->content;
-                ft_printf(1, "%s\n", ls->format);
+                print_format(data, ls);
+                printf("\n");
             }
             node = node->next;
         }
@@ -141,7 +157,8 @@ static void print_direct(t_data *data, t_dll *list)
         }
 
         t_ls *ls = node->content;
-        ft_printf(1, "%s\n", ls->format);
+        print_format(data, ls);
+        printf("\n");
         node = node->next;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 22:54:22 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 23:42:10 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 16:57:12 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,19 @@ Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.\n\n"
 \t0  if OK,\n\
 \t1  if minor problems (e.g., cannot access subdirectory),\n\
 \t2  if serious trouble (e.g., cannot access command-line argument).\n"
+
+
+/*#############################################################################
+# Colors
+#############################################################################*/
+
+# define COLOR_RESET   "\033[0m"
+# define COLOR_DIR     "\033[1;36m"  // Bold cyan for directories
+# define COLOR_LINK    "\033[35m"    // Magenta for symbolic links
+# define COLOR_SOCKET  "\033[32m"    // Green for sockets
+# define COLOR_PIPE    "\033[33m"    // Yellow for pipes
+# define COLOR_EXEC    "\033[31m"    // Red for executables
+# define COLOR_BLOCK   "\033[34;46m" // Blue on cyan for block devices
+# define COLOR_CHAR    "\033[34;43m" // Blue on yellow for character devices
 
 #endif

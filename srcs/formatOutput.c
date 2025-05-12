@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/11 21:53:36 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 17:10:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ void formatLongFormat(t_ls *node, t_format *format)
 	appendStr(node->format, node->info->last_mod);
 	appendChar(node->format, ' ');
 	
-	appendStr(node->format, node->name);
-	if (node->is_symbolic){
-    	appendStr(node->format, " -> ");
-		appendStr(node->format, node->info->sym_name);
-	}
+	// appendStr(node->format, node->name);
+	// if (node->is_symbolic){
+    // 	appendStr(node->format, " -> ");
+	// 	appendStr(node->format, node->info->sym_name);
+	// }
 }
 
 void formatOther(t_ls *node)

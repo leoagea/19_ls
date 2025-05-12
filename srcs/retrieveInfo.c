@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/11 19:48:53 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 17:08:03 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 	}
 	else{
 		info_tmp->name_len = ft_strlen(node->name) + 1;
+		extractPerm(info_tmp->perm, info.st_mode);
 	}
     
 	node->info = info_tmp;
