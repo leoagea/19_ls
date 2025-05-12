@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 21:32:56 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 23:48:17 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_arg
 	bool	recurisve; //-R
 	bool	long_format; //-l
 	bool	extended_attributes; //-@
+	bool	sort_size; //-S
 	char*	path;
 	char**	all_path;
 }				t_arg;

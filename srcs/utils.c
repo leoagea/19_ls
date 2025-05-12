@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 20:53:46 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 23:54:41 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,15 @@ int compareSubdirName(void *a, void *b)
     t_subdir *node_a = a;
     t_subdir *node_b = b;
     return ft_strncmp(node_a->name, node_b->name, INT_MAX);
+}
+
+int compareSize(void *a, void *b)
+{
+    t_ls *node_a = a;
+    t_ls *node_b = b;
+    if (node_a->info->size_bytes == node_b->info->size_bytes)
+        return compareName(a, b);
+    return node_b->info->size_bytes - node_a->info->size_bytes;
 }
 
 int calculateTotalBlocks(t_dll *list)

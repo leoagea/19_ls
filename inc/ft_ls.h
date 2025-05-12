@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 21:11:16 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 23:52:51 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void    extractPerm(char *perm, int mode);
 int     compareName(void *a, void *b);
 int     compareTime(void *a, void *b);
 int     compareSubdirName(void *a, void *b);
+int		compareSize(void *a, void *b);
 int     calculateTotalBlocks(t_dll *list);
 t_ls *mallocLs(t_format *format);
 t_subdir *mallocSubdir(void);
