@@ -28,6 +28,7 @@ SRC_FILES = main.c \
 			retrieveInfo.c \
 			formatOutput.c \
 			consoleOutput.c \
+			colors.c \
 			utils.c \
 			free.c \
 			debug.c

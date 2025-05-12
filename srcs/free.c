@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/07 18:46:58 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 17:51:21 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
-static void free2Array(char **array)
+void free2Array(char **array)
 {
     int i = 0;
     
@@ -92,4 +92,12 @@ void freeList(void *content)
     list->head = NULL;
     list->tail = NULL;
     free(list);
+}
+
+void freeFormatStruct(t_format **format)
+{
+    if (*format){
+        free(*format);
+        *format = NULL;
+    }
 }

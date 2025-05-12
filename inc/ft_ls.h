@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 16:57:32 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 17:51:37 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void    printFormatStruct(t_format *format);
 void    printInfoStruct(t_info *info);
 void    printNodeLs(t_ls *node);
 void    print_subdir(void *content);
+void	print_colors_map(t_color_map *colors);
 
 /*#############################################################################
 # ParseArg functions
@@ -93,6 +94,12 @@ void formatOutput(t_ls *node, t_arg arg);
 void output(t_data *data, t_dll *list);
 void print_recursive(t_data *data, t_dll *list);
 
+/*#############################################################################
+# Colors functions
+#############################################################################*/
+
+void init_colors(t_data *data);
+char *get_color_from_env(t_ls *ls, t_data *data);
 
 /*#############################################################################
 # Utils functions
@@ -114,8 +121,11 @@ char *get_color_for_file(t_ls *ls);
 # Free functions
 #############################################################################*/
 
+void	free2Array(char **array);
 void    freeArgStruct(t_arg *argList);
 void    freeLsNode(void *content);
 void    freeStr(char **info);
 void    freeList(void *content);
+void  	freeFormatStruct(t_format **format);
+
 #endif

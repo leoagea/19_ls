@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/11 19:21:15 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 18:01:27 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ int main(int ac, char **av)
     t_data data;
     initArgStruct(&data.arg);
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &data.w);
+    init_colors(&data);  // Add this line
+    // print_colors_map(&data.colors); // For debugging
     
     t_dll list;
+    dll_init(&list);
     data.list = &list;
-    dll_init(data.list);
     
     int parse_result = parseArg(ac, av, &data.arg);
     if (parse_result == EXIT_FAILURE)
@@ -33,5 +35,6 @@ int main(int ac, char **av)
     freeArgStruct(&data.arg);
     dll_free(data.list, freeList); 
     // system("leaks ft_ls");
+    
     return EXIT_SUCCESS;
 }

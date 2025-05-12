@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/11 19:50:16 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 17:41:37 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,18 @@ enum e_type
 	SOCKET = 12,
 	CFS = 14, //Network file system
 };
+
+// Color mapping structure
+typedef struct s_color_map {
+    char *di; 	// directory
+    char *ln; 	// symlink
+    char *so; 	// socket
+    char *pi; 	// pipe
+    char *ex; 	// executable
+    char *bd; 	// block device
+    char *cd; 	// char device
+    char *fi; 	// regular file
+} 				t_color_map;
 
 typedef struct s_arg
 {
@@ -96,6 +108,8 @@ typedef struct s_data
 	t_dll *list;
 	t_arg arg;
 	struct winsize w;
+	t_color_map colors;
+	bool use_color;
 }				t_data;
 
 #endif

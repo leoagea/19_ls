@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/11 19:51:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 17:46:21 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,16 @@ void print_subdir(void *content)
 {
 	t_subdir *subdir = content;
 	ft_printf(1, "subdir name: %s\n", subdir->name);
+}
+
+void print_colors_map(t_color_map *colors)
+{
+	ft_printf(1, "di: %s\n", colors->di);
+	ft_printf(1, "ln: %s\n", colors->ln);
+	ft_printf(1, "so: %s\n", colors->so);
+	ft_printf(1, "pi: %s\n", colors->pi);
+	ft_printf(1, "ex: %s\n", colors->ex);
+	ft_printf(1, "bd: %s\n", colors->bd);
+	ft_printf(1, "cd: %s\n", colors->cd);
+	ft_printf(1, "fi: %s\n", colors->fi);
 }

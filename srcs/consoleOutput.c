@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:19:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 17:43:38 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void print_format(t_data *data, t_ls *ls)
 {
-    char *color = get_color_for_file(ls);
+    char *color = get_color_from_env(ls, data);
     if (data->arg.long_format) {
         ft_printf(1, "%s", ls->format);
         ft_printf(1, "%s%s%s", color, ls->name, COLOR_RESET);
@@ -60,6 +60,8 @@ static void print_column(t_data *data, t_dll *list)
         node = node->next;
         printf("\n");
     }
+
+    freeFormatStruct(&ls->format_info);
 }
 
 static void handle_subdirs(t_data *data, t_dll *printsubdir)
@@ -149,6 +151,7 @@ static void print_direct(t_data *data, t_dll *list)
         ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
     
     t_node *node = list->head;
+    t_node *head = list->head;
     while (node != NULL) {
         if (!node->content) {
             printf("Warning: Skipping NULL content node\n");
@@ -161,6 +164,8 @@ static void print_direct(t_data *data, t_dll *list)
         printf("\n");
         node = node->next;
     }
+    t_ls *head_ls = head->content;
+    freeFormatStruct(&head_ls->format_info);
 }
 
 void output(t_data *data, t_dll *list)
