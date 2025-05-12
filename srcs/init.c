@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:03:39 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:34:06 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void initArgStruct(t_arg *argStruct)
 	argStruct->extended_attributes = false;
 	argStruct->sort_size = false;
 	argStruct->block_size = false;
+	argStruct->not_sort = false;
 }
 
 void initFormatStruct(t_format *format)
@@ -38,6 +39,7 @@ void initInfoStruct(t_info *info)
 	info->user_name = NULL;
 	info->last_mod = NULL;
 	info->nlink = 0;
+	info->block_size = 0;
 	ft_memset(info->perm, 0, sizeof(info->perm));
 	ft_memset(info->sym_name, 0, sizeof(info->sym_name));
 
@@ -45,4 +47,6 @@ void initInfoStruct(t_info *info)
 	info->user_name_len = 0;
 	info->group_name_len = 0;
 	info->size_bytes_len = 0;
+	info->name_len = 0;
+	info->block_size_len = 0;
 }
