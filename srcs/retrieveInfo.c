@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 21:26:49 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:28:59 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,20 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 	struct stat info;
 	if (node->is_symbolic ? lstat(node->relative_path, &info) : stat(node->relative_path, &info) == -1)
 		return (printf("stat failed\n"), EXIT_FAILURE);
-
+            info_tmp->block_size = (int)info.st_blocks;
+            
+    char *tmp_block_size = ft_itoa(info_tmp->block_size);
+    info_tmp->block_size_len = ft_strlen(tmp_block_size);
+    free(tmp_block_size);
+    
+    info_tmp->size_bytes = info.st_size;
+    char *tmp_size = ft_itoa(info_tmp->size_bytes);
+	info_tmp->size_bytes_len = ft_strlen(tmp_size);
+	free(tmp_size);
+    
+	extractPerm(info_tmp->perm, info.st_mode);
+    
 	if (data->arg.long_format){
-		if (node->type == DIRECTORY)
-			info_tmp->size_bytes = 4096; //linux, how macos handle ? not the same way as linux for sure
-	
-		info_tmp->size_bytes = info.st_size;
-			
 		info_tmp->nlink = info.st_nlink;
 		
 		struct passwd *pwd = getpwuid(info.st_uid);
@@ -123,16 +130,14 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 			info_tmp->user_name = ft_strdup("unknown");
 			info_tmp->group_name = ft_strdup("unknown");
 		}
-		extractPerm(info_tmp->perm, info.st_mode);
-		
+    
 		char *tmp_nlink = ft_itoa(info_tmp->nlink);
-		char *tmp_size = ft_itoa(info_tmp->size_bytes);
 		info_tmp->nlink_len = ft_strlen(tmp_nlink);
+		free(tmp_nlink);
+        
 		info_tmp->user_name_len = ft_strlen(info_tmp->user_name);
 		info_tmp->group_name_len = ft_strlen(info_tmp->group_name);
-		info_tmp->size_bytes_len = ft_strlen(tmp_size);
-		free(tmp_nlink);
-		free(tmp_size);
+        
 		info_tmp->last_mod = extractTimeModified(info);
 
 		if (listxattr(node->relative_path, NULL, 0, XATTR_NOFOLLOW) > 0)
@@ -147,10 +152,9 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 				get_file_xattr(node, node->relative_path);
 			}
     	}
-		}
+	}
 	else{
 		info_tmp->name_len = ft_strlen(node->name) + 1;
-		extractPerm(info_tmp->perm, info.st_mode);
 	}
     
 	node->info = info_tmp;

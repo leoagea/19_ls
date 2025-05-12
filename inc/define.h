@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 22:54:22 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:58:26 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:07:15 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@
     #define st_mtime st_mtimespec.tv_sec
     #define TOTAL_BLOCKS "total:"
     #define ENV_LSCOLORS "LS_COLORS"
+    #define CALC_BLOCKS(total_block) total_block
 # elif __linux__
     #define TOTAL_BLOCKS "total"
     #define ENV_LSCOLORS "LS_COLORS"
+    #define CALC_BLOCKS(total_block) (total_block / 2)
 # endif
 
 # define DEFAULT_PATH "."

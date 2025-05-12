@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 21:16:59 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:32:49 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void getFormatLen(t_ls *node, t_format *format)
 	format->max_link = MAX(format->max_link, node->info->nlink_len);
 	format->max_size_bytes = MAX(format->max_size_bytes, node->info->size_bytes_len);
 	format->max_name = MAX(format->max_name, node->info->name_len);
+	format->max_block_size = MAX(format->max_block_size, node->info->block_size_len);
 }
 
 static void fillInSpace(t_ls *node, int max_len, int len)
@@ -83,8 +84,16 @@ static void appendType(char *format, int type)
 	}
 }
 
-void formatLongFormat(t_ls *node, t_format *format)
+void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 {
+	if (arg.block_size)
+	{
+		char *tmp = ft_itoa(node->info->block_size);
+		fillInSpace(node, format->max_block_size, node->info->block_size_len);
+		appendStr(node->format, tmp);
+		free(tmp);
+		appendChar(node->format, ' ');
+	}
 	appendType(node->format, node->type);
 	
 	appendStr(node->format, node->info->perm);
@@ -115,8 +124,16 @@ void formatLongFormat(t_ls *node, t_format *format)
 	// }
 }
 
-void formatOther(t_ls *node)
+void formatOther(t_arg arg, t_ls *node)
 {
+	if (arg.block_size)
+	{
+		fillInSpace(node, node->format_info->max_block_size, node->info->block_size_len);
+		char *tmp = ft_itoa(node->info->block_size);
+		appendStr(node->format, tmp);
+		free(tmp);
+		appendChar(node->format, ' ');
+	}
 	appendStr(node->format, node->name);
 
 	int space = node->format_info->max_name - node->info->name_len + 1;
@@ -143,8 +160,8 @@ void formatOutput(t_ls *node, t_arg arg)
 			printf("Error: Null info in node passed to formatOutput\n");
 			return;
 		}
-		formatLongFormat(node, node->format_info);
+		formatLongFormat(arg, node, node->format_info);
 	}
 	else
-		formatOther(node);
+		formatOther(arg, node);
 }

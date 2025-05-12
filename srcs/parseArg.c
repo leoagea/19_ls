@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 23:53:28 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:03:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,10 @@ int parseArg(int ac, char **av, t_arg *argList)
 					argList->sort_size = true;
 					break;
 
+				case 's':
+					argList->block_size = true;
+					break;
+					
 				default:
 					usage(option);
 					return EXIT_FAILURE;

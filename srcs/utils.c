@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 23:54:41 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:08:02 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,12 @@ int calculateTotalBlocks(t_dll *list)
     t_node *curr = list->head;
     
     while (curr != NULL) {
-        struct stat info;
-        t_ls *node = (t_ls *)curr->content;
-        if (lstat(node->relative_path, &info) == 0)
-            total_blocks += (int)info.st_blocks;
+        t_ls *node = curr->content;
+        total_blocks += node->info->block_size;
         curr = curr->next;
     }
 
-    return total_blocks / 2;
+    return CALC_BLOCKS(total_blocks);
 }
 
 t_ls *mallocLs(t_format *format)
