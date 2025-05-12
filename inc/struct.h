@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:41:37 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 20:57:13 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ typedef struct s_color_map {
     char *fi; 	// regular file
 } 				t_color_map;
 
+typedef struct s_xattr {
+    char    *name;          // Attribute name
+    void    *value;         // Attribute value
+    ssize_t value_size;     // Size of value
+    struct s_xattr *next;   // Next attribute
+} 				t_xattr;
+
 typedef struct s_arg
 {
 	bool	all; //-a
@@ -50,6 +57,7 @@ typedef struct s_arg
 	bool	sort_time; //-t
 	bool	recurisve; //-R
 	bool	long_format; //-l
+	bool	extended_attributes; //-@
 	char*	path;
 	char**	all_path;
 }				t_arg;
@@ -70,7 +78,7 @@ typedef struct s_info
 	char			sym_name[256];
 	char*			group_name;
 	char*			user_name;
-	char			perm[10];
+	char			perm[11];
 	char*			last_mod;
 	int 			nlink;
 	
@@ -94,6 +102,7 @@ typedef struct s_ls
 	t_info *info;
 	t_format *format_info;
 	t_dll *subdir;
+	t_dll *xattr_list;
 }				t_ls;
 
 typedef struct s_subdir

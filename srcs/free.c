@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:51:21 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:12:20 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,14 @@ void freeStr(char **str)
     }
 }
 
+void freeVoid(void **content)
+{
+    if (*content){
+        free(*content);
+        *content = NULL;
+    }
+}
+
 void freeList(void *content)
 {
     printf("free list\n");
@@ -100,4 +108,13 @@ void freeFormatStruct(t_format **format)
         free(*format);
         *format = NULL;
     }
+}
+
+void freeXattr(void *content)
+{
+    t_xattr *xattr = (t_xattr *)content;
+    if (xattr->name)
+        freeStr(&xattr->name);
+    if (xattr->value)
+        freeVoid(&xattr->value);
 }

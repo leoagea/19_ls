@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:08:09 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 20:53:46 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void extractPerm(char *perm, int mode)
     perm[6] = (mode & S_IROTH) ? 'r' : '-';
     perm[7] = (mode & S_IWOTH) ? 'w' : '-';
     perm[8] = (mode & S_IXOTH) ? 'x' : '-';
-    perm[9] = '\0';
+    perm[9] = ' ';
+    perm[10] = '\0';
 }
 
 int compareName(void *a, void *b)
@@ -123,6 +124,7 @@ t_ls *mallocLs(t_format *format)
     node->subdir = NULL;
     node->info = NULL;
     node->format_info = format;
+    node->xattr_list = NULL;
     return node; 
 }
 

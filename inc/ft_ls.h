@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:51:37 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:11:16 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <pwd.h>       //getpwuid
 # include <grp.h>       //getgrgid
 # include <sys/ioctl.h>	// ioctl
+# include <sys/xattr.h>
 
 /*#############################################################################
 # Init functions
@@ -124,8 +125,10 @@ char *get_color_for_file(t_ls *ls);
 void	free2Array(char **array);
 void    freeArgStruct(t_arg *argList);
 void    freeLsNode(void *content);
-void    freeStr(char **info);
+void    freeStr(char **str);
+void 	freeVoid(void **content);
 void    freeList(void *content);
 void  	freeFormatStruct(t_format **format);
+void	freeXattr(void *content);
 
 #endif

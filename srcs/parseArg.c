@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseArg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/08 15:39:24 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:13:20 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,11 @@ int parseArg(int ac, char **av, t_arg *argList)
 				case 'l':
 					argList->long_format = true;
 					break;
-					
+				
+				case '@':
+					argList->extended_attributes = true;
+					break;
+				
 				default:
 					usage(option);
 					return EXIT_FAILURE;

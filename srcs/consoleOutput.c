@@ -6,11 +6,35 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:43:38 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:26:19 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
+
+static void print_xattr(t_dll *xattr_list)
+{
+    t_node *current;
+    t_xattr *attr;
+
+    if (!xattr_list || !xattr_list->head)
+        return;
+
+    current = xattr_list->head;
+    while (current)
+    {
+        attr = current->content;
+        int tmp = (int)attr->value_size;
+        if (attr)
+            ft_printf(1, "\t%s\t%d\n", attr->name, tmp);
+        current = current->next;
+    }
+    dll_free(xattr_list, freeXattr);
+    xattr_list->head = NULL;
+    xattr_list->tail = NULL;
+    free(xattr_list);
+    xattr_list = NULL;
+}
 
 static void print_format(t_data *data, t_ls *ls)
 {
@@ -18,11 +42,22 @@ static void print_format(t_data *data, t_ls *ls)
     if (data->arg.long_format) {
         ft_printf(1, "%s", ls->format);
         ft_printf(1, "%s%s%s", color, ls->name, COLOR_RESET);
+        
         if (ls->is_symbolic){
             ft_printf(1, " -> %s", ls->info->sym_name);
         }
+        
+        if (ls->xattr_list && ls->xattr_list->head)
+        {
+            ft_printf(1, "\n");
+            print_xattr(ls->xattr_list);
+        }
+        else
+            ft_printf(1, "\n");
+    
     } else {
         ft_printf(1, "%s%s%s", color, ls->format, COLOR_RESET);
+
     }
 }
 
@@ -161,7 +196,6 @@ static void print_direct(t_data *data, t_dll *list)
 
         t_ls *ls = node->content;
         print_format(data, ls);
-        printf("\n");
         node = node->next;
     }
     t_ls *head_ls = head->content;

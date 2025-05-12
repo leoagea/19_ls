@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/04/23 17:05:42 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:13:04 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void initArgStruct(t_arg *argStruct)
 	argStruct->sort_time = false;
 	argStruct->recurisve = false;
 	argStruct->long_format = false;
+	argStruct->extended_attributes = false;
 }
 
 void initFormatStruct(t_format *format)

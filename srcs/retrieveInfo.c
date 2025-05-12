@@ -6,11 +6,94 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:08:03 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:26:49 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
+
+t_xattr *create_xattr_node(const char *path, const char *attr_name)
+{
+    t_xattr *node;
+    ssize_t value_size;
+
+    node = malloc(sizeof(t_xattr));
+    if (!node)
+        return (NULL);
+    
+    // Initialize node
+    node->name = ft_strdup(attr_name);
+    node->next = NULL;
+    
+    if (!node->name)
+    {
+        free(node);
+        return (NULL);
+    }
+
+    // Get size of attribute value
+    value_size = getxattr(path, attr_name, NULL, 0, 0, XATTR_NOFOLLOW);
+    if (value_size == -1)
+    {
+        free(node->name);
+        free(node);
+        return (NULL);
+    }
+
+    node->value_size = value_size;
+    node->value = malloc(value_size);
+    if (!node->value)
+    {
+        free(node->name);
+        free(node);
+        return (NULL);
+    }
+
+    // Get actual attribute value
+    if (getxattr(path, attr_name, node->value, value_size, 0, XATTR_NOFOLLOW) == -1)
+    {
+        free(node->name);
+        free(node->value);
+        free(node);
+        return (NULL);
+    }
+
+    return (node);
+}
+
+void get_file_xattr(t_ls *node, const char *path)
+{
+    ssize_t list_size;
+    char    *attr_list;
+    char    *curr_attr;
+
+    // Get size needed for attributes list
+    list_size = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
+    if (list_size <= 0)
+        return ;
+
+    attr_list = malloc(list_size);
+    if (!attr_list)
+        return ;
+
+    // Get actual list
+    if (listxattr(path, attr_list, list_size, XATTR_NOFOLLOW) == -1)
+    {
+        free(attr_list);
+        return ;
+    }
+
+    curr_attr = attr_list;
+    while (curr_attr < attr_list + list_size)
+    {
+        t_xattr *new = create_xattr_node(path, curr_attr);
+        if (new)
+            dll_insert_tail(new, node->xattr_list);
+        curr_attr += strlen(curr_attr) + 1;
+    }
+
+    free(attr_list);
+}
 
 int retrieveAllInfo(t_data *data, t_ls *node)
 {
@@ -51,7 +134,20 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 		free(tmp_nlink);
 		free(tmp_size);
 		info_tmp->last_mod = extractTimeModified(info);
-	}
+
+		if (listxattr(node->relative_path, NULL, 0, XATTR_NOFOLLOW) > 0)
+    	{
+			info_tmp->perm[9] = '@';
+
+			if (data->arg.extended_attributes){
+				node->xattr_list = malloc(sizeof(t_dll));
+				if (!node->xattr_list)
+					return (EXIT_FAILURE);
+				dll_init(node->xattr_list);
+				get_file_xattr(node, node->relative_path);
+			}
+    	}
+		}
 	else{
 		info_tmp->name_len = ft_strlen(node->name) + 1;
 		extractPerm(info_tmp->perm, info.st_mode);
