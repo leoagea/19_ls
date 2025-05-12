@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:48:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:55:05 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ int parseArg(int ac, char **av, t_arg *argList)
 				case 'g':
 					argList->no_name = true;
 					argList->long_format = true;
+					break;
+				
+				case 'n':
+					argList->long_format = true;
+					argList->id = true;
 					break;
 					
 				default:

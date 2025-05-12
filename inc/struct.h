@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:47:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:59:42 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_arg
 	bool	block_size; //-s
 	bool 	not_sort; //-f
 	bool 	no_name; //-g
+	bool 	id; //-n
 	
 	char*	path;
 	char**	all_path;
@@ -75,6 +76,8 @@ typedef struct s_format
 	int 		max_size_bytes;
 	int			max_name;
 	int			max_block_size;
+	int 		max_uid;
+	int 		max_gid;
 }				t_format;	
 
 typedef struct s_info
@@ -82,7 +85,9 @@ typedef struct s_info
 	// Long Format Info
 	int				size_bytes;
 	char			sym_name[256];
+	int 			group_id;
 	char*			group_name;
+	int 			user_id;
 	char*			user_name;
 	char			perm[11];
 	char*			last_mod;
@@ -91,7 +96,9 @@ typedef struct s_info
 	
 	// Len Info
 	int				nlink_len;
+	int 			user_id_len;
 	int 			user_name_len;
+	int 			group_id_len;
 	int 			group_name_len;
 	int 			size_bytes_len;
 	int				name_len;

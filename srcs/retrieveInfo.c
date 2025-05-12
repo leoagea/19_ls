@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:28:59 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:59:00 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,15 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 		struct passwd *pwd = getpwuid(info.st_uid);
 		struct group *grp = getgrgid(info.st_gid);
 		if (pwd && grp){
+            info_tmp->user_id = pwd->pw_uid;
+            char *tmp_id = ft_itoa(info_tmp->user_id);
+            info_tmp->user_id_len = ft_strlen(tmp_id);
+            free(tmp_id);
 			info_tmp->user_name = ft_strdup(pwd->pw_name);
+            info_tmp->group_id = grp->gr_gid;
+            tmp_id = ft_itoa(info_tmp->group_id);
+            info_tmp->group_id_len = ft_strlen(tmp_id);
+            free(tmp_id);
 			info_tmp->group_name = ft_strdup(grp->gr_name);
 	
 		}

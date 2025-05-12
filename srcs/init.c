@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:47:53 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:57:07 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,9 @@
 
 void initArgStruct(t_arg *argStruct)
 {
+	ft_memset(argStruct, 0, sizeof(t_arg));
 	argStruct->path = NULL;
 	argStruct->all_path = NULL;
-	argStruct->all = false;
-	argStruct->reverse = false;
-	argStruct->sort_time = false;
-	argStruct->recurisve = false;
-	argStruct->long_format = false;
-	argStruct->extended_attributes = false;
-	argStruct->sort_size = false;
-	argStruct->block_size = false;
-	argStruct->not_sort = false;
-	argStruct->no_name = false;
 }
 
 void initFormatStruct(t_format *format)
@@ -35,19 +26,10 @@ void initFormatStruct(t_format *format)
 
 void initInfoStruct(t_info *info)
 {
-	info->size_bytes = 0;
+	ft_memset(info, 0, sizeof(t_info));
+	ft_memset(info->perm, 0, sizeof(info->perm));
+	ft_memset(info->sym_name, 0, sizeof(info->sym_name));
 	info->group_name = NULL;
 	info->user_name = NULL;
 	info->last_mod = NULL;
-	info->nlink = 0;
-	info->block_size = 0;
-	ft_memset(info->perm, 0, sizeof(info->perm));
-	ft_memset(info->sym_name, 0, sizeof(info->sym_name));
-
-	info->nlink_len = 0;
-	info->user_name_len = 0;
-	info->group_name_len = 0;
-	info->size_bytes_len = 0;
-	info->name_len = 0;
-	info->block_size_len = 0;
 }

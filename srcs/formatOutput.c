@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:50:20 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 01:04:04 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void getFormatLen(t_ls *node, t_format *format)
 	format->max_size_bytes = MAX(format->max_size_bytes, node->info->size_bytes_len);
 	format->max_name = MAX(format->max_name, node->info->name_len);
 	format->max_block_size = MAX(format->max_block_size, node->info->block_size_len);
+	format->max_uid = MAX(format->max_uid, node->info->user_id_len);
+	format->max_gid = MAX(format->max_gid, node->info->group_id_len);
 }
 
 static void fillInSpace(t_ls *node, int max_len, int len)
@@ -102,13 +104,27 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	appendStr(node->format, tmp);
 	free(tmp);
 	
-	if (!arg.no_name){		
+	if (!arg.no_name && !arg.id){		
 		fillInSpace(node, format->max_user, node->info->user_name_len);
 		appendStr(node->format, node->info->user_name);
 	}
+	else if (arg.id){
+		fillInSpace(node, format->max_uid, node->info->user_id_len);
+		tmp = ft_itoa(node->info->user_id);
+		appendStr(node->format, tmp);
+		free(tmp);
+	}
 	
-	fillInSpace(node, format->max_group + 1, node->info->group_name_len);
-	appendStr(node->format, node->info->group_name);
+	if (arg.id){
+		fillInSpace(node, format->max_gid + 1, node->info->group_id_len);
+		tmp = ft_itoa(node->info->group_id);
+		appendStr(node->format, tmp);
+		free(tmp);
+	}
+	else{		
+		fillInSpace(node, format->max_group + 1, node->info->group_name_len);
+		appendStr(node->format, node->info->group_name);
+	}
 	
 	fillInSpace(node, format->max_size_bytes + 1, node->info->size_bytes_len);
 	tmp = ft_itoa(node->info->size_bytes);
