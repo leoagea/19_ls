@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 20:57:13 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:32:56 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ typedef struct s_data
 	struct winsize w;
 	t_color_map colors;
 	bool use_color;
+	bool is_tty;
 }				t_data;
 
 #endif

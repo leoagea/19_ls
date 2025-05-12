@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 21:26:19 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:46:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ static void print_xattr(t_dll *xattr_list)
 
 static void print_format(t_data *data, t_ls *ls)
 {
-    char *color = get_color_from_env(ls, data);
+    char *color = data->is_tty ? get_color_from_env(ls, data) : "";
+    char *reset = data->is_tty ? COLOR_RESET : "";
+    
     if (data->arg.long_format) {
         ft_printf(1, "%s", ls->format);
-        ft_printf(1, "%s%s%s", color, ls->name, COLOR_RESET);
+        ft_printf(1, "%s%s%s", color, ls->name, reset);
         
         if (ls->is_symbolic){
             ft_printf(1, " -> %s", ls->info->sym_name);
@@ -56,8 +58,7 @@ static void print_format(t_data *data, t_ls *ls)
             ft_printf(1, "\n");
     
     } else {
-        ft_printf(1, "%s%s%s", color, ls->format, COLOR_RESET);
-
+        ft_printf(1, "%s%s%s", color, ls->format, reset);
     }
 }
 
@@ -196,6 +197,7 @@ static void print_direct(t_data *data, t_dll *list)
 
         t_ls *ls = node->content;
         print_format(data, ls);
+        ft_printf(1, "\n");
         node = node->next;
     }
     t_ls *head_ls = head->content;
@@ -219,7 +221,7 @@ void output(t_data *data, t_dll *list)
     if (data->arg.recurisve)
         print_recursive(data, list);
     else{
-        if (data->arg.long_format)
+        if (data->arg.long_format || !data->is_tty)
             print_direct(data, list);
         else
             print_column(data, list);

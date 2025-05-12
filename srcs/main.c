@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 18:01:27 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/12 21:37:25 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int main(int ac, char **av)
 {
     t_data data;
+    data.is_tty = isatty(STDOUT_FILENO);
     initArgStruct(&data.arg);
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &data.w);
     init_colors(&data);  // Add this line
