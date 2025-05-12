@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:34:01 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:47:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_arg
 	bool	sort_size; //-S
 	bool	block_size; //-s
 	bool 	not_sort; //-f
+	bool 	no_name; //-g
 	
 	char*	path;
 	char**	all_path;

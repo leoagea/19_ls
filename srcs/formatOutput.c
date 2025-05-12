@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:32:49 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:50:20 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,10 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	appendStr(node->format, tmp);
 	free(tmp);
 	
-	fillInSpace(node, format->max_user, node->info->user_name_len);
-	appendStr(node->format, node->info->user_name);
+	if (!arg.no_name){		
+		fillInSpace(node, format->max_user, node->info->user_name_len);
+		appendStr(node->format, node->info->user_name);
+	}
 	
 	fillInSpace(node, format->max_group + 1, node->info->group_name_len);
 	appendStr(node->format, node->info->group_name);

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:34:06 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 00:47:53 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void initArgStruct(t_arg *argStruct)
 	argStruct->sort_size = false;
 	argStruct->block_size = false;
 	argStruct->not_sort = false;
+	argStruct->no_name = false;
 }
 
 void initFormatStruct(t_format *format)
