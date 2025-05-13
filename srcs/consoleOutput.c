@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 23:54:04 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:24:10 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ static void print_direct(t_data *data, t_dll *list)
 
         t_ls *ls = node->content;
         print_format(data, ls);
+        ft_printf(1, "\n");
         node = node->next;
     }
     t_ls *head_ls = head->content;
@@ -222,7 +223,7 @@ void output(t_data *data, t_dll *list)
     if (data->arg.recurisve)
         print_recursive(data, list);
     else{
-        if (data->arg.long_format || !data->is_tty)
+        if (data->arg.long_format || !data->is_tty || data->arg.oneline)
             print_direct(data, list);
         else
             print_column(data, list);
