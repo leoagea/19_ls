@@ -14,157 +14,150 @@
 
 t_xattr *create_xattr_node(const char *path, const char *attr_name)
 {
-    t_xattr *node;
-    ssize_t value_size;
+	t_xattr *node;
+	ssize_t	 value_size;
 
-    node = malloc(sizeof(t_xattr));
-    if (!node)
-        return (NULL);
-    
-    // Initialize node
-    node->name = ft_strdup(attr_name);
-    node->next = NULL;
-    
-    if (!node->name)
-    {
-        free(node);
-        return (NULL);
-    }
+	node = malloc(sizeof(t_xattr));
+	if (!node)
+		return (NULL);
 
-    // Get size of attribute value
-    value_size = getxattr(path, attr_name, NULL, 0, 0, XATTR_NOFOLLOW);
-    if (value_size == -1)
-    {
-        free(node->name);
-        free(node);
-        return (NULL);
-    }
+	// Initialize node
+	node->name = ft_strdup(attr_name);
+	node->next = NULL;
 
-    node->value_size = value_size;
-    node->value = malloc(value_size);
-    if (!node->value)
-    {
-        free(node->name);
-        free(node);
-        return (NULL);
-    }
+	if (!node->name) {
+		free(node);
+		return (NULL);
+	}
 
-    // Get actual attribute value
-    if (getxattr(path, attr_name, node->value, value_size, 0, XATTR_NOFOLLOW) == -1)
-    {
-        free(node->name);
-        free(node->value);
-        free(node);
-        return (NULL);
-    }
+	// Get size of attribute value
+	value_size = getxattr(path, attr_name, NULL, 0, 0, XATTR_NOFOLLOW);
+	if (value_size == -1) {
+		free(node->name);
+		free(node);
+		return (NULL);
+	}
 
-    return (node);
+	node->value_size = value_size;
+	node->value = malloc(value_size);
+	if (!node->value) {
+		free(node->name);
+		free(node);
+		return (NULL);
+	}
+
+	// Get actual attribute value
+	if (getxattr(path, attr_name, node->value, value_size, 0, XATTR_NOFOLLOW) ==
+		-1) {
+		free(node->name);
+		free(node->value);
+		free(node);
+		return (NULL);
+	}
+
+	return (node);
 }
 
 void get_file_xattr(t_ls *node, const char *path)
 {
-    ssize_t list_size;
-    char    *attr_list;
-    char    *curr_attr;
+	ssize_t list_size;
+	char   *attr_list;
+	char   *curr_attr;
 
-    // Get size needed for attributes list
-    list_size = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
-    if (list_size <= 0)
-        return ;
+	// Get size needed for attributes list
+	list_size = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
+	if (list_size <= 0)
+		return;
 
-    attr_list = malloc(list_size);
-    if (!attr_list)
-        return ;
+	attr_list = malloc(list_size);
+	if (!attr_list)
+		return;
 
-    // Get actual list
-    if (listxattr(path, attr_list, list_size, XATTR_NOFOLLOW) == -1)
-    {
-        free(attr_list);
-        return ;
-    }
+	// Get actual list
+	if (listxattr(path, attr_list, list_size, XATTR_NOFOLLOW) == -1) {
+		free(attr_list);
+		return;
+	}
 
-    curr_attr = attr_list;
-    while (curr_attr < attr_list + list_size)
-    {
-        t_xattr *new = create_xattr_node(path, curr_attr);
-        if (new)
-            dll_insert_tail(new, node->xattr_list);
-        curr_attr += strlen(curr_attr) + 1;
-    }
+	curr_attr = attr_list;
+	while (curr_attr < attr_list + list_size) {
+		t_xattr *new = create_xattr_node(path, curr_attr);
+		if (new)
+			dll_insert_tail(new, node->xattr_list);
+		curr_attr += strlen(curr_attr) + 1;
+	}
 
-    free(attr_list);
+	free(attr_list);
 }
 
 int retrieveAllInfo(t_data *data, t_ls *node)
 {
 	t_info *info_tmp = malloc(sizeof(t_info));
 	initInfoStruct(info_tmp);
-	
+
 	struct stat info;
-	if (node->is_symbolic ? lstat(node->relative_path, &info) : stat(node->relative_path, &info) == -1)
+	if (node->is_symbolic ? lstat(node->relative_path, &info)
+						  : stat(node->relative_path, &info) == -1)
 		return (printf("stat failed\n"), EXIT_FAILURE);
-            info_tmp->block_size = (int)info.st_blocks;
-            
-    info_tmp->block_size_len = ft_intlen(info_tmp->block_size);
-    
-    info_tmp->size_bytes = info.st_size;
+	info_tmp->block_size = (int)info.st_blocks;
+
+	info_tmp->block_size_len = ft_intlen(info_tmp->block_size);
+
+	info_tmp->size_bytes = info.st_size;
 	info_tmp->size_bytes_len = ft_intlen(info_tmp->size_bytes);
-    if (data->arg.comma){
-        info_tmp->size_thousands = (info_tmp->size_bytes_len - 1) / 3;
-        info_tmp->size_bytes_len += info_tmp->size_thousands;
-    }
-    
+	if (data->arg.comma) {
+		info_tmp->size_thousands = (info_tmp->size_bytes_len - 1) / 3;
+		info_tmp->size_bytes_len += info_tmp->size_thousands;
+	}
+
 	extractPerm(info_tmp->perm, info.st_mode);
-    
-	if (data->arg.long_format){
+
+	if (data->arg.long_format) {
 		info_tmp->nlink = info.st_nlink;
-		
+
 		struct passwd *pwd = getpwuid(info.st_uid);
-		struct group *grp = getgrgid(info.st_gid);
-		if (pwd && grp){
-            info_tmp->user_id = pwd->pw_uid;
-            info_tmp->user_id_len = ft_intlen(info_tmp->user_id);
+		struct group  *grp = getgrgid(info.st_gid);
+		if (pwd && grp) {
+			info_tmp->user_id = pwd->pw_uid;
+			info_tmp->user_id_len = ft_intlen(info_tmp->user_id);
 			info_tmp->user_name = ft_strdup(pwd->pw_name);
-            
-            info_tmp->group_id = grp->gr_gid;
-            info_tmp->group_id_len = ft_intlen(info_tmp->group_id);
+
+			info_tmp->group_id = grp->gr_gid;
+			info_tmp->group_id_len = ft_intlen(info_tmp->group_id);
 			info_tmp->group_name = ft_strdup(grp->gr_name);
-		}
-		else{
+		} else {
 			info_tmp->user_name = ft_strdup("unknown");
 			info_tmp->group_name = ft_strdup("unknown");
 		}
-    
+
 		info_tmp->nlink_len = ft_intlen(info_tmp->nlink);
-        
+
 		info_tmp->user_name_len = ft_strlen(info_tmp->user_name);
 		info_tmp->group_name_len = ft_strlen(info_tmp->group_name);
-        
+
 		info_tmp->last_mod = extractTimeModified(info);
 
-		if (listxattr(node->relative_path, NULL, 0, XATTR_NOFOLLOW) > 0)
-    	{
+		if (listxattr(node->relative_path, NULL, 0, XATTR_NOFOLLOW) > 0) {
 			info_tmp->perm[9] = '@';
 
-			if (data->arg.extended_attributes){
+			if (data->arg.extended_attributes) {
 				node->xattr_list = malloc(sizeof(t_dll));
 				if (!node->xattr_list)
 					return (EXIT_FAILURE);
 				dll_init(node->xattr_list);
 				get_file_xattr(node, node->relative_path);
 			}
-    	}
-	}
-	else{
+		}
+	} else {
 		info_tmp->name_len = ft_strlen(node->name) + 1;
 	}
-    
+
 	node->info = info_tmp;
-	
-    if (node->is_symbolic)
+
+	if (node->is_symbolic)
 		handleSymlink(node);
-	
-    getFormatLen(node, node->format_info);
+
+	getFormatLen(node, node->format_info);
 
 	return EXIT_SUCCESS;
 }

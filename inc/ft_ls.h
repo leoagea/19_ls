@@ -11,54 +11,53 @@
 /* ************************************************************************** */
 
 #ifndef __FT_LS_H__
-# define __FT_LS_H__
-
+#define __FT_LS_H__
 
 /*#############################################################################
 # Includes
 #############################################################################*/
 
-# include "../libft/libft.h"
-# include "struct.h"
-# include "define.h"
+#include "../libft/libft.h"
+#include "struct.h"
+#include "define.h"
 
-# include <stdlib.h>	// exit, EXIT_FAILURE
-# include <stdio.h>		// perror
-# include <stdlib.h>	// exit, EXIT_FAILURE
-# include <dirent.h>	// DIR, struct dirent, opendir, readdir, closedir
-# include <time.h>      // time_t, ctime
-# include <unistd.h>    //readlink
-# include <pwd.h>       //getpwuid
-# include <grp.h>       //getgrgid
-# include <sys/ioctl.h>	// ioctl
-# include <sys/xattr.h>
-# include <locale.h>	// setlocale
+#include <stdlib.h>	   // exit, EXIT_FAILURE
+#include <stdio.h>	   // perror
+#include <stdlib.h>	   // exit, EXIT_FAILURE
+#include <dirent.h>	   // DIR, struct dirent, opendir, readdir, closedir
+#include <time.h>	   // time_t, ctime
+#include <unistd.h>	   //readlink
+#include <pwd.h>	   //getpwuid
+#include <grp.h>	   //getgrgid
+#include <sys/ioctl.h> // ioctl
+#include <sys/xattr.h>
+#include <locale.h> // setlocale
 
 /*#############################################################################
 # Init functions
 #############################################################################*/
 
-void    initArgStruct(t_arg *argStruct);
-void    initFormatStruct(t_format *format);
-void    initInfoStruct(t_info *info);
+void initArgStruct(t_arg *argStruct);
+void initFormatStruct(t_format *format);
+void initInfoStruct(t_info *info);
 
 /*#############################################################################
 # Debug functions
 #############################################################################*/
 
-void    print_argList(t_arg argList);
-void    print_dirent(struct dirent *entry);
-void    printFormatStruct(t_format *format);
-void    printInfoStruct(t_info *info);
-void    printNodeLs(t_ls *node);
-void    print_subdir(void *content);
-void	print_colors_map(t_color_map *colors);
+void print_argList(t_arg argList);
+void print_dirent(struct dirent *entry);
+void printFormatStruct(t_format *format);
+void printInfoStruct(t_info *info);
+void printNodeLs(t_ls *node);
+void print_subdir(void *content);
+void print_colors_map(t_color_map *colors);
 
 /*#############################################################################
 # ParseArg functions
 #############################################################################*/
 
-int     parseArg(int ac, char **av, t_arg *argList);
+int parseArg(int ac, char **av, t_arg *argList);
 
 /*#############################################################################
 # Explore functions
@@ -74,7 +73,8 @@ int exploreDirectories(t_data *data, t_dll *list, char *path);
 # RetrieveInfo functions
 #############################################################################*/
 
-// int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent *entry, t_format *format);
+// int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent
+// *entry, t_format *format);
 int retrieveAllInfo(t_data *data, t_ls *node);
 
 /*#############################################################################
@@ -101,38 +101,38 @@ void print_recursive(t_data *data, t_dll *list);
 # Colors functions
 #############################################################################*/
 
-void init_colors(t_data *data);
+void  init_colors(t_data *data);
 char *get_color_from_env(t_ls *ls, t_data *data);
 
 /*#############################################################################
 # Utils functions
 #############################################################################*/
 
-void    usage(char invalidOption);
-void    help(void);
-char    *extractTimeModified(struct stat info);
-void    extractPerm(char *perm, int mode);
-int     compareName(void *a, void *b);
-int     compareTime(void *a, void *b);
-int     compareSubdirName(void *a, void *b);
-int		compareSize(void *a, void *b);
-int     calculateTotalBlocks(t_dll *list);
-t_ls *mallocLs(t_format *format);
+void	  usage(char invalidOption);
+void	  help(void);
+char	 *extractTimeModified(struct stat info);
+void	  extractPerm(char *perm, int mode);
+int		  compareName(void *a, void *b);
+int		  compareTime(void *a, void *b);
+int		  compareSubdirName(void *a, void *b);
+int		  compareSize(void *a, void *b);
+int		  calculateTotalBlocks(t_dll *list);
+t_ls	 *mallocLs(t_format *format);
 t_subdir *mallocSubdir(void);
-char *get_color_for_file(t_ls *ls);
-char *int_to_str_sep(t_ls *node, char *num);
+char	 *get_color_for_file(t_ls *ls);
+char	 *int_to_str_sep(t_ls *node, char *num);
 
 /*#############################################################################
 # Free functions
 #############################################################################*/
 
-void	free2Array(char **array);
-void    freeArgStruct(t_arg *argList);
-void    freeLsNode(void *content);
-void    freeStr(char **str);
-void 	freeVoid(void **content);
-void    freeList(void *content);
-void  	freeFormatStruct(t_format **format);
-void	freeXattr(void *content);
+void free2Array(char **array);
+void freeArgStruct(t_arg *argList);
+void freeLsNode(void *content);
+void freeStr(char **str);
+void freeVoid(void **content);
+void freeList(void *content);
+void freeFormatStruct(t_format **format);
+void freeXattr(void *content);
 
 #endif

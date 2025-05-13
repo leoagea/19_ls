@@ -45,9 +45,11 @@ void getFormatLen(t_ls *node, t_format *format)
 	format->max_group = MAX(format->max_group, node->info->group_name_len);
 	format->max_user = MAX(format->max_user, node->info->user_name_len);
 	format->max_link = MAX(format->max_link, node->info->nlink_len);
-	format->max_size_bytes = MAX(format->max_size_bytes, node->info->size_bytes_len);
+	format->max_size_bytes =
+		MAX(format->max_size_bytes, node->info->size_bytes_len);
 	format->max_name = MAX(format->max_name, node->info->name_len);
-	format->max_block_size = MAX(format->max_block_size, node->info->block_size_len);
+	format->max_block_size =
+		MAX(format->max_block_size, node->info->block_size_len);
 	format->max_uid = MAX(format->max_uid, node->info->user_id_len);
 	format->max_gid = MAX(format->max_gid, node->info->group_id_len);
 }
@@ -55,7 +57,7 @@ void getFormatLen(t_ls *node, t_format *format)
 static void fillInSpace(t_ls *node, int max_len, int len)
 {
 	int i = 0;
-	
+
 	appendChar(node->format, ' ');
 	while (++i <= max_len - len)
 		appendChar(node->format, ' ');
@@ -63,99 +65,94 @@ static void fillInSpace(t_ls *node, int max_len, int len)
 
 static void appendType(char *format, int type)
 {
-	switch (type)
-	{
-		case DIRECTORY:
-			appendChar(format, 'd');
-			break;
-		case REGFILE:
-			appendChar(format, '-');
-			break;
-		case LINK:
-			appendChar(format, 'l');
-			break;
-		case FIFO:
-			appendChar(format, 'p');
-			break;
-		case SOCKET:
-			appendChar(format, 's');
-			break;
-		case CFS:
-			appendChar(format, 'n');
-			break;
-		case CHARFILE:
-			appendChar(format, 'c');
-			break;
-		case BLKFILE:
-			appendChar(format, 'b');
-			break;
-		default:
-			appendChar(format, 'u');
-			break;
+	switch (type) {
+	case DIRECTORY:
+		appendChar(format, 'd');
+		break;
+	case REGFILE:
+		appendChar(format, '-');
+		break;
+	case LINK:
+		appendChar(format, 'l');
+		break;
+	case FIFO:
+		appendChar(format, 'p');
+		break;
+	case SOCKET:
+		appendChar(format, 's');
+		break;
+	case CFS:
+		appendChar(format, 'n');
+		break;
+	case CHARFILE:
+		appendChar(format, 'c');
+		break;
+	case BLKFILE:
+		appendChar(format, 'b');
+		break;
+	default:
+		appendChar(format, 'u');
+		break;
 	}
 }
 
 void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 {
-	if (arg.block_size)
-	{
+	if (arg.block_size) {
 		fillInSpace(node, format->max_block_size, node->info->block_size_len);
 		appendInt(node->format, node->info->block_size);
 		appendChar(node->format, ' ');
 	}
 	appendType(node->format, node->type);
-	
+
 	appendStr(node->format, node->info->perm);
 	fillInSpace(node, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
-	
-	if (!arg.no_name && !arg.id){		
+
+	if (!arg.no_name && !arg.id) {
 		fillInSpace(node, format->max_user, node->info->user_name_len);
 		appendStr(node->format, node->info->user_name);
-	}
-	else if (arg.id){
+	} else if (arg.id) {
 		fillInSpace(node, format->max_uid, node->info->user_id_len);
 		appendInt(node->format, node->info->user_id);
 	}
-	
-	if (arg.id){
+
+	if (arg.id) {
 		fillInSpace(node, format->max_gid + 1, node->info->group_id_len);
 		appendInt(node->format, node->info->group_id);
-	}
-	else{		
+	} else {
 		fillInSpace(node, format->max_group + 1, node->info->group_name_len);
 		appendStr(node->format, node->info->group_name);
 	}
-	
+
 	fillInSpace(node, format->max_size_bytes + 1, node->info->size_bytes_len);
 	// appendInt(node->format, node->info->size_bytes);
 	char *tmp = ft_itoa(node->info->size_bytes);
 	char *append = NULL;
-	if (arg.comma){
+	if (arg.comma) {
 		append = int_to_str_sep(node, tmp);
 		appendStr(node->format, append);
 		free(append);
-	}
-	else
+	} else
 		appendStr(node->format, tmp);
 	free(tmp);
 	appendChar(node->format, ' ');
-	
+
 	appendStr(node->format, node->info->last_mod);
 	appendChar(node->format, ' ');
-	
+
 	// appendStr(node->format, node->name);
 	// if (node->is_symbolic){
-    // 	appendStr(node->format, " -> ");
+	// 	appendStr(node->format, " -> ");
 	// 	appendStr(node->format, node->info->sym_name);
 	// }
 }
 
 void formatOther(t_arg arg, t_ls *node)
 {
-	if (arg.block_size)
-	{
-		fillInSpace(node, node->format_info->max_block_size, node->info->block_size_len);
+	if (arg.block_size) {
+		fillInSpace(node, node->format_info->max_block_size,
+					node->info->block_size_len);
 		appendInt(node->format, node->info->block_size);
 		appendChar(node->format, ' ');
 	}
@@ -168,25 +165,24 @@ void formatOther(t_arg arg, t_ls *node)
 
 void formatOutput(t_ls *node, t_arg arg)
 {
-	if (!node)
-	{
+	if (!node) {
 		printf("Error: Null node passed to formatOutput\n");
-        return;
+		return;
 	}
-	
-	if (arg.long_format)
-	{
+
+	if (arg.long_format) {
 		// printFormatStruct(node->format_info);
-		if (!node->format_info){
-			printf("Error: Null format_info in node passed to formatOutput\n");
+		if (!node->format_info) {
+			printf("Error: Null format_info in node passed to "
+				   "formatOutput\n");
 			return;
 		}
-		if (!node->info){
-			printf("Error: Null info in node passed to formatOutput\n");
+		if (!node->info) {
+			printf("Error: Null info in node passed to "
+				   "formatOutput\n");
 			return;
 		}
 		formatLongFormat(arg, node, node->format_info);
-	}
-	else
+	} else
 		formatOther(arg, node);
 }

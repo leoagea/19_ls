@@ -23,7 +23,7 @@ void print_argList(t_arg argList)
 	ft_printf(2, "\tpath: %s\n", argList.path);
 	ft_printf(2, "\tall_path: \n");
 	int i = 0;
-	while (argList.all_path[i] != NULL){
+	while (argList.all_path[i] != NULL) {
 		ft_printf(2, "\t\t%s\n", argList.all_path[i]);
 		i++;
 	}
@@ -63,15 +63,14 @@ void printNodeLs(t_ls *node)
 	ft_printf(1, "format: %s\n", node->format);
 	printInfoStruct(node->info);
 	printFormatStruct(node->format_info);
-	if (node->subdir && node->subdir->head != NULL){
+	if (node->subdir && node->subdir->head != NULL) {
 		ft_printf(1, "subdir: \n");
 		t_node *sub = node->subdir->head;
-		while (sub != NULL){
+		while (sub != NULL) {
 			// printNodeLs(sub->content);
 			sub = sub->next;
 		}
-	}
-	else
+	} else
 		ft_printf(1, "no subdir\n");
 }
 
