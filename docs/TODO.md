@@ -11,13 +11,6 @@ just check color when ./ft_ls -s
 check -t with and without -l option
 check -f options outputs sorting
 
-add intlen function into libft so to remove itoa followed by strlen 
-
 LEAKS
 	--recursive -R
 
-Options for bonus
--m output horizontal with commas between (never split a word)
--p add '/' when it is a directory
--1 force output to be one entry per line
--, split sizes thousand by a separator
