@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 21:20:10 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 22:28:34 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,11 @@ int parseArg(int ac, char **av, t_arg *argList)
 					argList->oneline = true;
 					break;
 				
+				case ',':
+				   	setlocale(LC_ALL, "");
+					argList->comma = true;
+					break;
+
 				default:
 					usage(option);
 					return EXIT_FAILURE;

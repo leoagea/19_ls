@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 00:08:02 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 23:04:06 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,4 +167,39 @@ char *get_color_for_file(t_ls *ls)
                 return COLOR_EXEC;
     }
     return COLOR_RESET;
+}
+
+char *int_to_str_sep(t_ls *node, char *num)
+{   
+    size_t thousands = node->info->size_thousands;
+    char *str = malloc(12 + thousands);
+    if (!str)
+        return NULL;
+
+    ft_memset(str, 0, 12 + node->info->size_thousands);
+    
+    struct lconv *loc;
+    loc = localeconv();
+    char sep = loc->thousands_sep[0] ? loc->thousands_sep[0] : ',';
+
+    int num_len = ft_strlen(num);
+    int sep_count = node->info->size_thousands;
+    int total_len = num_len + sep_count + 1;
+    
+    int i = num_len - 1;
+    int j = total_len - 2;
+    int count = 0;
+
+    while (i >= 0 && j >= 0) {
+        str[j] = num[i];
+        count++;
+        i--;
+        j--;
+        
+        if (i >= 0 && count % 3 == 0 && j >= 0) {
+            str[j] = sep;
+            j--;
+        }
+    }
+    return str;
 }

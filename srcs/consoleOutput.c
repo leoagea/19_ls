@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 21:24:10 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 22:48:28 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ static void print_format(t_data *data, t_ls *ls)
             ft_printf(1, "\n");
             print_xattr(ls->xattr_list);
         }
-        else
-            ft_printf(1, "\n");
     
     } else {
         ft_printf(1, "%s%s%s", color, ls->format, reset);

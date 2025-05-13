@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 21:19:59 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 22:23:12 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_arg
 	bool 	id; //-n
 	bool    slash; //-p
 	bool    oneline; //-1
+	bool    comma; //-,
 	
 	char*	path;
 	char**	all_path;
@@ -95,6 +96,7 @@ typedef struct s_info
 	char*			last_mod;
 	int 			nlink;
 	int 			block_size;
+	size_t 			size_thousands;
 	
 	// Len Info
 	size_t			nlink_len;

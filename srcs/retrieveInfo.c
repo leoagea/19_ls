@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 01:28:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 23:04:44 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,10 @@ int retrieveAllInfo(t_data *data, t_ls *node)
     
     info_tmp->size_bytes = info.st_size;
 	info_tmp->size_bytes_len = ft_intlen(info_tmp->size_bytes);
+    if (data->arg.comma){
+        info_tmp->size_thousands = (info_tmp->size_bytes_len - 1) / 3;
+        info_tmp->size_bytes_len += info_tmp->size_thousands;
+    }
     
 	extractPerm(info_tmp->perm, info.st_mode);
     
