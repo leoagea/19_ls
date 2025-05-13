@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 22:48:28 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 23:54:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,56 @@ static void print_format(t_data *data, t_ls *ls)
     }
 }
 
+static void print_horizontal(t_data *data, t_dll *list)
+{
+    t_node *node = list->head;
+    if (!node || !node->content)
+        return;
+
+    int col = data->w.ws_col;
+    int current_width = 0;
+    bool first_in_line = true;
+    t_node *next = NULL;
+    
+    while (node) {
+        t_ls *ls = node->content;
+        if (!ls) {
+            node = node->next;
+            continue;
+        }
+
+        next = node->next;
+        int name_width = ft_strlen(ls->name);
+        int separator_width = 2;
+        int total_width = name_width + (first_in_line ? 0 : separator_width);
+
+        if (!first_in_line && (current_width + total_width >= col)) {
+            ft_printf(1, ", ");
+            ft_printf(1, "\n");
+            current_width = name_width;
+            first_in_line = true;
+        } else {
+            if (!first_in_line)
+                ft_printf(1, ", ");
+            current_width += total_width;
+        }
+
+        ft_printf(1, "%s%s%s", get_color_from_env(ls, data), ls->name, COLOR_RESET);
+
+        first_in_line = false;
+        node = next;
+    }
+    
+    ft_printf(1, "\n");
+}
+
 static void print_column(t_data *data, t_dll *list)
 {
+    if (data->arg.horizontal){
+        print_horizontal(data, list);
+        return;
+    }
+
     t_node *node = list->head;
     if (!node || !node->content)
         return;
@@ -146,8 +194,10 @@ void print_recursive(t_data *data, t_dll *list)
             node = node->next;
         }
     } else {
-        // Print in column format
-        print_column(data, list);
+        if (data->arg.horizontal)
+            print_horizontal(data, list);
+        else
+            print_column(data, list);
     }
     
     // Collect subdirectories

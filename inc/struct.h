@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 22:23:12 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 23:15:48 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_arg
 	bool    slash; //-p
 	bool    oneline; //-1
 	bool    comma; //-,
+	bool    horizontal; //-m
 	
 	char*	path;
 	char**	all_path;

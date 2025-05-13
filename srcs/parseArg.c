@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 22:28:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 23:18:33 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,10 @@ int parseArg(int ac, char **av, t_arg *argList)
 					argList->comma = true;
 					break;
 
+				case 'm':
+					argList->horizontal = true;
+					break;
+
 				default:
 					usage(option);
 					return EXIT_FAILURE;
@@ -138,6 +142,18 @@ int parseArg(int ac, char **av, t_arg *argList)
 		}
 	}
 
+	if (argList->not_sort){
+		argList->sort_time = false;
+		argList->sort_size = false;
+		argList->reverse = false;
+	}
+	
+	if (argList->horizontal){
+		argList->long_format = false;
+		if (argList->oneline)
+			argList->oneline = false;
+	}
+	
 	//Retrieve all path
 	if (getAllPath(ac, av, argList, i) == EXIT_FAILURE)
 		return EXIT_FAILURE;
