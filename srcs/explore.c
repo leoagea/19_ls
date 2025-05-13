@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:23:36 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:16:56 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,10 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
             return EXIT_FAILURE;
         }
         
-        node->name = ft_strdup(entry->d_name);
+        if (data->arg.slash)
+            node->name = ft_strjoin(entry->d_name, "/");
+        else
+            node->name = ft_strdup(entry->d_name);
         node->relative_path = ft_join_path(path, entry->d_name);
         
         checkEntryType(node, entry);
