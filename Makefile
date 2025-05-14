@@ -52,8 +52,7 @@ test: all
 	@ASAN_OPTIONS=detect_leaks=0 ./$(TARGET) $(ARGS)
 
 tests: all
-	@cd tests && bash Filetypes.sh && \
-		bash OldFile.sh
+	@cd tests && bash run_tests.sh
 
 ###############################################################################
 # Linking

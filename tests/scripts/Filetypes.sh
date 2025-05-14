@@ -21,10 +21,10 @@ cd /tmp/ls_test
 mkfifo testpipe
 
 # Create a character special file (needs root)
-#sudo mknod testchar c 1 3    # Major number 1, minor number 3 for null device
+sudo mknod testchar c 1 3    # Major number 1, minor number 3 for null device
 
 # Create a block special file (needs root)
-#$sudo mknod testblock b 8 0   # Major number 8, minor number 0 for first SCSI disk
+sudo mknod testblock b 8 0   # Major number 8, minor number 0 for first SCSI disk
 
 # Create a Unix domain socket
 python3 -c "import socket; s = socket.socket(socket.AF_UNIX); s.bind('testsock')"
