@@ -18,6 +18,7 @@ int main(int ac, char **av)
 	data.is_tty = isatty(STDOUT_FILENO);
 	initArgStruct(&data.arg);
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &data.w);
+	// print_terminal_size(&data.w); // For debugging
 	init_colors(&data);
 	// print_colors_map(&data.colors); // For debugging
 

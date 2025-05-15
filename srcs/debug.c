@@ -91,3 +91,11 @@ void print_colors_map(t_color_map *colors)
 	ft_printf(1, "cd: %s\n", colors->cd);
 	ft_printf(1, "fi: %s\n", colors->fi);
 }
+
+void print_terminal_size(struct winsize *w)
+{
+	ft_printf(1, "ws_col: %d\n", w->ws_col);
+	ft_printf(1, "ws_row: %d\n", w->ws_row);
+	ft_printf(1, "ws_xpixel: %d\n", w->ws_xpixel);
+	ft_printf(1, "ws_ypixel: %d\n", w->ws_ypixel);
+}

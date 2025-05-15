@@ -19,17 +19,16 @@
 
 #ifdef __APPLE__
 #	define st_mtime				 st_mtimespec.tv_sec
-#	define ENV_LSCOLORS			 "LS_COLORS"
 #	define CALC_BLOCKS(total_block) total_block
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size, 0, XATTR_NOFOLLOW)
 #	define LIST_XATTR(path, list, size) listxattr(path, list, size, XATTR_NOFOLLOW)
 #elif __linux__
-#	define ENV_LSCOLORS			 "LSCOLORS"
 #	define CALC_BLOCKS(total_block) (total_block / 2)
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size)
 #   define LIST_XATTR(path, list, size) listxattr(path, list, size)
 #endif
 
+#define ENV_LSCOLORS "LS_COLORS"
 #define TOTAL_BLOCKS "total"
 #define DEFAULT_PATH "."
 #define EXIT_CLEAN	 2

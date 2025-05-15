@@ -52,6 +52,7 @@ void printInfoStruct(t_info *info);
 void printNodeLs(t_ls *node);
 void print_subdir(void *content);
 void print_colors_map(t_color_map *colors);
+void print_terminal_size(struct winsize *w);
 
 /*#############################################################################
 # ParseArg functions

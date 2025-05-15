@@ -31,7 +31,7 @@ t_xattr *create_xattr_node(const char *path, const char *attr_name)
 	}
 
 	// Get size of attribute value
-	value_size = getxattr(path, attr_name, NULL, 0, 0, XATTR_NOFOLLOW);
+	value_size = GET_XATTR(path, attr_name, NULL, 0);
 	if (value_size == -1) {
 		free(node->name);
 		free(node);
@@ -47,7 +47,7 @@ t_xattr *create_xattr_node(const char *path, const char *attr_name)
 	}
 
 	// Get actual attribute value
-	if (getxattr(path, attr_name, node->value, value_size, 0, XATTR_NOFOLLOW) ==
+	if (GET_XATTR(path, attr_name, node->value, value_size) ==
 		-1) {
 		free(node->name);
 		free(node->value);
@@ -65,7 +65,7 @@ void get_file_xattr(t_ls *node, const char *path)
 	char   *curr_attr;
 
 	// Get size needed for attributes list
-	list_size = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
+	list_size = LIST_XATTR(path, NULL, 0);
 	if (list_size <= 0)
 		return;
 
@@ -74,7 +74,7 @@ void get_file_xattr(t_ls *node, const char *path)
 		return;
 
 	// Get actual list
-	if (listxattr(path, attr_list, list_size, XATTR_NOFOLLOW) == -1) {
+	if (LIST_XATTR(path, attr_list, list_size) == -1) {
 		free(attr_list);
 		return;
 	}
@@ -137,7 +137,7 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 
 		info_tmp->last_mod = extractTimeModified(info);
 
-		if (listxattr(node->relative_path, NULL, 0, XATTR_NOFOLLOW) > 0) {
+		if (LIST_XATTR(node->relative_path, NULL, 0) > 0) {
 			info_tmp->perm[9] = '@';
 
 			if (data->arg.extended_attributes) {
