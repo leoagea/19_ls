@@ -135,5 +135,7 @@ void freeVoid(void **content);
 void freeList(void *content);
 void freeFormatStruct(t_format **format);
 void freeXattr(void *content);
+void freeColorMap(t_color_map *colors);
+void freeAll(t_data *data);
 
 #endif

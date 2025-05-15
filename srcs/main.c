@@ -34,8 +34,7 @@ int main(int ac, char **av)
 
 	// print_argList(data.arg);
 	explore_loop(&data);
-	freeArgStruct(&data.arg);
-	dll_free(data.list, freeList);
+	freeAll(&data);
 	// system("leaks ft_ls");
 
 	return EXIT_SUCCESS;

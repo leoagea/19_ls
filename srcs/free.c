@@ -118,3 +118,28 @@ void freeXattr(void *content)
 	if (xattr->value)
 		freeVoid(&xattr->value);
 }
+
+void freeColorMap(t_color_map *colors)
+{
+	if (colors->di)
+		freeStr(&colors->di);
+	if (colors->ln)
+		freeStr(&colors->ln);
+	if (colors->so)
+		freeStr(&colors->so);
+	if (colors->pi)
+		freeStr(&colors->pi);
+	if (colors->ex)
+		freeStr(&colors->ex);
+	if (colors->bd)
+		freeStr(&colors->bd);
+	if (colors->cd)
+		freeStr(&colors->cd);
+}
+
+void freeAll(t_data *data)
+{
+	freeArgStruct(&data->arg);
+	freeColorMap(&data->colors);
+	dll_free(data->list, freeList);
+}
