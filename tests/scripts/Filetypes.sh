@@ -14,7 +14,9 @@ PROJECT_DIR=$(dirname "$SCRIPT_DIR")
 
 # Create temporary directory
 mkdir /tmp/ls_test
-ln -s "$PROJECT_DIR/ft_ls" /tmp/ls_test/myls
+cp myls /tmp/ls_test/myls
+chmod +x /tmp/ls_test/myls
+cp OldFile.sh /tmp/ls_test/OldFile.sh
 cd /tmp/ls_test
 
 # Create a named pipe (FIFO)
@@ -42,3 +44,5 @@ cleanup() {
     rmdir /tmp/ls_test 2>/dev/null
 }
 trap cleanup EXIT
+
+bash ./OldFile.sh

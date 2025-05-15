@@ -7,6 +7,7 @@ NC='\033[0m' # No Color
 echo "${GREEN}Building ft_ls...${NC}"
 cd ..
 make
+cp ft_ls tests/myls
 if [ $? -ne 0 ]; then
     echo "${RED}Build failed${NC}"
     exit 1
