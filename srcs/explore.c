@@ -131,8 +131,9 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		return EXIT_FAILURE;
 	}
 
-	t_format *format = malloc(sizeof(t_format));
-	initFormatStruct(format);
+	// t_format *format = malloc(sizeof(t_format));
+	t_format format;
+	initFormatStruct(&format);
 	struct dirent *entry;
 	while ((entry = readdir(dir)) != NULL) {
 		// if ((ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
@@ -142,7 +143,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		if (entry->d_name[0] == '.' && !data->arg.all)
 			continue;
 
-		t_ls *node = mallocLs(format);
+		t_ls *node = mallocLs(&format);
 		if (!node) {
 			closedir(dir);
 			return EXIT_FAILURE;

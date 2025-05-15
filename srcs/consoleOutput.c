@@ -142,7 +142,7 @@ static void print_column(t_data *data, t_dll *list)
 		printf("\n");
 	}
 
-	freeFormatStruct(&ls->format_info);
+	// freeFormatStruct(&ls->format_info);
 }
 
 static void handle_subdirs(t_data *data, t_dll *printsubdir)
@@ -234,7 +234,7 @@ static void print_direct(t_data *data, t_dll *list)
 		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
 
 	t_node *node = list->head;
-	t_node *head = list->head;
+	// t_node *head = list->head;
 	while (node != NULL) {
 		if (!node->content) {
 			printf("Warning: Skipping NULL content node\n");
@@ -247,8 +247,8 @@ static void print_direct(t_data *data, t_dll *list)
 		ft_printf(1, "\n");
 		node = node->next;
 	}
-	t_ls *head_ls = head->content;
-	freeFormatStruct(&head_ls->format_info);
+	// t_ls *head_ls = head->content;
+	// freeFormatStruct(&head_ls->format_info);
 }
 
 void output(t_data *data, t_dll *list)

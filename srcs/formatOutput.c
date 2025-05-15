@@ -56,10 +56,14 @@ void getFormatLen(t_ls *node, t_format *format)
 
 static void fillInSpace(t_ls *node, int max_len, int len)
 {
-	int i = 0;
+	int i = -1;
+	int spaces = max_len - len + 1;
 
-	appendChar(node->format, ' ');
-	while (++i <= max_len - len)
+	if (len == max_len){
+		appendChar(node->format, ' ');
+		return;
+	}
+	while (++i < spaces)
 		appendChar(node->format, ' ');
 }
 
@@ -106,7 +110,6 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	appendType(node->format, node->type);
 
 	appendStr(node->format, node->info->perm);
-	fillInSpace(node, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
 
 	if (!arg.no_name && !arg.id) {
@@ -118,15 +121,14 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	}
 
 	if (arg.id) {
-		fillInSpace(node, format->max_gid + 1, node->info->group_id_len);
+		fillInSpace(node, format->max_gid, node->info->group_id_len);
 		appendInt(node->format, node->info->group_id);
 	} else {
-		fillInSpace(node, format->max_group + 1, node->info->group_name_len);
+		fillInSpace(node, format->max_group, node->info->group_name_len);
 		appendStr(node->format, node->info->group_name);
 	}
 
-	fillInSpace(node, format->max_size_bytes + 1, node->info->size_bytes_len);
-	// appendInt(node->format, node->info->size_bytes);
+	fillInSpace(node, format->max_size_bytes, node->info->size_bytes_len);
 	char *tmp = ft_itoa(node->info->size_bytes);
 	char *append = NULL;
 	if (arg.comma) {
