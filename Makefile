@@ -9,7 +9,7 @@ NC     := \033[0m
 ###############################################################################
 # Compiler & Flags
 ###############################################################################
-CC       = clang
+CC       = gcc
 CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 22:54:22 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/14 00:27:32 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/15 21:40:12 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,13 @@
 #	define st_mtime				 st_mtimespec.tv_sec
 #	define ENV_LSCOLORS			 "LS_COLORS"
 #	define CALC_BLOCKS(total_block) total_block
+#	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size, 0, XATTR_NOFOLLOW)
+#	define LIST_XATTR(path, list, size) listxattr(path, list, size, XATTR_NOFOLLOW)
 #elif __linux__
 #	define ENV_LSCOLORS			 "LSCOLORS"
 #	define CALC_BLOCKS(total_block) (total_block / 2)
+#	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size)
+#   define LIST_XATTR(path, list, size) listxattr(path, list, size)
 #endif
 
 #define TOTAL_BLOCKS "total"
