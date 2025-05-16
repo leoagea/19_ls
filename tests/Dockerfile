@@ -23,8 +23,4 @@ RUN chmod +x myls
 
 RUN ls -la && pwd
 
-# Uncomment this after fixing the dependencies
-# RUN bash ./Filetypes.sh && ./Oldfile.sh
-
-ENTRYPOINT ["./Filetypes.sh"]
-# ENTRYPOINT [ "bash" ]
+ENTRYPOINT ["./run_scripts.sh"]

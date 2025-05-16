@@ -13,7 +13,11 @@ SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 PROJECT_DIR=$(dirname "$SCRIPT_DIR")
 
 # Create temporary directory
+mkdir -p /tmp/ls_test
+cp myls /tmp/ls_test/myls > /dev/null 2>&1
+chmod +x /tmp/ls_test/myls > /dev/null 2>&1
 cd /tmp/ls_test
+pwd 
 
 # Create a temporary file
 touch testfile
@@ -30,7 +34,7 @@ touch -t 204001010000 futurefile    # Set date to Jan 1, 2040
 echo -e "${BLUE}Testing with real ls:${RESET}"
 ls -l
 echo -e "${GREEN}Testing with my ls:${RESET}"
-ASAN_OPTIONS=detect_leaks=0 ./myls -l 
+./myls -l 
 
 # Clean up
 cleanup() {

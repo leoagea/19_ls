@@ -15,8 +15,8 @@ PROJECT_DIR=$(dirname "$SCRIPT_DIR")
 # Create temporary directory
 mkdir /tmp/ls_test
 cp myls /tmp/ls_test/myls
-chmod +x /tmp/ls_test/myls
-cp OldFile.sh /tmp/ls_test/OldFile.sh
+chmod +x /tmp/ls_test/myls > /dev/null 2>&1
+cp OldFile.sh /tmp/ls_test/OldFile.sh > /dev/null 2>&1
 cd /tmp/ls_test
 
 # Create a named pipe (FIFO)
@@ -35,7 +35,7 @@ python3 -c "import socket; s = socket.socket(socket.AF_UNIX); s.bind('testsock')
 echo -e "${BLUE}Testing with real ls:${RESET}"
 ls -l
 echo -e "${GREEN}Testing with my ls:${RESET}"
-ASAN_OPTIONS=detect_leaks=0 ./myls -l
+./myls -l
 
 # Clean up
 cleanup() {
@@ -45,4 +45,4 @@ cleanup() {
 }
 trap cleanup EXIT
 
-bash ./OldFile.sh
+# bash ./OldFile.sh

@@ -22,4 +22,4 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "${GREEN}Running tests in container...${NC}"
-docker run -it ls-tests
+docker run -e TERM=xterm-256color -it ls-tests
