@@ -43,6 +43,7 @@ myls
 *.su
 *.idb
 *.pdb
+.build_mode
 
 # Kernel Module Compile Results
 *.mod*
