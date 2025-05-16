@@ -30,13 +30,13 @@ void init_colors(t_data *data)
 	char *ls_colors = getenv(ENV_LSCOLORS);
 	data->use_color = isatty(STDOUT_FILENO);
 
+	memset(&data->colors, 0, sizeof(t_color_map));
 	if (!ls_colors || !data->use_color) {
 		data->use_color = false;
 		return;
 	}
-
+	
 	// Initialize with default values
-	memset(&data->colors, 0, sizeof(t_color_map));
 	parse_ls_colors(ls_colors, &data->colors);
 }
 

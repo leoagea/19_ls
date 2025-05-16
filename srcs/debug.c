@@ -82,14 +82,14 @@ void print_subdir(void *content)
 
 void print_colors_map(t_color_map *colors)
 {
-	ft_printf(1, "di: %s\n", colors->di);
-	ft_printf(1, "ln: %s\n", colors->ln);
-	ft_printf(1, "so: %s\n", colors->so);
-	ft_printf(1, "pi: %s\n", colors->pi);
-	ft_printf(1, "ex: %s\n", colors->ex);
-	ft_printf(1, "bd: %s\n", colors->bd);
-	ft_printf(1, "cd: %s\n", colors->cd);
-	ft_printf(1, "fi: %s\n", colors->fi);
+	ft_printf(1, "di: '%s'\n", colors->di);
+	ft_printf(1, "ln: '%s'\n", colors->ln);
+	ft_printf(1, "so: '%s'\n", colors->so);
+	ft_printf(1, "pi: '%s'\n", colors->pi);
+	ft_printf(1, "ex: '%s'\n", colors->ex);
+	ft_printf(1, "bd: '%s'\n", colors->bd);
+	ft_printf(1, "cd: '%s'\n", colors->cd);
+	ft_printf(1, "fi: '%s'\n", colors->fi);
 }
 
 void print_terminal_size(struct winsize *w)
