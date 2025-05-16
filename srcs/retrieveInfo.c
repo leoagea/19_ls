@@ -134,7 +134,7 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 	if (node->is_symbolic ? lstat(node->relative_path, &info)
 						  : stat(node->relative_path, &info) == -1)
 		return (printf("stat failed\n"), EXIT_FAILURE);
-	info_tmp->block_size = (int)info.st_blocks;
+	info_tmp->block_size = CALC_BLOCKS((int)info.st_blocks);
 
 	info_tmp->block_size_len = ft_intlen(info_tmp->block_size);
 
