@@ -59,7 +59,7 @@ static void fillInSpace(t_ls *node, int max_len, int len)
 	int i = -1;
 	int spaces = max_len - len + 1;
 
-	if (len == max_len){
+	if (len == max_len ){
 		appendChar(node->format, ' ');
 		return;
 	}
@@ -110,6 +110,7 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	appendType(node->format, node->type);
 
 	appendStr(node->format, node->info->perm);
+	fillInSpace(node, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
 
 	if (!arg.no_name && !arg.id) {

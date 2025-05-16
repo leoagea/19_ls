@@ -89,7 +89,7 @@ typedef struct s_info {
 	char  *group_name;
 	int	   user_id;
 	char  *user_name;
-	char   perm[11];
+	char   perm[10];
 	char  *last_mod;
 	int	   nlink;
 	int	   block_size;

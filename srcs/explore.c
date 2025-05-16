@@ -172,6 +172,8 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 	}
 
 	t_node *node = list->head;
+	// t_ls *tmp = node->content;
+	// printFormatStruct(node->content->format_info); // For debugging
 	while (node != NULL) {
 		if (node->content == NULL) {
 			printf("node content is null\n");

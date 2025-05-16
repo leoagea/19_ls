@@ -69,8 +69,7 @@ void extractPerm(char *perm, int mode)
 	perm[6] = (mode & S_IROTH) ? 'r' : '-';
 	perm[7] = (mode & S_IWOTH) ? 'w' : '-';
 	perm[8] = (mode & S_IXOTH) ? 'x' : '-';
-	perm[9] = ' ';
-	perm[10] = '\0';
+	perm[9] = '\0';
 }
 
 int compareName(void *a, void *b)
