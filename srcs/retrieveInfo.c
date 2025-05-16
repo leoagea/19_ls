@@ -145,6 +145,12 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 		info_tmp->size_bytes_len += info_tmp->size_thousands;
 	}
 
+	if (node->type == DIRECTORY && data->arg.slash){
+		char *tmp = ft_strjoin(node->name, "/");
+		free(node->name);
+		node->name = tmp;
+	}
+
 	extractPerm(info_tmp->perm, info.st_mode);
 
 	if (data->arg.long_format) {

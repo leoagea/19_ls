@@ -149,10 +149,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 			return EXIT_FAILURE;
 		}
 
-		if (data->arg.slash)
-			node->name = ft_strjoin(entry->d_name, "/");
-		else
-			node->name = ft_strdup(entry->d_name);
+		node->name = ft_strdup(entry->d_name);
 		node->relative_path = ft_join_path(path, entry->d_name);
 
 		checkEntryType(node, entry);
