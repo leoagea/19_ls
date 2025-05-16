@@ -11,6 +11,8 @@ just check color when ./ft_ls -s
 check -t with and without -l option
 check -f options outputs sorting
 
+test on linux all new flags
+
 LEAKS
 	--recursive -R
 
