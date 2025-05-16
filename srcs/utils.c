@@ -117,7 +117,7 @@ int calculateTotalBlocks(t_dll *list)
 		curr = curr->next;
 	}
 
-	return CALC_BLOCKS(total_blocks);
+	return total_blocks;
 }
 
 t_ls *mallocLs(t_format *format)

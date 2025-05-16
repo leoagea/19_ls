@@ -19,11 +19,11 @@
 
 #ifdef __APPLE__
 #	define st_mtime				 st_mtimespec.tv_sec
-#	define CALC_BLOCKS(total_block) total_block
+#	define CALC_BLOCKS(blocks) block
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size, 0, XATTR_NOFOLLOW)
 #	define LIST_XATTR(path, list, size) listxattr(path, list, size, XATTR_NOFOLLOW)
 #elif __linux__
-#	define CALC_BLOCKS(total_block) (total_block / 2)
+#	define CALC_BLOCKS(blocks) (blocks / 2)
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size)
 #   define LIST_XATTR(path, list, size) listxattr(path, list, size)
 #endif
