@@ -31,6 +31,7 @@
 #include <grp.h>	   //getgrgid
 #include <sys/ioctl.h> // ioctl
 #include <sys/xattr.h>
+#include <sys/sysmacros.h> // major, minor
 #include <locale.h> // setlocale
 
 /*#############################################################################

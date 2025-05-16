@@ -129,15 +129,19 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	}
 
 	fillInSpace(node, format->max_size_bytes, node->info->size_bytes_len);
-	char *tmp = ft_itoa(node->info->size_bytes);
-	char *append = NULL;
-	if (arg.comma) {
-		append = int_to_str_sep(node, tmp);
-		appendStr(node->format, append);
-		free(append);
-	} else
-		appendStr(node->format, tmp);
-	free(tmp);
+	if (node->type == BLKFILE || node->type == CHARFILE)
+		appendStr(node->format, node->info->major);
+	else{
+		char *tmp = ft_itoa(node->info->size_bytes);
+		char *append = NULL;
+		if (arg.comma) {
+			append = int_to_str_sep(node, tmp);
+			appendStr(node->format, append);
+			free(append);
+		} else
+			appendStr(node->format, tmp);
+		free(tmp);
+	}
 	appendChar(node->format, ' ');
 
 	appendStr(node->format, node->info->last_mod);

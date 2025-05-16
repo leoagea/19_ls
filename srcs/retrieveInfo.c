@@ -89,6 +89,41 @@ void get_file_xattr(t_ls *node, const char *path)
 
 	free(attr_list);
 }
+static void retrieveMajorMinor(t_info **ls, struct stat info)
+{
+	if (!ls || !*ls)
+		return ;
+		
+	int major;
+	int minor;
+	char *format = (*ls)->major;
+
+	major = major(info.st_rdev);
+	minor = minor(info.st_rdev);
+
+	// Check for overflow
+    if (major > 4095) {
+        major = 4095;  // Cap at maximum
+    }
+    if (minor > 1048575) {
+        minor = 1048575;  // Cap at maximum
+    }
+
+	char *major_str = ft_itoa(major);
+	char *minor_str = ft_itoa(minor);
+	if (!major_str || !minor_str) {
+		freeStr(&major_str);
+		freeStr(&minor_str);
+		return ;
+	}
+
+	ft_memcpy(format, major_str, ft_strlen(major_str));
+	ft_memcpy(format + ft_strlen(major_str), ", ", 2);
+	ft_memcpy(format + ft_strlen(major_str) + 2, minor_str, ft_strlen(minor_str));
+
+	freeStr(&major_str);
+	freeStr(&minor_str);
+}
 
 int retrieveAllInfo(t_data *data, t_ls *node)
 {
@@ -136,6 +171,11 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 		info_tmp->group_name_len = ft_strlen(info_tmp->group_name);
 
 		info_tmp->last_mod = extractTimeModified(info);
+
+		if (node->type == BLKFILE || node->type == CHARFILE) {
+			retrieveMajorMinor(&info_tmp, info);
+			info_tmp->size_bytes_len = ft_strlen(info_tmp->major);
+		}
 
 		if (LIST_XATTR(node->relative_path, NULL, 0) > 0) {
 			info_tmp->perm[9] = '@';

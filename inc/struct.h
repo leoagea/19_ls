@@ -93,6 +93,7 @@ typedef struct s_info {
 	char  *last_mod;
 	int	   nlink;
 	int	   block_size;
+	char   major[33];
 	size_t size_thousands;
 
 	// Len Info
