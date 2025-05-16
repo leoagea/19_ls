@@ -1,4 +1,4 @@
 #!/bin/bash
 
 ./Filetypes.sh
-./OldFile.sh
+# ./OldFile.sh

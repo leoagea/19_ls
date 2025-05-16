@@ -31,6 +31,9 @@ sudo mknod testblock b 8 0   # Major number 8, minor number 0 for first SCSI dis
 # Create a Unix domain socket
 python3 -c "import socket; s = socket.socket(socket.AF_UNIX); s.bind('testsock')"
 
+# Create a big file
+head -c 50M /dev/urandom > testfile
+
 # Test with ls
 echo -e "${BLUE}Testing with real ls:${RESET}"
 ls -l
