@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:27:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 17:40:33 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,24 @@ static void handle_subdirs(t_data *data, t_dll *printsubdir)
 	}
 }
 
+static void print_oneline(t_data *data, t_dll *list)
+{
+	if (!list || !list->head) {
+		printf("Warning: Empty list\n");
+		return;
+	}
+
+	t_node *node = list->head;
+	while (node) {
+		t_ls *ls = node->content;
+		if (ls) {
+			print_format(data, ls);
+			ft_printf(1, "\n");
+		}
+		node = node->next;
+	}
+}
+
 void print_recursive(t_data *data, t_dll *list)
 {
 	if (!list) {
@@ -203,6 +221,8 @@ void print_recursive(t_data *data, t_dll *list)
 			}
 			node = node->next;
 		}
+	} else if (!data->is_tty || data->arg.oneline) {
+		print_oneline(data, list);
 	} else {
 		if (data->arg.horizontal)
 			print_horizontal(data, list);
@@ -219,6 +239,7 @@ void print_recursive(t_data *data, t_dll *list)
 				t_subdir *subdir = mallocSubdir();
 				if (subdir) {
 					subdir->name = ft_strdup(ls->name);
+					subdir->lower_name = string_to_lower(subdir->name);
 					subdir->path = ft_strdup(ls->relative_path);
 					subdir->subdir_list = ls->subdir;
 					dll_insert_tail(subdir, printsubdir);

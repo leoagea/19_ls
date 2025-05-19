@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:55:32 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 17:40:00 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct s_ls {
 
 typedef struct s_subdir {
 	char  *name;
+	char  *lower_name;
 	char  *path;
 	t_dll *subdir_list;
 } t_subdir;

@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:06:09 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 17:11:25 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 17:40:41 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int compareSubdirName(void *a, void *b)
 {
 	t_subdir *node_a = a;
 	t_subdir *node_b = b;
-	return ft_strncmp(node_a->name, node_b->name, INT_MAX);
+	return ft_strncmp(node_a->lower_name, node_b->lower_name, INT_MAX);
 }
 
 int compareSize(void *a, void *b)

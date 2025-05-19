@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 15:49:37 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 17:37:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ void freeLsNode(void *content)
 	if (node->relative_path) {
 		freeStr(&node->relative_path);
 	}
-	// if (node->format_info){
-	// 	freeFormatStruct(&node->format_info);
-	// }
+	if (node->lower_name){
+		freeStr(&node->lower_name);
+	}
 	if (node->subdir && node->subdir->head) {
-		printf("free subdir\n");
+		// printf("free subdir\n");
 		t_node *sub = node->subdir->head;
 		t_ls *tmp = sub->content;
 		if (tmp->format_info) {
@@ -98,12 +98,12 @@ void freeVoid(void **content)
 
 void freeList(void *content)
 {
-	printf("free list\n");
+	// printf("free list\n");
 	t_dll  *list = (t_dll *)content;
 	t_node *node = list->head;
 	t_ls *ls = node->content;
 	if (ls->format_info){
-		printf("free format\n");
+		// printf("free format\n");
 		freeFormatStruct(&ls->format_info);
 	}
 	while (node != NULL) {
