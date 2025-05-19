@@ -9,5 +9,3 @@ Test file type: n, network files; c, character special file; b, block special fi
 check -f options outputs sorting
 
 Outputs column false because of its calibration on max_len_name
-
-Test with ./ft_ls -R ~ LEAKS
