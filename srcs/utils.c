@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 23:04:06 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:01:01 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int compareName(void *a, void *b)
 {
 	t_ls *node_a = a;
 	t_ls *node_b = b;
-	return ft_strncmp(node_a->name, node_b->name, INT_MAX);
+	return ft_strncmp(node_a->lower_name, node_b->lower_name, INT_MAX);
 }
 
 int compareTime(void *a, void *b)
@@ -201,4 +201,19 @@ char *int_to_str_sep(t_ls *node, char *num)
 		}
 	}
 	return str;
+}
+
+char *string_to_lower(char *str)
+{
+	size_t len = ft_strlen(str);
+	char *lower_str = malloc(len + 1);
+	if (!lower_str)
+		return NULL;
+
+	for (int i = 0; str[i]; i++) {
+		lower_str[i] = ft_tolower(str[i]);
+	}
+	lower_str[len] = '\0';
+	
+	return lower_str;
 }

@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 15:39:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:00:05 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		}
 
 		node->name = ft_strdup(entry->d_name);
+		node->lower_name = string_to_lower(node->name);
 		node->relative_path = ft_join_path(path, entry->d_name);
 
 		checkEntryType(node, entry);

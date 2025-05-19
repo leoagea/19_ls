@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 14:44:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:59:03 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ t_ls	 *mallocLs(t_format *format);
 t_subdir *mallocSubdir(void);
 char	 *get_color_for_file(t_ls *ls);
 char	 *int_to_str_sep(t_ls *node, char *num);
+char     *string_to_lower(char *str);
 
 /*#############################################################################
 # Free functions
