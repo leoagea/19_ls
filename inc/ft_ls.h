@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:08:21 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:47:57 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ t_subdir *mallocSubdir(void);
 # Debug functions
 #############################################################################*/
 
-void print_argList(t_arg argList);
-void print_dirent(struct dirent *entry);
-void printFormatStruct(t_format *format);
-void printInfoStruct(t_info *info);
-void printNodeLs(t_ls *node);
-void print_subdir(void *content);
-void print_colors_map(t_color_map *colors);
-void print_terminal_size(struct winsize *w);
+void debug_print_argList(t_arg argList);
+void debug_print_dirent(struct dirent *entry);
+void debug_printFormatStruct(t_format *format);
+void debug_printInfoStruct(t_info *info);
+void debug_printNodeLs(t_ls *node);
+void debug_print_subdir(void *content);
+void debug_print_colors_map(t_color_map *colors);
+void debug_print_terminal_size(struct winsize *w);
 
 /*#############################################################################
 # ParseArg functions

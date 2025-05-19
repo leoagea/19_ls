@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:00:05 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:47:57 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 	t_node *node = list->head;
 	// t_ls *tmp = node->content;
-	// printFormatStruct(tmp->format_info); // For debugging
+	// debug_printFormatStruct(tmp->format_info); // For debugging
 	while (node != NULL) {
 		if (node->content == NULL) {
 			printf("node content is null\n");
@@ -178,7 +178,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		}
 
 		t_ls *ls = node->content;
-		// printNodeLs(ls);
+		// debug_printNodeLs(ls);
 		formatOutput(ls, data->arg);
 		node = node->next;
 	}

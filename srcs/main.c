@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:21:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:47:12 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int main(int ac, char **av)
 	data.is_tty = isatty(STDOUT_FILENO);
 	initArgStruct(&data.arg);
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &data.w);
-	// print_terminal_size(&data.w); // For debugging
+	// debug_print_terminal_size(&data.w); // For debugging
 	init_colors(&data);
-	// print_colors_map(&data.colors); // For debugging
+	// debug_print_colors_map(&data.colors); // For debugging
 
 	t_dll list;
 	dll_init(&list);
@@ -32,7 +32,7 @@ int main(int ac, char **av)
 	if (parse_result == EXIT_CLEAN)
 		return EXIT_SUCCESS;
 
-	print_argList(data.arg);
+	// debug_print_argList(data.arg);
 	explore_loop(&data);
 	freeAll(&data);
 	// system("leaks ft_ls");
