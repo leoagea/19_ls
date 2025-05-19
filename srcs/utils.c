@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:06:38 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:11:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,21 @@ int calculateTotalBlocks(t_dll *list)
 char *get_color_for_file(t_ls *ls)
 {
 	switch (ls->type) {
-	case DIRECTORY:
-		return COLOR_DIR;
-	case LINK:
-		return COLOR_LINK;
-	case SOCKET:
-		return COLOR_SOCKET;
-	case FIFO:
-		return COLOR_PIPE;
-	case BLKFILE:
-		return COLOR_BLOCK;
-	case CHARFILE:
-		return COLOR_CHAR;
-	case REGFILE:
-		if (ls->info && ls->info->perm[2] == 'x')
-			return COLOR_EXEC;
+		case DIRECTORY:
+			return COLOR_DIR;
+		case LINK:
+			return COLOR_LINK;
+		case SOCKET:
+			return COLOR_SOCKET;
+		case FIFO:
+			return COLOR_PIPE;
+		case BLKFILE:
+			return COLOR_BLOCK;
+		case CHARFILE:
+			return COLOR_CHAR;
+		case REGFILE:
+			if (ls->info && ls->info->perm[2] == 'x')
+				return COLOR_EXEC;
 	}
 	return COLOR_RESET;
 }

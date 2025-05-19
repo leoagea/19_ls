@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/14 00:34:48 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:21:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main(int ac, char **av)
 	if (parse_result == EXIT_CLEAN)
 		return EXIT_SUCCESS;
 
-	// print_argList(data.arg);
+	print_argList(data.arg);
 	explore_loop(&data);
 	freeAll(&data);
 	// system("leaks ft_ls");

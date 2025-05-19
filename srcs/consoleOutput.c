@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 15:35:20 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:27:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,9 @@ static void print_column(t_data *data, t_dll *list)
 		for (int j = 0; j < nb_col && current; j++) {
 			ls = current->content;
 			if (ls) {
+				if (data->arg.block_size){
+					ft_printf(1, "%s", ls->format_block);
+				}
 				print_format(data, ls);
 			}
 

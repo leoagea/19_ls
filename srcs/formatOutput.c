@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 15:18:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:27:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,17 @@ void getFormatLen(t_ls *node, t_format *format)
 	format->max_gid = MAX(format->max_gid, node->info->group_id_len);
 }
 
-static void fillInSpace(t_ls *node, int max_len, int len)
+static void fillInSpace(char *str, int max_len, int len)
 {
 	int i = -1;
 	int spaces = max_len - len + 1;
 
 	if (len == max_len ){
-		appendChar(node->format, ' ');
+		appendChar(str, ' ');
 		return;
 	}
 	while (++i < spaces)
-		appendChar(node->format, ' ');
+		appendChar(str, ' ');
 }
 
 static void appendType(char *format, int type)
@@ -104,33 +104,33 @@ static void appendType(char *format, int type)
 void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 {
 	if (arg.block_size) {
-		fillInSpace(node, format->max_block_size, node->info->block_size_len);
+		fillInSpace(node->format, format->max_block_size, node->info->block_size_len);
 		appendInt(node->format, node->info->block_size);
 		appendChar(node->format, ' ');
 	}
 	appendType(node->format, node->type);
 
 	appendStr(node->format, node->info->perm);
-	fillInSpace(node, format->max_link, node->info->nlink_len);
+	fillInSpace(node->format, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
 
 	if (!arg.no_name && !arg.id) {
-		fillInSpace(node, format->max_user, node->info->user_name_len);
+		fillInSpace(node->format, format->max_user, node->info->user_name_len);
 		appendStr(node->format, node->info->user_name);
 	} else if (arg.id) {
-		fillInSpace(node, format->max_uid, node->info->user_id_len);
+		fillInSpace(node->format, format->max_uid, node->info->user_id_len);
 		appendInt(node->format, node->info->user_id);
 	}
 
 	if (arg.id) {
-		fillInSpace(node, format->max_gid, node->info->group_id_len);
+		fillInSpace(node->format, format->max_gid, node->info->group_id_len);
 		appendInt(node->format, node->info->group_id);
 	} else {
-		fillInSpace(node, format->max_group, node->info->group_name_len);
+		fillInSpace(node->format, format->max_group, node->info->group_name_len);
 		appendStr(node->format, node->info->group_name);
 	}
 
-	fillInSpace(node, format->max_size_bytes, node->info->size_bytes_len);
+	fillInSpace(node->format, format->max_size_bytes, node->info->size_bytes_len);
 	if (node->type == BLKFILE || node->type == CHARFILE)
 		appendStr(node->format, node->info->major);
 	else{
@@ -159,10 +159,10 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 void formatOther(t_arg arg, t_ls *node)
 {
 	if (arg.block_size) {
-		fillInSpace(node, node->format_info->max_block_size,
+		fillInSpace(node->format_block, node->format_info->max_block_size,
 					node->info->block_size_len);
-		appendInt(node->format, node->info->block_size);
-		appendChar(node->format, ' ');
+		appendInt(node->format_block, node->info->block_size);
+		appendChar(node->format_block, ' ');
 	}
 	appendStr(node->format, node->name);
 

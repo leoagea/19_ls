@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 15:18:18 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:28:28 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,21 @@ void print_argList(t_arg argList)
 	ft_printf(2, "\trecursive: %b\n", argList.recurisve);
 	ft_printf(2, "\tlong_format: %b\n", argList.long_format);
 	ft_printf(2, "\tpath: %s\n", argList.path);
+	ft_printf(2, "\textended_attributes: %b\n", argList.extended_attributes);
+	ft_printf(2, "\tsort_size: %b\n", argList.sort_size);
+	ft_printf(2, "\tblock_size: %b\n", argList.block_size);
+	ft_printf(2, "\tnot_sort: %b\n", argList.not_sort);
+	ft_printf(2, "\tno_name: %b\n", argList.no_name);
+	ft_printf(2, "\tid: %b\n", argList.id);
+	ft_printf(2, "\tslash: %b\n", argList.slash);
+	ft_printf(2, "\toneline: %b\n", argList.oneline);
+	ft_printf(2, "\tcomma: %b\n", argList.slash);
+	ft_printf(2, "\thorizontal: %b\n", argList.horizontal);
+	
 	ft_printf(2, "\tall_path: \n");
 	int i = 0;
 	while (argList.all_path[i] != NULL) {
-		ft_printf(2, "\t\t%s\n", argList.all_path[i]);
+		ft_printf(2, "\t\t'%s'\n", argList.all_path[i]);
 		i++;
 	}
 }
