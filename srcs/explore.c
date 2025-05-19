@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:47:57 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 19:03:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ int explore_loop(t_data *data)
 		i++;
 	}
 
-	int tmp = i;
+	// int tmp = i;
 	i = 0;
 	t_node *node = data->list->head;
 	while (node != NULL) {
 		t_dll *dll = node->content;
-		if (tmp != 1)
-			printf("%s:\n", data->arg.all_path[i]);
+		// if (tmp != 1)
+		// printf("Iteration\n");
+		ft_printf(1, "%s:\n", data->arg.all_path[i]);
 		output(data, dll);
 		node = node->next;
 		if (node == NULL)
@@ -98,7 +99,7 @@ int handleSymlink(t_ls *node)
 		perror("readlink");
 		return EXIT_FAILURE;
 	}
-
+	free(link_path);
 	node->info->size_bytes = ft_strlen(node->info->sym_name);
 	node->info->size_bytes_len = ft_intlen(node->info->size_bytes);
 
@@ -115,12 +116,23 @@ static int processEntry(t_data *data, t_ls *node)
 		(ft_strncmp(".", node->name, INT_MAX) != 0 &&
 		 ft_strncmp("..", node->name, INT_MAX) != 0)) {
 		t_dll *sub = malloc(sizeof(t_dll));
+		if (!sub) {
+			freeLsNode(node);
+			return EXIT_FAILURE;
+		}
 		dll_init(sub);
 		node->subdir = sub;
-		exploreDirectories(data, node->subdir, node->relative_path);
+		if (exploreDirectories(data, node->subdir, node->relative_path) == EXIT_FAILURE) {
+			freeLsNode(node);
+			return EXIT_FAILURE;
+		}
 	}
 
-	return retrieveAllInfo(data, node);
+	if (retrieveAllInfo(data, node) == EXIT_FAILURE) {
+		freeLsNode(node);
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
 }
 
 int exploreDirectories(t_data *data, t_dll *list, char *path)
@@ -144,13 +156,14 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 		t_ls *node = mallocLs(format);
 		if (!node) {
+			// freeFormatStruct(&format);
 			closedir(dir);
 			return EXIT_FAILURE;
 		}
 
 		node->name = ft_strdup(entry->d_name);
 		node->lower_name = string_to_lower(node->name);
-		node->relative_path = ft_join_path(path, entry->d_name);
+		node->relative_path = path[ft_strlen(path) - 1] == '/' ? ft_strjoin(path, entry->d_name) : ft_join_path(path, entry->d_name);
 
 		checkEntryType(node, entry);
 
@@ -158,22 +171,30 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 		if (processEntry(data, node) == EXIT_FAILURE) {
 			printf("processEntry failed\n");
+			// freeFormatStruct(&format);
 			closedir(dir);
 			return EXIT_FAILURE;
 		}
 	}
 
 	if (closedir(dir) == -1) {
+		freeFormatStruct(&format);
 		perror("closedir");
 		return EXIT_FAILURE;
 	}
 
 	t_node *node = list->head;
+	// if (node == NULL) {
+	// 	printf("node is null\n");
+	// 	return EXIT_FAILURE;
+	// }
+
 	// t_ls *tmp = node->content;
 	// debug_printFormatStruct(tmp->format_info); // For debugging
 	while (node != NULL) {
 		if (node->content == NULL) {
 			printf("node content is null\n");
+			// freeFormatStruct(&format);
 			return EXIT_FAILURE;
 		}
 
@@ -182,6 +203,6 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		formatOutput(ls, data->arg);
 		node = node->next;
 	}
-
+	
 	return EXIT_SUCCESS;
 }

@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 17:37:35 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 19:07:16 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,21 @@ void freeLsNode(void *content)
 	if (node->lower_name){
 		freeStr(&node->lower_name);
 	}
-	if (node->subdir && node->subdir->head) {
-		// printf("free subdir\n");
-		t_node *sub = node->subdir->head;
-		t_ls *tmp = sub->content;
-		if (tmp->format_info) {
-			// printf("free format subdir\n");
-			freeFormatStruct(&tmp->format_info);
+	if (node->subdir) {
+		if (node->subdir->head) {
+			t_node *sub = node->subdir->head;
+			t_ls *tmp = sub->content;
+			// printf("free subdir %s\n", tmp->relative_path);
+			if (tmp->format_info) {
+				// printf("free format subdir\n");
+				freeFormatStruct(&tmp->format_info);
+			}
+			dll_free(node->subdir, freeLsNode);
+			free(node->subdir);
+			node->subdir = NULL;
 		}
-		dll_free(node->subdir, freeLsNode);
-		free(node->subdir);
-		node->subdir = NULL;
+		else
+			free(node->subdir);
 	}
 	free(node);
 }
@@ -167,7 +171,7 @@ void freeSubdir(void *content)
 		freeStr(&subdir->name);
 	if (subdir->path)
 		freeStr(&subdir->path);
-	// if (subdir->subdir_list && subdir->subdir_list->head)
-	// 	dll_free(subdir->subdir_list, freeLsNode);
+	if (subdir->lower_name)
+		freeStr(&subdir->lower_name);
 	free(subdir);
 }
