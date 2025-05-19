@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 15:59:03 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:08:21 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 void initArgStruct(t_arg *argStruct);
 void initFormatStruct(t_format *format);
 void initInfoStruct(t_info *info);
+t_ls	 *mallocLs(t_format *format);
+t_subdir *mallocSubdir(void);
 
 /*#############################################################################
 # Debug functions
@@ -75,9 +77,9 @@ int exploreDirectories(t_data *data, t_dll *list, char *path);
 # RetrieveInfo functions
 #############################################################################*/
 
-// int     retrieveAllInfo(t_ls_node *node, t_arg arg, char *path, struct dirent
-// *entry, t_format *format);
 int retrieveAllInfo(t_data *data, t_ls *node);
+char	 *extractTimeModified(struct stat info);
+void	  extractPerm(char *perm, int mode);
 
 /*#############################################################################
 # FormatOutput functions
@@ -107,20 +109,21 @@ void  init_colors(t_data *data);
 char *get_color_from_env(t_ls *ls, t_data *data);
 
 /*#############################################################################
+# Sort functions
+#############################################################################*/
+
+int		  compareName(void *a, void *b);
+int		  compareTime(void *a, void *b);
+int		  compareSubdirName(void *a, void *b);
+int		  compareSize(void *a, void *b);
+
+/*#############################################################################
 # Utils functions
 #############################################################################*/
 
 void	  usage(char invalidOption);
 void	  help(void);
-char	 *extractTimeModified(struct stat info);
-void	  extractPerm(char *perm, int mode);
-int		  compareName(void *a, void *b);
-int		  compareTime(void *a, void *b);
-int		  compareSubdirName(void *a, void *b);
-int		  compareSize(void *a, void *b);
 int		  calculateTotalBlocks(t_dll *list);
-t_ls	 *mallocLs(t_format *format);
-t_subdir *mallocSubdir(void);
 char	 *get_color_for_file(t_ls *ls);
 char	 *int_to_str_sep(t_ls *node, char *num);
 char     *string_to_lower(char *str);

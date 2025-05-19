@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:01:01 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:06:38 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,82 +30,6 @@ void help(void)
 	ft_printf(1, EXIT);
 }
 
-char *extractTimeModified(struct stat info)
-{
-	time_t now = time(NULL);
-	time_t mod_sec = info.st_mtime;
-	time_t six_months = 15552000;
-	char  *full_time_str = ctime(&mod_sec);
-
-	if (!full_time_str) {
-		perror("ctime");
-		return NULL;
-	}
-
-	char *time_str = malloc(13 * sizeof(char));
-	if (!time_str)
-		return NULL;
-	ft_memset(time_str, 0, 13);
-
-	if ((now - mod_sec > six_months) || (mod_sec > now)) {
-		ft_memcpy(time_str, &full_time_str[4], 7);
-		ft_memcpy(time_str + 7, &full_time_str[19], 5);
-	} else {
-		ft_memcpy(time_str, &full_time_str[4], 12);
-		time_str[12] = '\0';
-	}
-
-	return time_str;
-}
-
-void extractPerm(char *perm, int mode)
-{
-	perm[0] = (mode & S_IRUSR) ? 'r' : '-';
-	perm[1] = (mode & S_IWUSR) ? 'w' : '-';
-	perm[2] = (mode & S_IXUSR) ? 'x' : '-';
-	perm[3] = (mode & S_IRGRP) ? 'r' : '-';
-	perm[4] = (mode & S_IWGRP) ? 'w' : '-';
-	perm[5] = (mode & S_IXGRP) ? 'x' : '-';
-	perm[6] = (mode & S_IROTH) ? 'r' : '-';
-	perm[7] = (mode & S_IWOTH) ? 'w' : '-';
-	perm[8] = (mode & S_IXOTH) ? 'x' : '-';
-	perm[9] = '\0';
-}
-
-int compareName(void *a, void *b)
-{
-	t_ls *node_a = a;
-	t_ls *node_b = b;
-	return ft_strncmp(node_a->lower_name, node_b->lower_name, INT_MAX);
-}
-
-int compareTime(void *a, void *b)
-{
-	t_ls *node_a = a;
-	t_ls *node_b = b;
-	int	  cmp =
-		ft_strncmp(node_a->info->last_mod, node_b->info->last_mod, INT_MAX);
-	if (cmp == 0)
-		return compareName(a, b);
-	return -ft_strncmp(node_a->info->last_mod, node_b->info->last_mod, INT_MAX);
-}
-
-int compareSubdirName(void *a, void *b)
-{
-	t_subdir *node_a = a;
-	t_subdir *node_b = b;
-	return ft_strncmp(node_a->name, node_b->name, INT_MAX);
-}
-
-int compareSize(void *a, void *b)
-{
-	t_ls *node_a = a;
-	t_ls *node_b = b;
-	if (node_a->info->size_bytes == node_b->info->size_bytes)
-		return compareName(a, b);
-	return node_b->info->size_bytes - node_a->info->size_bytes;
-}
-
 int calculateTotalBlocks(t_dll *list)
 {
 	int		total_blocks = 0;
@@ -118,32 +42,6 @@ int calculateTotalBlocks(t_dll *list)
 	}
 
 	return total_blocks;
-}
-
-t_ls *mallocLs(t_format *format)
-{
-	t_ls *node;
-	node = malloc(sizeof(t_ls));
-	if (!node)
-		return NULL;
-	ft_memset(node, 0, sizeof(t_ls));
-
-	node->subdir = NULL;
-	node->info = NULL;
-	node->format_info = format;
-	node->xattr_list = NULL;
-	return node;
-}
-
-t_subdir *mallocSubdir(void)
-{
-	t_subdir *subdir = malloc(sizeof(t_subdir));
-	if (!subdir)
-		return NULL;
-	subdir->name = NULL;
-	subdir->path = NULL;
-	subdir->subdir_list = NULL;
-	return subdir;
 }
 
 char *get_color_for_file(t_ls *ls)
