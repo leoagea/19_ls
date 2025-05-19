@@ -6,14 +6,8 @@ Sorting algo:
 
 Test file type: n, network files; c, character special file; b, block special file.
 
-./ft_ls without argument different outputs
-just check color when ./ft_ls -s
-check -t with and without -l option
 check -f options outputs sorting
 
-Fix: -S flag on mac
+Outputs column false because of its calibration on max_len_name
 
-LEAKS
-	--recursive -R
-
--S doesnt work on linux
+Test with ./ft_ls -R ~ LEAKS
