@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:06:09 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:06:27 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 17:11:25 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,15 @@ int compareTime(void *a, void *b)
 {
 	t_ls *node_a = a;
 	t_ls *node_b = b;
-	int	  cmp =
-		ft_strncmp(node_a->info->last_mod, node_b->info->last_mod, INT_MAX);
-	if (cmp == 0)
-		return compareName(a, b);
-	return -ft_strncmp(node_a->info->last_mod, node_b->info->last_mod, INT_MAX);
+	
+    if (node_a->info->last_mod_time > node_b->info->last_mod_time){
+        return -1;
+    }
+    if (node_a->info->last_mod_time < node_b->info->last_mod_time){
+        return 1;
+    }
+        
+	return -compareName(a, b);
 }
 
 int compareSubdirName(void *a, void *b)

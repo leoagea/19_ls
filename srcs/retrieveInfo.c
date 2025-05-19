@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:06:47 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:56:04 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void get_file_xattr(t_ls *node, const char *path)
 
 	free(attr_list);
 }
+
 static void retrieveMajorMinor(t_info **ls, struct stat info)
 {
 	if (!ls || !*ls)
@@ -193,6 +194,8 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 		node->name = tmp;
 	}
 
+	info_tmp->last_mod_time = info.st_mtime;
+	
 	extractPerm(info_tmp->perm, info.st_mode);
 
 	if (data->arg.long_format) {
