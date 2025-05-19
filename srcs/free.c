@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 21:12:20 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:49:37 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void freeArgStruct(t_arg *argList)
 
 void freeLsNode(void *content)
 {
+	// printf("free ls node\n");
 	t_ls *node = (t_ls *)content;
 
 	if (node->info) {
@@ -61,12 +62,22 @@ void freeLsNode(void *content)
 	if (node->relative_path) {
 		freeStr(&node->relative_path);
 	}
+	// if (node->format_info){
+	// 	freeFormatStruct(&node->format_info);
+	// }
 	if (node->subdir && node->subdir->head) {
 		printf("free subdir\n");
+		t_node *sub = node->subdir->head;
+		t_ls *tmp = sub->content;
+		if (tmp->format_info) {
+			// printf("free format subdir\n");
+			freeFormatStruct(&tmp->format_info);
+		}
 		dll_free(node->subdir, freeLsNode);
 		free(node->subdir);
 		node->subdir = NULL;
 	}
+	free(node);
 }
 
 void freeStr(char **str)
@@ -90,10 +101,15 @@ void freeList(void *content)
 	printf("free list\n");
 	t_dll  *list = (t_dll *)content;
 	t_node *node = list->head;
+	t_ls *ls = node->content;
+	if (ls->format_info){
+		printf("free format\n");
+		freeFormatStruct(&ls->format_info);
+	}
 	while (node != NULL) {
 		t_node *next = node->next;
 		freeLsNode(node->content);
-		free(node->content);
+		// free(node->content);
 		free(node);
 		node = next;
 	}
@@ -142,4 +158,16 @@ void freeAll(t_data *data)
 	freeArgStruct(&data->arg);
 	freeColorMap(&data->colors);
 	dll_free(data->list, freeList);
+}
+
+void freeSubdir(void *content)
+{
+	t_subdir *subdir = (t_subdir *)content;
+	if (subdir->name)
+		freeStr(&subdir->name);
+	if (subdir->path)
+		freeStr(&subdir->path);
+	// if (subdir->subdir_list && subdir->subdir_list->head)
+	// 	dll_free(subdir->subdir_list, freeLsNode);
+	free(subdir);
 }

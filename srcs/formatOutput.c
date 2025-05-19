@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formatOutput.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 22:47:23 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:18:34 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void getFormatLen(t_ls *node, t_format *format)
 	format->max_link = MAX(format->max_link, node->info->nlink_len);
 	format->max_size_bytes =
 		MAX(format->max_size_bytes, node->info->size_bytes_len);
+	// printf("name len: %zu\n", node->info->name_len);
 	format->max_name = MAX(format->max_name, node->info->name_len);
 	format->max_block_size =
 		MAX(format->max_block_size, node->info->block_size_len);

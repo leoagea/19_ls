@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   consoleOutput.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/14 00:31:25 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:35:20 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,16 +114,24 @@ static void print_column(t_data *data, t_dll *list)
 		return;
 
 	t_ls *ls = node->content;
-	if (!ls->format_info)
+	if (!ls || !ls->format_info) {
+		printf("Warning: Uninitialized format_info\n");
 		return;
+	}
 
 	int max_name = ls->format_info->max_name;
 	if (max_name == 0)
 		max_name = 1;
+	
+	// printf("ws_col: %d\n", data->w.ws_col);
 	int nb_col = data->w.ws_col / max_name;
 	if (nb_col == 0)
 		nb_col = 1;
 
+	if (list->size == 0) {
+		printf("Warning: Empty list\n");
+		return;
+	}
 	size_t rows = (list->size + nb_col - 1) / nb_col; // Round up division
 
 	for (size_t i = 0; i < rows; i++) {
@@ -220,6 +228,7 @@ void print_recursive(t_data *data, t_dll *list)
 	// Handle subdirectories recursively
 	handle_subdirs(data, printsubdir);
 
+	dll_free(printsubdir, freeSubdir);
 	free(printsubdir);
 }
 
@@ -275,5 +284,13 @@ void output(t_data *data, t_dll *list)
 		else
 			print_column(data, list);
 	}
+
+	// t_node *node = list->head;
+	// t_ls *ls = node->content;
+	// if (ls->format_info) {
+	// 	printf("free format info\n");
+	// 	freeFormatStruct(&ls->format_info);
+	// 	ls->format_info = NULL;
+	// }
 	// print_column(data, list);
 }

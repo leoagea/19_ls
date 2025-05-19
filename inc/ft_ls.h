@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 22:46:06 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 14:44:34 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,6 @@ void freeFormatStruct(t_format **format);
 void freeXattr(void *content);
 void freeColorMap(t_color_map *colors);
 void freeAll(t_data *data);
+void freeSubdir(void *content);
 
 #endif

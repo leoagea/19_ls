@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/12 17:46:21 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:18:18 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ void printFormatStruct(t_format *format)
 	ft_printf(1, "max_group: %d\n", format->max_group);
 	ft_printf(1, "max_link: %d\n", format->max_link);
 	ft_printf(1, "max_size_bytes: %d\n", format->max_size_bytes);
+	ft_printf(1, "max_name: %d\n", format->max_name);
+	ft_printf(1, "max_block_size: %d\n", format->max_block_size);
+	ft_printf(1, "max_uid: %d\n", format->max_uid);
+	ft_printf(1, "max_gid: %d\n", format->max_gid);
 }
 
 void printInfoStruct(t_info *info)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   explore.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 21:16:56 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 15:39:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,8 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		return EXIT_FAILURE;
 	}
 
-	// t_format *format = malloc(sizeof(t_format));
-	t_format format;
-	initFormatStruct(&format);
+	t_format *format = malloc(sizeof(t_format));
+	initFormatStruct(format);
 	struct dirent *entry;
 	while ((entry = readdir(dir)) != NULL) {
 		// if ((ft_strncmp(".", entry->d_name, INT_MAX) == 0 ||
@@ -143,7 +142,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		if (entry->d_name[0] == '.' && !data->arg.all)
 			continue;
 
-		t_ls *node = mallocLs(&format);
+		t_ls *node = mallocLs(format);
 		if (!node) {
 			closedir(dir);
 			return EXIT_FAILURE;
@@ -170,7 +169,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 	t_node *node = list->head;
 	// t_ls *tmp = node->content;
-	// printFormatStruct(node->content->format_info); // For debugging
+	// printFormatStruct(tmp->format_info); // For debugging
 	while (node != NULL) {
 		if (node->content == NULL) {
 			printf("node content is null\n");
