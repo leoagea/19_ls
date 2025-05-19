@@ -168,7 +168,7 @@ static void retrieveMajorMinor(t_info **ls, struct stat info)
 	freeStr(&minor_str);
 }
 
-int retrieveAllInfo(t_data *data, t_ls *node)
+int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 {
 	t_info *info_tmp = malloc(sizeof(t_info));
 	initInfoStruct(info_tmp);
@@ -248,7 +248,7 @@ int retrieveAllInfo(t_data *data, t_ls *node)
 	if (node->is_symbolic)
 		handleSymlink(node);
 
-	getFormatLen(node, node->format_info);
+	getFormatLen(node, format);
 
 	return EXIT_SUCCESS;
 }

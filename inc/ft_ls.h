@@ -41,7 +41,7 @@
 void initArgStruct(t_arg *argStruct);
 void initFormatStruct(t_format *format);
 void initInfoStruct(t_info *info);
-t_ls	 *mallocLs(t_format *format);
+t_ls	 *mallocLs();
 t_subdir *mallocSubdir(void);
 
 /*#############################################################################
@@ -77,7 +77,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path);
 # RetrieveInfo functions
 #############################################################################*/
 
-int retrieveAllInfo(t_data *data, t_ls *node);
+int retrieveAllInfo(t_data *data, t_ls *node, t_format **format);
 char	 *extractTimeModified(struct stat info);
 void	  extractPerm(char *perm, int mode);
 
@@ -88,10 +88,10 @@ void	  extractPerm(char *perm, int mode);
 void appendStr(char *str, char *append);
 void appendChar(char *str, char c);
 void appendInt(char *str, int num);
-void getFormatLen(t_ls *node, t_format *format);
+void getFormatLen(t_ls *node, t_format **format);
 void formatLongFormat(t_arg arg, t_ls *node, t_format *format);
-void formatOther(t_arg arg, t_ls *node);
-void formatOutput(t_ls *node, t_arg arg);
+void formatOther(t_arg arg, t_ls *node, t_format *format);
+void formatOutput(t_format *format, t_ls *node, t_arg arg);
 
 /*#############################################################################
 # ConsoleOutput functions
@@ -127,6 +127,7 @@ int		  calculateTotalBlocks(t_dll *list);
 char	 *get_color_for_file(t_ls *ls);
 char	 *int_to_str_sep(t_ls *node, char *num);
 char     *string_to_lower(char *str);
+int		  get_max_len(t_dll *list);
 
 /*#############################################################################
 # Free functions

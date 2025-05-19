@@ -67,13 +67,13 @@ void freeLsNode(void *content)
 	}
 	if (node->subdir) {
 		if (node->subdir->head) {
-			t_node *sub = node->subdir->head;
-			t_ls *tmp = sub->content;
+			// t_node *sub = node->subdir->head;
+			// t_ls *tmp = sub->content;
 			// printf("free subdir %s\n", tmp->relative_path);
-			if (tmp->format_info) {
-				// printf("free format subdir\n");
-				freeFormatStruct(&tmp->format_info);
-			}
+			// if (tmp->format_info) {
+			// 	// printf("free format subdir\n");
+			// 	freeFormatStruct(&tmp->format_info);
+			// }
 			dll_free(node->subdir, freeLsNode);
 			free(node->subdir);
 			node->subdir = NULL;
@@ -105,11 +105,11 @@ void freeList(void *content)
 	// printf("free list\n");
 	t_dll  *list = (t_dll *)content;
 	t_node *node = list->head;
-	t_ls *ls = node->content;
-	if (ls->format_info){
-		// printf("free format\n");
-		freeFormatStruct(&ls->format_info);
-	}
+	// t_ls *ls = node->content;
+	// if (ls->format_info){
+	// 	// printf("free format\n");
+	// 	freeFormatStruct(&ls->format_info);
+	// }
 	while (node != NULL) {
 		t_node *next = node->next;
 		freeLsNode(node->content);

@@ -77,7 +77,7 @@ void debug_printNodeLs(t_ls *node)
 	ft_printf(1, "directory: %b\n", node->is_dir);
 	ft_printf(1, "format: %s\n", node->format);
 	debug_printInfoStruct(node->info);
-	debug_printFormatStruct(node->format_info);
+	// debug_printFormatStruct(node->format_info);
 	if (node->subdir && node->subdir->head != NULL) {
 		ft_printf(1, "subdir: \n");
 		t_node *sub = node->subdir->head;

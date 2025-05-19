@@ -35,7 +35,7 @@ void initInfoStruct(t_info *info)
 	info->last_mod = NULL;
 }
 
-t_ls *mallocLs(t_format *format)
+t_ls *mallocLs(void)
 {
 	t_ls *node;
 	node = malloc(sizeof(t_ls));
@@ -45,7 +45,6 @@ t_ls *mallocLs(t_format *format)
 
 	node->subdir = NULL;
 	node->info = NULL;
-	node->format_info = format;
 	node->xattr_list = NULL;
 	return node;
 }

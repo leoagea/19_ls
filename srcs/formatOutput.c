@@ -40,19 +40,19 @@ void appendInt(char *str, int num)
 	free(tmp);
 }
 
-void getFormatLen(t_ls *node, t_format *format)
+void getFormatLen(t_ls *node, t_format **format)
 {
-	format->max_group = MAX(format->max_group, node->info->group_name_len);
-	format->max_user = MAX(format->max_user, node->info->user_name_len);
-	format->max_link = MAX(format->max_link, node->info->nlink_len);
-	format->max_size_bytes =
-		MAX(format->max_size_bytes, node->info->size_bytes_len);
+	(*format)->max_group = MAX((*format)->max_group, node->info->group_name_len);
+	(*format)->max_user = MAX((*format)->max_user, node->info->user_name_len);
+	(*format)->max_link = MAX((*format)->max_link, node->info->nlink_len);
+	(*format)->max_size_bytes =
+		MAX((*format)->max_size_bytes, node->info->size_bytes_len);
 	// printf("name len: %zu\n", node->info->name_len);
-	format->max_name = MAX(format->max_name, node->info->name_len);
-	format->max_block_size =
-		MAX(format->max_block_size, node->info->block_size_len);
-	format->max_uid = MAX(format->max_uid, node->info->user_id_len);
-	format->max_gid = MAX(format->max_gid, node->info->group_id_len);
+	(*format)->max_name = MAX((*format)->max_name, node->info->name_len);
+	(*format)->max_block_size =
+		MAX((*format)->max_block_size, node->info->block_size_len);
+	(*format)->max_uid = MAX((*format)->max_uid, node->info->user_id_len);
+	(*format)->max_gid = MAX((*format)->max_gid, node->info->group_id_len);
 }
 
 static void fillInSpace(char *str, int max_len, int len)
@@ -156,22 +156,22 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	// }
 }
 
-void formatOther(t_arg arg, t_ls *node)
+void formatOther(t_arg arg, t_ls *node, t_format *format)
 {
 	if (arg.block_size) {
-		fillInSpace(node->format_block, node->format_info->max_block_size,
+		fillInSpace(node->format_block, format->max_block_size,
 					node->info->block_size_len);
 		appendInt(node->format_block, node->info->block_size);
 		appendChar(node->format_block, ' ');
 	}
 	appendStr(node->format, node->name);
 
-	int space = node->format_info->max_name - node->info->name_len + 1;
+	int space = format->max_name - node->info->name_len + 1;
 	for (int i = 0; i < space; i++)
 		appendChar(node->format, ' ');
 }
 
-void formatOutput(t_ls *node, t_arg arg)
+void formatOutput(t_format *format, t_ls *node, t_arg arg)
 {
 	if (!node) {
 		printf("Error: Null node passed to formatOutput\n");
@@ -179,18 +179,18 @@ void formatOutput(t_ls *node, t_arg arg)
 	}
 
 	if (arg.long_format) {
-		// debug_printFormatStruct(node->format_info);
-		if (!node->format_info) {
-			printf("Error: Null format_info in node passed to "
-				   "formatOutput\n");
-			return;
-		}
+		// // debug_printFormatStruct(node->format_info);
+		// if (!node->format_info) {
+		// 	printf("Error: Null format_info in node passed to "
+		// 		   "formatOutput\n");
+		// 	return;
+		// }
 		if (!node->info) {
 			printf("Error: Null info in node passed to "
 				   "formatOutput\n");
 			return;
 		}
-		formatLongFormat(arg, node, node->format_info);
+		formatLongFormat(arg, node, format);
 	} else
-		formatOther(arg, node);
+		formatOther(arg, node, format);
 }

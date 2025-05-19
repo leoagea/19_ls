@@ -115,3 +115,18 @@ char *string_to_lower(char *str)
 	
 	return lower_str;
 }
+
+int get_max_len(t_dll *list)
+{
+	size_t max_len = 0;
+	t_node *node = list->head;
+
+	while (node != NULL) {
+		t_ls *ls = node->content;
+		if (ls && ls->info && ls->info->name_len > max_len) {
+			max_len = ls->info->name_len;
+		}
+		node = node->next;
+	}
+	return max_len;
+}

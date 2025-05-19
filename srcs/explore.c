@@ -106,11 +106,11 @@ int handleSymlink(t_ls *node)
 	return EXIT_SUCCESS;
 }
 
-static int processEntry(t_data *data, t_ls *node)
+static int processEntry(t_data *data, t_ls *node, t_format **format)
 {
 	// struct stat path_stat;
 	if (node->is_symbolic)
-		return retrieveAllInfo(data, node);
+		return retrieveAllInfo(data, node, format);
 
 	if (node->is_dir && data->arg.recurisve &&
 		(ft_strncmp(".", node->name, INT_MAX) != 0 &&
@@ -128,7 +128,7 @@ static int processEntry(t_data *data, t_ls *node)
 		}
 	}
 
-	if (retrieveAllInfo(data, node) == EXIT_FAILURE) {
+	if (retrieveAllInfo(data, node, format) == EXIT_FAILURE) {
 		freeLsNode(node);
 		return EXIT_FAILURE;
 	}
@@ -154,7 +154,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		if (entry->d_name[0] == '.' && !data->arg.all)
 			continue;
 
-		t_ls *node = mallocLs(format);
+		t_ls *node = mallocLs();
 		if (!node) {
 			// freeFormatStruct(&format);
 			closedir(dir);
@@ -169,7 +169,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 		dll_insert_tail(node, list);
 
-		if (processEntry(data, node) == EXIT_FAILURE) {
+		if (processEntry(data, node, &format) == EXIT_FAILURE) {
 			printf("processEntry failed\n");
 			// freeFormatStruct(&format);
 			closedir(dir);
@@ -200,8 +200,11 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 		t_ls *ls = node->content;
 		// debug_printNodeLs(ls);
-		formatOutput(ls, data->arg);
+		formatOutput(format, ls, data->arg);
 		node = node->next;
+	}
+	if (format) {
+		freeFormatStruct(&format);
 	}
 	
 	return EXIT_SUCCESS;

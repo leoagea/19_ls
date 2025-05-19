@@ -119,7 +119,6 @@ typedef struct s_ls {
 	char  format_block[32];
 
 	t_info	 *info;
-	t_format *format_info;
 	t_dll	 *subdir;
 	t_dll	 *xattr_list;
 } t_ls;

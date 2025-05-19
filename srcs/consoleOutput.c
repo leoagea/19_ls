@@ -114,12 +114,12 @@ static void print_column(t_data *data, t_dll *list)
 		return;
 
 	t_ls *ls = node->content;
-	if (!ls || !ls->format_info) {
+	if (!ls) {
 		printf("Warning: Uninitialized format_info\n");
 		return;
 	}
 
-	int max_name = ls->format_info->max_name;
+	int max_name = (int)get_max_len(list);
 	if (max_name == 0)
 		max_name = 1;
 	
