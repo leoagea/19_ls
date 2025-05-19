@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:47:12 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 17:13:53 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int main(int ac, char **av)
 	dll_init(&list);
 	data.list = &list;
 
-	int parse_result = parseArg(ac, av, &data.arg);
+	int parse_result = parseArg(ac, av, &data);
 	if (parse_result == EXIT_FAILURE)
 		return EXIT_FAILURE;
 	if (parse_result == EXIT_CLEAN)

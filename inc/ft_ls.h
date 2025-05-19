@@ -6,7 +6,7 @@
 /*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:47:57 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 17:14:45 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void debug_print_terminal_size(struct winsize *w);
 # ParseArg functions
 #############################################################################*/
 
-int parseArg(int ac, char **av, t_arg *argList);
+int parseArg(int ac, char **av, t_data *data);
 
 /*#############################################################################
 # Explore functions

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseArg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
+/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/13 23:18:33 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/19 17:14:33 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ static int getAllPath(int ac, char **av, t_arg *argList, int i)
 	return EXIT_SUCCESS;
 }
 
-int parseArg(int ac, char **av, t_arg *argList)
+int parseArg(int ac, char **av, t_data *data)
 {
+	t_arg *argList = &data->arg;
 	int i = 0;
 
 	// Parse all options
@@ -103,6 +104,7 @@ int parseArg(int ac, char **av, t_arg *argList)
 				argList->sort_time = false;
 				argList->sort_size = false;
 				argList->reverse = false;
+				data->use_color = false;
 				break;
 
 			case 'g':
