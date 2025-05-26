@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parseArg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 17:14:33 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 15:37:06 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,10 @@ int parseArg(int ac, char **av, t_data *data)
 
 			case 'm':
 				argList->horizontal = true;
+				break;
+			
+			case 'u':
+				argList->access_time = true;
 				break;
 
 			default:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 17:14:45 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 15:02:01 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int exploreDirectories(t_data *data, t_dll *list, char *path);
 #############################################################################*/
 
 int retrieveAllInfo(t_data *data, t_ls *node, t_format **format);
-char	 *extractTimeModified(struct stat info);
 void	  extractPerm(char *perm, int mode);
 
 /*#############################################################################

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:05:42 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 15:07:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ void initInfoStruct(t_info *info)
 	ft_memset(info->perm, 0, sizeof(info->perm));
 	ft_memset(info->sym_name, 0, sizeof(info->sym_name));
 	ft_memset(info->major, 0, sizeof(info->major));
+	ft_memset(info->time, 0, sizeof(info->time));
 	info->group_name = NULL;
 	info->user_name = NULL;
-	info->last_mod = NULL;
+	// info->last_mod = NULL;
 }
 
 t_ls *mallocLs(void)

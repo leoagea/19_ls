@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:47:57 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 15:06:22 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void debug_printInfoStruct(t_info *info)
 	ft_printf(1, "user_name: %s\n", info->user_name);
 	ft_printf(1, "group_name: %s\n", info->group_name);
 	ft_printf(1, "perm: %s\n", info->perm);
-	ft_printf(1, "last_mod: %s\n", info->last_mod);
+	ft_printf(1, "time: %s\n", info->time);
 	ft_printf(1, "nlink: %d\n", info->nlink);
 	ft_printf(1, "size_bytes: %d\n", info->size_bytes);
 }

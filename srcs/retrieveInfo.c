@@ -3,30 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   retrieveInfo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:56:04 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 15:34:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
-char *extractTimeModified(struct stat info)
+static void extractTime(t_arg arg, struct stat info, char *str)
 {
 	time_t now = time(NULL);
-	time_t mod_sec = info.st_mtime;
+	time_t mod_sec = (arg.access_time) ? info.st_atime : info.st_mtime;
 	time_t six_months = 15552000;
 	char  *full_time_str = ctime(&mod_sec);
 
 	if (!full_time_str) {
 		perror("ctime");
-		return NULL;
+		return ;
 	}
 
-	char *time_str = malloc(13 * sizeof(char));
-	if (!time_str)
-		return NULL;
+	// char *time_str = malloc(13 * sizeof(char));
+	// if (!time_str)
+	// 	return NULL;
+	char *time_str = str;
 	ft_memset(time_str, 0, 13);
 
 	if ((now - mod_sec > six_months) || (mod_sec > now)) {
@@ -36,8 +37,6 @@ char *extractTimeModified(struct stat info)
 		ft_memcpy(time_str, &full_time_str[4], 12);
 		time_str[12] = '\0';
 	}
-
-	return time_str;
 }
 
 void extractPerm(char *perm, int mode)
@@ -194,7 +193,10 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 		node->name = tmp;
 	}
 
-	info_tmp->last_mod_time = info.st_mtime;
+	info_tmp->time_info = (data->arg.access_time) ? info.st_atime : info.st_mtime;
+	struct timespec time_spec = (data->arg.access_time) ? info.st_atim : info.st_mtim;
+	info_tmp->time_nsec = time_spec.tv_nsec; // For nanosecond precision
+	extractTime(data->arg, info, info_tmp->time);
 	
 	extractPerm(info_tmp->perm, info.st_mode);
 
@@ -220,8 +222,6 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 
 		info_tmp->user_name_len = ft_strlen(info_tmp->user_name);
 		info_tmp->group_name_len = ft_strlen(info_tmp->group_name);
-
-		info_tmp->last_mod = extractTimeModified(info);
 
 		if (node->type == BLKFILE || node->type == CHARFILE) {
 			retrieveMajorMinor(&info_tmp, info);

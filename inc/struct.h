@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 17:40:00 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 15:33:53 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_arg {
 	bool oneline;			  //-1
 	bool comma;				  //-,
 	bool horizontal;		  //-m
+	bool access_time;		  //-u
 
 	char  *path;
 	char **all_path;
@@ -90,12 +91,13 @@ typedef struct s_info {
 	int	   user_id;
 	char  *user_name;
 	char   perm[11];
-	char  *last_mod;
+	char   time[13];
 	int	   nlink;
 	int	   block_size;
 	char   major[33];
 	size_t size_thousands;
-	time_t last_mod_time;
+	time_t time_info;
+	long time_nsec;
 
 	// Len Info
 	size_t nlink_len;

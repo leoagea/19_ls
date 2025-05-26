@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 19:07:16 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 15:07:34 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void freeInfoStruct(t_info *info)
 		freeStr(&info->group_name);
 	if (info->user_name)
 		freeStr(&info->user_name);
-	if (info->last_mod)
-		freeStr(&info->last_mod);
+	// if (info->time)
+	// 	freeStr(&info->time);
 }
 
 void freeArgStruct(t_arg *argList)

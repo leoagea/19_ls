@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   consoleOutput.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 17:40:33 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 15:42:32 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,9 @@ void output(t_data *data, t_dll *list)
 		printf("null output\n");
 		return;
 	}
-	if (data->arg.sort_time)
+	if (data->arg.sort_time || (data->arg.access_time && !data->arg.long_format))
+		dll_bubble_sort(list->head, list->tail, compareTime);
+	else if (data->arg.access_time && data->arg.sort_time && data->arg.long_format)
 		dll_bubble_sort(list->head, list->tail, compareTime);
 	else if (data->arg.sort_size)
 		dll_bubble_sort(list->head, list->tail, compareSize);
