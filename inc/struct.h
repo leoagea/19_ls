@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 15:33:53 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:15:36 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_data {
 	t_color_map	   colors;
 	bool		   use_color;
 	bool		   is_tty;
+	int 		   return_val;
 } t_data;
 
 #endif

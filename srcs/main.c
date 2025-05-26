@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:22:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 17:21:10 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:19:31 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int main(int ac, char **av)
 {
 	t_data data;
+	data.return_val = EXIT_SUCCESS;
 	initArgStruct(&data.arg);
 	data.is_tty = isatty(STDOUT_FILENO);
 	if (!data.is_tty)
@@ -30,14 +31,14 @@ int main(int ac, char **av)
 
 	int parse_result = parseArg(ac, av, &data);
 	if (parse_result == EXIT_FAILURE)
-		return EXIT_FAILURE;
+		return (freeAll(&data), EXIT_FAILURE);
 	if (parse_result == EXIT_CLEAN)
-		return EXIT_SUCCESS;
+		return (freeAll(&data), EXIT_SUCCESS);
 
 	// debug_print_argList(data.arg);
 	explore_loop(&data);
 	freeAll(&data);
 	// system("leaks ft_ls");
 
-	return EXIT_SUCCESS;
+	return data.return_val;
 }

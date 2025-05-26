@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 14:48:13 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:15:59 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int explore_loop(t_data *data)
 		dll_insert_tail(list, data->list);
 		if (exploreDirectories(data, data->list->tail->content,
 							   data->arg.all_path[i])) {
-			printf("exploreDirectories failed\n");
+			// printf("exploreDirectories failed\n");
 			return EXIT_FAILURE;
 		}
 		i++;
@@ -140,7 +140,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 	DIR *dir = opendir(path);
 	if (!dir) {
 		ft_printf(2, "ls: %s: %s\n", path, strerror(errno));
-		return EXIT_FAILURE;
+		return (data->return_val = 2, EXIT_FAILURE);
 	}
 
 	t_format *format = malloc(sizeof(t_format));

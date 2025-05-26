@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 22:54:22 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/15 21:40:12 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:17:56 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
 #define ENV_LSCOLORS "LS_COLORS"
 #define TOTAL_BLOCKS "total"
 #define DEFAULT_PATH "."
-#define EXIT_CLEAN	 2
+#define EXIT_ERROR	 2
+#define EXIT_CLEAN	 3
 
 /*#############################################################################
 # Text
