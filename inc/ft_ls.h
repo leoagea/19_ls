@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 16:15:16 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:47:02 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int parseArg(int ac, char **av, t_data *data);
 // int     explore_loop(t_arg arglist);
 int handleSymlink(t_ls *node);
 int explore_loop(t_data *data);
+int processEntry(t_data *data, t_ls *node, t_format **format);
 int exploreDirectories(t_data *data, t_dll *list, char *path);
 // int     exploreDirectories(t_arg argList, char *path);
 
@@ -97,6 +98,7 @@ void formatOutput(t_format *format, t_ls *node, t_arg arg);
 #############################################################################*/
 
 // void    output(t_dll *list, t_arg arg);
+void print_format(t_data *data, t_ls *ls);
 void output(t_data *data, t_dll *list);
 void print_recursive(t_data *data, t_dll *list);
 

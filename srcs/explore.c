@@ -6,11 +6,63 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 16:15:59 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:58:39 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
+
+static int directory(t_data *data)
+{
+	int i = 0;
+	t_format *format = malloc(sizeof(t_format));
+	initFormatStruct(format);
+	while (data->arg.all_path[i] != NULL) {
+		t_ls *node = mallocLs();
+		if (!node) {
+			return EXIT_FAILURE;
+		}
+		node->name = ft_strdup(data->arg.all_path[i]);
+		node->relative_path = ft_strdup(data->arg.all_path[i]);
+		node->is_dir = true;
+		node->type = DIRECTORY;
+		dll_insert_tail(node, data->list);
+		if (processEntry(data, node, &format) == EXIT_FAILURE) {
+			freeLsNode(node);
+			dll_free(data->list, freeLsNode);
+			return EXIT_FAILURE;
+		}
+		i++;
+	}
+
+	{
+		t_node *node = data->list->head;
+		while (node != NULL) {
+			if (node->content == NULL) {
+				return EXIT_FAILURE;
+			}
+	
+			t_ls *ls = node->content;
+			formatOutput(format, ls, data->arg);
+			node = node->next;
+		}
+	}
+	
+	if (format) {
+		freeFormatStruct(&format);
+	}
+	
+	// t_node *node = data->list->head;
+	// while (node != NULL) {
+	// 	t_ls *ls = node->content;
+		output(data, data->list);
+	// 	node = node->next;
+	// 	if (node == NULL)
+	// 		break;
+	// }
+	dll_free(data->list, freeLsNode);
+	return EXIT_SUCCESS;
+}
 
 int explore_loop(t_data *data)
 {
@@ -18,9 +70,13 @@ int explore_loop(t_data *data)
 
 	ft_bubble_sort_string_arr(data->arg.all_path,
 							  ft_arr_len((void **)data->arg.all_path));
+	if (data->arg.directory)
+		return directory(data);
+		
 	if (data->arg.reverse) {
 		ft_arr_revert((void **)data->arg.all_path);
 	}
+
 
 	while (data->arg.all_path[i] != NULL) {
 		t_dll *list = malloc(sizeof(t_dll));
@@ -106,7 +162,7 @@ int handleSymlink(t_ls *node)
 	return EXIT_SUCCESS;
 }
 
-static int processEntry(t_data *data, t_ls *node, t_format **format)
+int processEntry(t_data *data, t_ls *node, t_format **format)
 {
 	// struct stat path_stat;
 	if (node->is_symbolic)

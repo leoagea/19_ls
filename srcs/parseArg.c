@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 15:37:06 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:30:56 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,10 @@ int parseArg(int ac, char **av, t_data *data)
 				argList->access_time = true;
 				break;
 
+			case 'd':
+				argList->directory = true;
+				break;
+				
 			default:
 				usage(option);
 				return EXIT_FAILURE;

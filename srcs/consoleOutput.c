@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 16:25:38 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:56:39 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void print_xattr(t_dll *xattr_list)
 	xattr_list = NULL;
 }
 
-static void print_format(t_data *data, t_ls *ls)
+void print_format(t_data *data, t_ls *ls)
 {
 	char *color = data->is_tty ? get_color_from_env(ls, data) : "";
 	char *reset = data->is_tty ? COLOR_RESET : "";
@@ -263,7 +263,7 @@ static void print_direct(t_data *data, t_dll *list)
 		return;
 	}
 
-	if (data->arg.long_format)
+	if (data->arg.long_format && !data->arg.directory)
 		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
 
 	t_node *node = list->head;

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 15:34:35 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 16:49:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 	if (node->is_symbolic ? lstat(node->relative_path, &info)
 						  : stat(node->relative_path, &info) == -1)
 		return (printf("stat failed\n"), EXIT_FAILURE);
+		
 	info_tmp->block_size = CALC_BLOCKS((int)info.st_blocks);
 
 	info_tmp->block_size_len = ft_intlen(info_tmp->block_size);
