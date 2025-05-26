@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   explore.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 19:03:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 14:48:13 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ int explore_loop(t_data *data)
 
 	// int tmp = i;
 	i = 0;
+	size_t len = dll_size(data->list);
 	t_node *node = data->list->head;
 	while (node != NULL) {
 		t_dll *dll = node->content;
-		// if (tmp != 1)
-		// printf("Iteration\n");
-		ft_printf(1, "%s:\n", data->arg.all_path[i]);
+		if (len > 1)
+			ft_printf(1, "%s:\n", data->arg.all_path[i]);
 		output(data, dll);
 		node = node->next;
 		if (node == NULL)
