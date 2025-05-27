@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 16:58:39 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/26 17:14:22 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,8 @@ static int directory(t_data *data)
 	if (format) {
 		freeFormatStruct(&format);
 	}
-	
-	// t_node *node = data->list->head;
-	// while (node != NULL) {
-	// 	t_ls *ls = node->content;
-		output(data, data->list);
-	// 	node = node->next;
-	// 	if (node == NULL)
-	// 		break;
-	// }
+
+	output(data, data->list);
 	dll_free(data->list, freeLsNode);
 	return EXIT_SUCCESS;
 }

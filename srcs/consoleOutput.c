@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 16:56:39 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/27 15:41:13 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,102 +58,67 @@ void print_format(t_data *data, t_ls *ls)
 	}
 }
 
-static void print_horizontal(t_data *data, t_dll *list)
-{
-	t_node *node = list->head;
-	if (!node || !node->content)
-		return;
-
-	int		col = data->w.ws_col;
-	int		current_width = 0;
-	bool	first_in_line = true;
-	t_node *next = NULL;
-
-	while (node) {
-		t_ls *ls = node->content;
-		if (!ls) {
-			node = node->next;
-			continue;
-		}
-
-		next = node->next;
-		int name_width = ft_strlen(ls->name);
-		int separator_width = 2;
-		int total_width = name_width + (first_in_line ? 0 : separator_width);
-
-		if (!first_in_line && (current_width + total_width >= col)) {
-			ft_printf(1, ", ");
-			ft_printf(1, "\n");
-			current_width = name_width;
-			first_in_line = true;
-		} else {
-			if (!first_in_line)
-				ft_printf(1, ", ");
-			current_width += total_width;
-		}
-
-		ft_printf(1, "%s%s%s", get_color_from_env(ls, data), ls->name,
-				  COLOR_RESET);
-
-		first_in_line = false;
-		node = next;
-	}
-
-	ft_printf(1, "\n");
-}
-
 static void print_column(t_data *data, t_dll *list)
 {
-	if (data->arg.horizontal) {
-		print_horizontal(data, list);
-		return;
-	}
+    char **arr = list_to_stringarray(list);
+    if (!arr) {
+        return;
+    }
+
+    size_t arr_len = ft_arr_len((void **)arr);
+    size_t columns = calculate_columns((const char **)arr, data->w.ws_col);
+    size_t rows = (arr_len + columns - 1) / columns;
+	
+    // Calculate column widths
+    size_t *col_widths = malloc(columns * sizeof(size_t));
+    if (!col_widths) {
+        free2Array(arr);
+        return;
+    }
+
+    // Calculate column widths
+    for (size_t col = 0; col < columns; col++) {
+        col_widths[col] = 0;
+        for (size_t row = 0; row < rows; row++) {
+            size_t idx; //= row * columns + col;
+			if (data->arg.horizontal)
+                idx = row * columns + col;
+            else
+                idx = col * rows + row;
+            if (idx < arr_len) {
+                size_t len = strlen(arr[idx]);
+                if (len > col_widths[col])
+                    col_widths[col] = len;
+            }
+        }
+    }
 
 	t_node *node = list->head;
-	if (!node || !node->content)
-		return;
-
-	t_ls *ls = node->content;
-	if (!ls) {
-		printf("Warning: Uninitialized format_info\n");
-		return;
-	}
-
-	int max_name = (int)get_max_len(list);
-	if (max_name == 0)
-		max_name = 1;
-	
-	// printf("ws_col: %d\n", data->w.ws_col);
-	int nb_col = data->w.ws_col / max_name;
-	if (nb_col == 0)
-		nb_col = 1;
-
-	if (list->size == 0) {
-		printf("Warning: Empty list\n");
-		return;
-	}
-	size_t rows = (list->size + nb_col - 1) / nb_col; // Round up division
-
-	for (size_t i = 0; i < rows; i++) {
-		t_node *current = node;
-		for (int j = 0; j < nb_col && current; j++) {
-			ls = current->content;
-			if (ls) {
-				if (data->arg.block_size){
-					ft_printf(1, "%s", ls->format_block);
+	for (size_t row = 0; row < rows; row++) {
+		for (size_t col = 0; col < columns; col++) {
+			size_t idx; // = row * columns + col;
+			if (data->arg.horizontal)
+                idx = row * columns + col;
+            else
+                idx = col * rows + row;
+			if (idx < arr_len) {
+				char *color = data->is_tty ? get_color_from_env(node->content, data) : "";
+				char *reset = data->is_tty ? COLOR_RESET : "";
+				printf("%s%s%s  ", color, arr[idx], reset);
+				int padding = col_widths[col] - strlen(arr[idx]);
+				if (padding > 0) {
+					for (int i = 0; i < padding; i++) {
+						printf(" ");
+					}
 				}
-				print_format(data, ls);
+				node = node->next;
 			}
-
-			// Skip nb_col nodes ahead, but check for NULL
-			for (size_t k = 0; k < rows && current; k++)
-				current = current->next;
 		}
-		node = node->next;
 		printf("\n");
 	}
 
-	// freeFormatStruct(&ls->format_info);
+    free(col_widths);
+    free2Array(arr);
 }
 
 static void handle_subdirs(t_data *data, t_dll *printsubdir)
@@ -224,10 +189,7 @@ void print_recursive(t_data *data, t_dll *list)
 	} else if (!data->is_tty || data->arg.oneline) {
 		print_oneline(data, list);
 	} else {
-		if (data->arg.horizontal)
-			print_horizontal(data, list);
-		else
-			print_column(data, list);
+		print_column(data, list);
 	}
 
 	// Collect subdirectories
@@ -263,7 +225,6 @@ static void print_direct(t_data *data, t_dll *list)
 		return;
 	}
 
-	if (data->arg.long_format && !data->arg.directory)
 		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
 
 	t_node *node = list->head;

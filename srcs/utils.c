@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lagea <lagea@student.s19.be>               +#+  +:+       +#+        */
+/*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/19 16:11:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/27 15:47:04 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,4 +129,75 @@ int get_max_len(t_dll *list)
 		node = node->next;
 	}
 	return max_len;
+}
+
+char **list_to_stringarray(t_dll *list)
+{
+	size_t size = dll_size(list);
+	char **arr = malloc((size + 1) * sizeof(char *));
+	if (!arr)
+		return NULL;
+
+	t_node *node = list->head;
+	size_t i = 0;
+
+	while (node != NULL) {
+		t_ls *ls = node->content;
+		if (ls && ls->name) {
+			arr[i] = ft_strdup(ls->name);
+			if (!arr[i]) {
+				for (size_t j = 0; j < i; j++)
+					free(arr[j]);
+				free(arr);
+				return NULL;
+			}
+			i++;
+		}
+		node = node->next;
+	}
+	arr[i] = NULL;
+	return arr;
+}
+
+size_t calculate_columns(const char **files, size_t screen_width) 
+{
+	size_t count = ft_arr_len((void **)files);
+    if (count == 0)
+        return 0;
+
+    size_t max_filename_len = 0;
+	size_t total_len = 0;
+    for (size_t i = 0; i < count; i++) {
+		size_t name_len = strlen(files[i]);
+        size_t len = name_len;
+		total_len += len + 2;
+        if (len > max_filename_len)
+            max_filename_len = len;
+    }
+	
+	if (total_len < screen_width) {
+		return count;
+	}
+    size_t col_width = max_filename_len + 2;
+
+    size_t max_cols = screen_width / col_width;
+    if (max_cols == 0)
+        max_cols = 1;
+    if (max_cols > count){
+        max_cols = count;
+	}
+
+    size_t optimal_cols = max_cols;
+    size_t rows = (count + max_cols - 1) / max_cols;
+
+    // Try reducing columns if it gives more balanced output
+    while (optimal_cols > 1) {
+        size_t new_rows = (count + (optimal_cols-1) - 1) / (optimal_cols-1);
+        if (new_rows > rows + 1)
+            break;
+        optimal_cols--;
+        rows = new_rows;
+    }
+
+    return optimal_cols;
 }
