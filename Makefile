@@ -11,6 +11,7 @@ NC     := \033[0m
 ###############################################################################
 CC       = gcc
 CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP
+LDFLAGS  = -lm 
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 
 DEBUG_FLAGS   := -g -fsanitize=address
@@ -51,7 +52,7 @@ all: $(TARGET)
 ###############################################################################
 $(TARGET): $(LIBFT) $(OBJS)
 	@echo "$(BLUE)Linking $(TARGET)...$(NC)"
-	@$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ $(OBJS) $(LIBFT)
+	@$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ $(OBJS) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)Build complete!$(NC)"
 
 ###############################################################################

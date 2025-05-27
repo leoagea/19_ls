@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 16:49:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/27 19:29:59 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,23 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 	if (data->arg.comma) {
 		info_tmp->size_thousands = (info_tmp->size_bytes_len - 1) / 3;
 		info_tmp->size_bytes_len += info_tmp->size_thousands;
+	}
+	else if (data->arg.human_readable) {
+		if (node->type == DIRECTORY){
+			info_tmp->block_size_len = 1;
+		}
+		else if (node->type == REGFILE && info_tmp->size_bytes == 0){
+			info_tmp->block_size_len = 1;
+		}
+		else if (node->type == REGFILE && info_tmp->size_bytes > 0){
+			char *human_readable = get_human_readable_size(info_tmp->size_bytes);
+			if (!human_readable)
+				return (EXIT_FAILURE);
+			info_tmp->block_size_len = ft_strlen(human_readable);
+			free(human_readable);
+		}
+		else
+			info_tmp->block_size_len = 1;
 	}
 
 	if (node->type == DIRECTORY && data->arg.slash){

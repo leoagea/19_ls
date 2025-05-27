@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 15:47:04 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/27 18:31:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,10 @@ int get_max_len(t_dll *list)
 	return max_len;
 }
 
-char **list_to_stringarray(t_dll *list)
+t_ls **list_to_stringarray(t_dll *list)
 {
 	size_t size = dll_size(list);
-	char **arr = malloc((size + 1) * sizeof(char *));
+	t_ls **arr = malloc((size + 1) * sizeof(t_ls *));
 	if (!arr)
 		return NULL;
 
@@ -143,14 +143,15 @@ char **list_to_stringarray(t_dll *list)
 
 	while (node != NULL) {
 		t_ls *ls = node->content;
-		if (ls && ls->name) {
-			arr[i] = ft_strdup(ls->name);
-			if (!arr[i]) {
-				for (size_t j = 0; j < i; j++)
-					free(arr[j]);
-				free(arr);
-				return NULL;
-			}
+		if (ls) {
+			arr[i] = ls; // Assuming you want to store the t_ls pointers directly
+			// arr[i] = ft_strdup(ls->name);
+			// if (!arr[i]) {
+			// 	for (size_t j = 0; j < i; j++)
+			// 		free(arr[j]);
+			// 	free(arr);
+			// 	return NULL;
+			// }
 			i++;
 		}
 		node = node->next;
@@ -159,17 +160,21 @@ char **list_to_stringarray(t_dll *list)
 	return arr;
 }
 
-size_t calculate_columns(const char **files, size_t screen_width) 
+size_t calculate_columns(t_ls **files, size_t arr_len, size_t screen_width, bool is_block_size) 
 {
-	size_t count = ft_arr_len((void **)files);
+	// (void) is_block_size; // Unused parameter, can be removed if not needed
+	size_t count = arr_len;
     if (count == 0)
         return 0;
 
     size_t max_filename_len = 0;
 	size_t total_len = 0;
     for (size_t i = 0; i < count; i++) {
-		size_t name_len = strlen(files[i]);
+		size_t name_len = strlen(files[i]->name);
         size_t len = name_len;
+		if (is_block_size){
+			len += files[i]->info->block_size_len + 2;
+		}
 		total_len += len + 2;
         if (len > max_filename_len)
             max_filename_len = len;
@@ -189,15 +194,55 @@ size_t calculate_columns(const char **files, size_t screen_width)
 
     size_t optimal_cols = max_cols;
     size_t rows = (count + max_cols - 1) / max_cols;
+	printf("Initial columns: %zu, rows: %zu\n", optimal_cols, rows);
 
     // Try reducing columns if it gives more balanced output
-    while (optimal_cols > 1) {
-        size_t new_rows = (count + (optimal_cols-1) - 1) / (optimal_cols-1);
-        if (new_rows > rows + 1)
-            break;
-        optimal_cols--;
-        rows = new_rows;
-    }
+    // while (optimal_cols > 1) {
+    //     size_t new_rows = (count + (optimal_cols-1) - 1) / (optimal_cols-1);
+    //     if (new_rows > rows + 1)
+    //         break;
+    //     optimal_cols--;
+    //     rows = new_rows;
+    // }
 
+	printf("Optimal columns: %zu, rows: %zu\n", optimal_cols, rows);
     return optimal_cols;
+}
+
+void addPadding(size_t len)
+{
+	for (size_t i = 0; i < len; i++) {
+		printf(" ");
+	}
+}
+
+char *get_human_readable_size(size_t size)
+{
+	char *units[] = {"", "K", "M", "G", "T", "P", "E", "Z", "Y"};
+	int unit_index = 0;
+	double human_size = (double)size;
+
+	while (human_size >= 1024 && unit_index < 8) {
+		human_size /= 1024;
+		unit_index++;
+	}
+
+	char *result = malloc(32);
+	if (!result)
+		return NULL;
+	ft_memset(result, 0, 32);
+	
+	if (unit_index == 0) {
+        snprintf(result, 32, "%zu", size);
+    }
+    else if (human_size < 10){
+		human_size = round(human_size * 10) / 10.0;
+        snprintf(result, 32, "%.1f%s", human_size, units[unit_index]);
+	}
+    else if (human_size < 100){
+		human_size = (int)(human_size + 0.5);
+        snprintf(result, 32, "%.0f%s", human_size, units[unit_index]);
+	}
+    
+    return result;
 }

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 15:41:13 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/27 19:28:40 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,50 @@ void print_format(t_data *data, t_ls *ls)
 
 static void print_column(t_data *data, t_dll *list)
 {
-    char **arr = list_to_stringarray(list);
+    t_ls **arr = list_to_stringarray(list);
     if (!arr) {
         return;
     }
 
+	bool is_block_size = data->arg.block_size;
     size_t arr_len = ft_arr_len((void **)arr);
-    size_t columns = calculate_columns((const char **)arr, data->w.ws_col);
+    size_t columns = calculate_columns(arr, arr_len, data->w.ws_col, is_block_size);
     size_t rows = (arr_len + columns - 1) / columns;
 	
     // Calculate column widths
     size_t *col_widths = malloc(columns * sizeof(size_t));
     if (!col_widths) {
-        free2Array(arr);
+		free(arr);
         return;
     }
+
+	size_t *siz_widths = NULL;
+	if (is_block_size) {
+		printf("is_block_size\n");
+		siz_widths = malloc(columns * sizeof(size_t));
+		if (!siz_widths) {
+			free(col_widths);
+			free(arr);
+			return;
+		}
+		ft_memset(siz_widths, 0, columns * sizeof(size_t));
+		
+		for (size_t col = 0; col < columns; col++) {
+			siz_widths[col] = 0;
+			for (size_t row = 0; row < rows; row++) {
+				size_t idx; //= row * columns + col;
+				if (data->arg.horizontal)
+					idx = row * columns + col;
+				else
+					idx = col * rows + row;
+				if (idx < arr_len) {
+					size_t len = arr[idx]->info->block_size_len;
+					if (len > siz_widths[col])
+						siz_widths[col] = len;
+				}
+			}
+		}
+	}
 
     // Calculate column widths
     for (size_t col = 0; col < columns; col++) {
@@ -86,14 +115,13 @@ static void print_column(t_data *data, t_dll *list)
             else
                 idx = col * rows + row;
             if (idx < arr_len) {
-                size_t len = strlen(arr[idx]);
+                size_t len = strlen(arr[idx]->name);
                 if (len > col_widths[col])
-                    col_widths[col] = len;
+					col_widths[col] = len;
             }
         }
     }
 
-	t_node *node = list->head;
 	for (size_t row = 0; row < rows; row++) {
 		for (size_t col = 0; col < columns; col++) {
 			size_t idx; // = row * columns + col;
@@ -102,23 +130,46 @@ static void print_column(t_data *data, t_dll *list)
             else
                 idx = col * rows + row;
 			if (idx < arr_len) {
-				char *color = data->is_tty ? get_color_from_env(node->content, data) : "";
+				char *color = data->is_tty ? get_color_from_env(arr[idx], data) : "";
 				char *reset = data->is_tty ? COLOR_RESET : "";
-				printf("%s%s%s  ", color, arr[idx], reset);
-				int padding = col_widths[col] - strlen(arr[idx]);
-				if (padding > 0) {
-					for (int i = 0; i < padding; i++) {
-						printf(" ");
+				int padding = 0;
+				if (is_block_size){
+					padding = siz_widths[col] - arr[idx]->info->block_size_len;	
+					if (padding > 0) {
+						addPadding(padding);
+					}
+					if (data->arg.block_size && !data->arg.human_readable)
+						printf("%d ", arr[idx]->info->block_size);
+					else if (data->arg.human_readable) {
+						if (arr[idx]->type == DIRECTORY)
+							printf("%s ", "0");
+						else if (arr[idx]->type == REGFILE && arr[idx]->info->size_bytes == 0)
+							printf("%s ", "0");
+						else if (arr[idx]->type == REGFILE && arr[idx]->info->size_bytes > 0){
+							char *human_readable = get_human_readable_size(arr[idx]->info->size_bytes);
+							printf("%s ", human_readable);
+							free(human_readable);
+						}
+						else
+							printf("%s ", "0");
 					}
 				}
-				node = node->next;
+				printf("%s%s%s  ", color, arr[idx]->name, reset);
+				padding = col_widths[col] - strlen(arr[idx]->name);
+				if (padding > 0) {
+					addPadding(padding);
+				}
 			}
 		}
 		printf("\n");
 	}
 
     free(col_widths);
-    free2Array(arr);
+	free(arr);
+	if (siz_widths) {
+		free(siz_widths);
+		siz_widths = NULL;
+	}
 }
 
 static void handle_subdirs(t_data *data, t_dll *printsubdir)

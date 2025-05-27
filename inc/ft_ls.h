@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 14:55:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/27 18:14:11 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 #include <sys/xattr.h>
 #include <sys/sysmacros.h> // major, minor
 #include <locale.h> // setlocale
+#include <math.h> // roundf
 
 /*#############################################################################
 # Init functions
@@ -129,8 +130,11 @@ char	 *get_color_for_file(t_ls *ls);
 char	 *int_to_str_sep(t_ls *node, char *num);
 char     *string_to_lower(char *str);
 int		  get_max_len(t_dll *list);
-char **list_to_stringarray(t_dll *list);
-size_t calculate_columns(const char **files, size_t screen_width);
+t_ls **list_to_stringarray(t_dll *list);
+size_t calculate_columns(t_ls **files, size_t arr_len, size_t screen_width, bool is_block_size);
+void addPadding(size_t len);
+char *get_human_readable_size(size_t size);
+
 /*#############################################################################
 # Free functions
 #############################################################################*/
