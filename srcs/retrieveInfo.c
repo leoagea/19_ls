@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 19:29:59 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/28 18:01:25 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,13 +169,16 @@ static void retrieveMajorMinor(t_info **ls, struct stat info)
 
 int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 {
+	// printf("retrieveAllInfo called for node: %s\n", node->name);
 	t_info *info_tmp = malloc(sizeof(t_info));
 	initInfoStruct(info_tmp);
 
 	struct stat info;
 	if (node->is_symbolic ? lstat(node->relative_path, &info)
-						  : stat(node->relative_path, &info) == -1)
-		return (printf("stat failed\n"), EXIT_FAILURE);
+						  : stat(node->relative_path, &info) == -1){
+		free(info_tmp);
+		return (ft_printf(2, "ls: cannot access '%s': %s\n", node->relative_path, strerror(errno)), EXIT_FAILURE);
+	}
 		
 	info_tmp->block_size = CALC_BLOCKS((int)info.st_blocks);
 
@@ -188,21 +191,23 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 		info_tmp->size_bytes_len += info_tmp->size_thousands;
 	}
 	else if (data->arg.human_readable) {
-		if (node->type == DIRECTORY){
-			info_tmp->block_size_len = 1;
-		}
-		else if (node->type == REGFILE && info_tmp->size_bytes == 0){
-			info_tmp->block_size_len = 1;
-		}
-		else if (node->type == REGFILE && info_tmp->size_bytes > 0){
+		// if (node->type == DIRECTORY){
+		// 	info_tmp->size_bytes_len = 1;
+		// }
+		// else if (node->type == REGFILE && info_tmp->size_bytes == 0){
+		// 	info_tmp->size_bytes_len = 1;
+		// }
+		if ((node->type == REGFILE || node->type == DIRECTORY) && info_tmp->size_bytes > 0){
 			char *human_readable = get_human_readable_size(info_tmp->size_bytes);
-			if (!human_readable)
+			if (!human_readable){
+				info_tmp->size_bytes_len = 1;
 				return (EXIT_FAILURE);
-			info_tmp->block_size_len = ft_strlen(human_readable);
+			}
+			info_tmp->size_bytes_len = ft_strlen(human_readable);
 			free(human_readable);
 		}
-		else
-			info_tmp->block_size_len = 1;
+		// else
+		// 	info_tmp->size_bytes_len = 1;
 	}
 
 	if (node->type == DIRECTORY && data->arg.slash){

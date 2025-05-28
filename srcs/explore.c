@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 17:14:22 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/28 17:29:54 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,24 @@ int explore_loop(t_data *data)
 		dll_init(list);
 		dll_insert_tail(list, data->list);
 		if (exploreDirectories(data, data->list->tail->content,
-							   data->arg.all_path[i])) {
+							   data->arg.all_path[i]) == EXIT_FAILURE) {
 			// printf("exploreDirectories failed\n");
 			return EXIT_FAILURE;
 		}
 		i++;
 	}
 
-	// int tmp = i;
-	i = 0;
 	size_t len = dll_size(data->list);
+	// printf("len: %zu\n", len);
+	i = 0;
 	t_node *node = data->list->head;
 	while (node != NULL) {
 		t_dll *dll = node->content;
-		if (len > 1)
+		if (!dll || dll->head == NULL) {
+			node = node->next;
+			continue;
+		}
+		if (len > 1 || data->arg.recurisve)
 			ft_printf(1, "%s:\n", data->arg.all_path[i]);
 		output(data, dll);
 		node = node->next;
@@ -145,7 +149,10 @@ int handleSymlink(t_ls *node)
 	ssize_t len = readlink(link_path, node->info->sym_name,
 						   sizeof(node->info->sym_name) - 1);
 	if (len == -1) {
-		perror("readlink");
+		free(link_path);
+		// perror("readlink");
+		ft_printf(2, "ls: cannot read symbolic link '%s': %s\n",
+					node->relative_path, strerror(errno));
 		return EXIT_FAILURE;
 	}
 	free(link_path);
@@ -172,13 +179,15 @@ int processEntry(t_data *data, t_ls *node, t_format **format)
 		dll_init(sub);
 		node->subdir = sub;
 		if (exploreDirectories(data, node->subdir, node->relative_path) == EXIT_FAILURE) {
-			freeLsNode(node);
+			// printf("exploreSubdir failed\n");
+			dll_free(sub, freeLsNode);
 			return EXIT_FAILURE;
 		}
 	}
 
 	if (retrieveAllInfo(data, node, format) == EXIT_FAILURE) {
-		freeLsNode(node);
+		// freeLsNode(node);
+		// printf("retrieveAllInfo failed\n");
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;
@@ -188,8 +197,8 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 {
 	DIR *dir = opendir(path);
 	if (!dir) {
-		ft_printf(2, "ls: %s: %s\n", path, strerror(errno));
-		return (data->return_val = 2, EXIT_FAILURE);
+		ft_printf(2, "ls: cannot open directory '%s': %s\n", path, strerror(errno));
+		return (data->return_val = 2, EXIT_SUCCESS);
 	}
 
 	t_format *format = malloc(sizeof(t_format));
@@ -219,10 +228,15 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		dll_insert_tail(node, list);
 
 		if (processEntry(data, node, &format) == EXIT_FAILURE) {
-			printf("processEntry failed\n");
+			// printf("processEntry failed\n");
 			// freeFormatStruct(&format);
-			closedir(dir);
-			return EXIT_FAILURE;
+			// if (closedir(dir) == -1) {
+			// 	perror("closedir");
+			// }
+			// if (format) {
+			// 	freeFormatStruct(&format);
+			// }
+			// return EXIT_FAILURE;
 		}
 	}
 
@@ -242,7 +256,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 	// debug_printFormatStruct(tmp->format_info); // For debugging
 	while (node != NULL) {
 		if (node->content == NULL) {
-			printf("node content is null\n");
+			// printf("node content is null\n");
 			// freeFormatStruct(&format);
 			return EXIT_FAILURE;
 		}

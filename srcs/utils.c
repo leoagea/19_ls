@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/28 13:50:53 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/28 17:53:47 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int calculateTotalBlocks(t_dll *list)
 
 	while (curr != NULL) {
 		t_ls *node = curr->content;
-		total_blocks += node->info->block_size;
+		total_blocks += (node->info) ? node->info->block_size : 0;
 		curr = curr->next;
 	}
 
@@ -204,8 +204,8 @@ size_t calculate_columns(t_ls **files, size_t arr_len, size_t screen_width, bool
 	}
 
     size_t optimal_cols = max_cols;
-    size_t rows = (count + max_cols - 1) / max_cols;
-	printf("Initial columns: %zu, rows: %zu\n", optimal_cols, rows);
+    // size_t rows = (count + max_cols - 1) / max_cols;
+	// printf("Initial columns: %zu, rows: %zu\n", optimal_cols, rows);
 
     // Try reducing columns if it gives more balanced output
     // while (optimal_cols > 1) {
@@ -216,7 +216,7 @@ size_t calculate_columns(t_ls **files, size_t arr_len, size_t screen_width, bool
     //     rows = new_rows;
     // }
 
-	printf("Optimal columns: %zu, rows: %zu\n", optimal_cols, rows);
+	// printf("Optimal columns: %zu, rows: %zu\n", optimal_cols, rows);
     return optimal_cols;
 }
 
@@ -253,6 +253,9 @@ char *get_human_readable_size(size_t size)
     else if (human_size < 100){
 		human_size = (int)(human_size + 0.5);
         snprintf(result, 32, "%.0f%s", human_size, units[unit_index]);
+	}
+	else {
+		snprintf(result, 32, "%.0f%s", human_size, units[unit_index]);
 	}
     
     return result;

@@ -6,11 +6,28 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 19:28:40 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/28 18:06:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
+
+static void sort_inside_dir(t_data *data, t_dll *list)
+{
+	if (!data->arg.not_sort) {		
+		if (data->arg.sort_time || (data->arg.access_time && !data->arg.long_format))
+			dll_bubble_sort(list->head, list->tail, compareTime);
+		else if (data->arg.access_time && data->arg.sort_time && data->arg.long_format)
+			dll_bubble_sort(list->head, list->tail, compareTime);
+		else if (data->arg.sort_size)
+			dll_bubble_sort(list->head, list->tail, compareSize);
+		else
+			dll_bubble_sort(list->head, list->tail, compareName);
+	}
+
+	if (data->arg.reverse)
+		dll_revert(list);
+}
 
 static void print_xattr(t_dll *xattr_list)
 {
@@ -68,18 +85,23 @@ static void print_column(t_data *data, t_dll *list)
 	bool is_block_size = data->arg.block_size;
     size_t arr_len = ft_arr_len((void **)arr);
     size_t columns = calculate_columns(arr, arr_len, data->w.ws_col, is_block_size);
+	if (columns == 0) {
+		free(arr);
+		return;
+	}
     size_t rows = (arr_len + columns - 1) / columns;
 	
     // Calculate column widths
     size_t *col_widths = malloc(columns * sizeof(size_t));
     if (!col_widths) {
 		free(arr);
+		printf("\n");
         return;
     }
 
 	size_t *siz_widths = NULL;
 	if (is_block_size) {
-		printf("is_block_size\n");
+		// printf("is_block_size\n");
 		siz_widths = malloc(columns * sizeof(size_t));
 		if (!siz_widths) {
 			free(col_widths);
@@ -185,7 +207,12 @@ static void handle_subdirs(t_data *data, t_dll *printsubdir)
 	while (current) {
 		t_subdir *tmp = current->content;
 		if (tmp && tmp->subdir_list) {
+			if (tmp->subdir_list->size == 0) {
+				current = current->next;
+				continue;
+			}
 			ft_printf(1, "\n%s:\n", tmp->path);
+			sort_inside_dir(data, tmp->subdir_list);
 			print_recursive(data, tmp->subdir_list);
 		}
 		current = current->next;
@@ -195,10 +222,23 @@ static void handle_subdirs(t_data *data, t_dll *printsubdir)
 static void print_oneline(t_data *data, t_dll *list)
 {
 	if (!list || !list->head) {
-		printf("Warning: Empty list\n");
 		return;
 	}
 
+	int total_blocks = calculateTotalBlocks(list);
+	if (data->arg.human_readable) {
+		char *human_readable = get_human_readable_size(total_blocks * 1024);
+		if (human_readable) {
+			ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
+			free(human_readable);
+		}
+		else {
+			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
+		}
+	} else {
+		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
+	}
+	
 	t_node *node = list->head;
 	while (node) {
 		t_ls *ls = node->content;
@@ -213,21 +253,32 @@ static void print_oneline(t_data *data, t_dll *list)
 void print_recursive(t_data *data, t_dll *list)
 {
 	if (!list) {
-		printf("Error: NULL list passed to print_recursive\n");
 		return;
 	}
 
 	t_dll *printsubdir = malloc(sizeof(t_dll));
 	if (!printsubdir) {
-		printf("Error: Failed to allocate printsubdir\n");
 		return;
 	}
 	dll_init(printsubdir);
 
 	// Print current directory contents
-	if (data->arg.long_format) {
-		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
-		// Print in long format
+	if (data->arg.long_format && data->is_tty) {
+		
+		int total_blocks = calculateTotalBlocks(list);
+		if (data->arg.human_readable) {
+			char *human_readable = get_human_readable_size(total_blocks * 1024);
+			if (human_readable) {
+				ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
+				free(human_readable);
+			}
+			else {
+				ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
+			}
+		} else {
+			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
+		}
+		
 		t_node *node = list->head;
 		while (node) {
 			if (node->content) {
@@ -272,17 +323,27 @@ void print_recursive(t_data *data, t_dll *list)
 static void print_direct(t_data *data, t_dll *list)
 {
 	if (!list) {
-		printf("Error: NULL list passed to print_direct\n");
 		return;
 	}
 
-		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, calculateTotalBlocks(list));
+	int total_blocks = calculateTotalBlocks(list);
+	if (data->arg.human_readable) {
+		char *human_readable = get_human_readable_size(total_blocks * 1024);
+		if (human_readable) {
+			ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
+			free(human_readable);
+		}
+		else {
+			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
+		}
+	} else {
+		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
+	}
 
 	t_node *node = list->head;
 	// t_node *head = list->head;
 	while (node != NULL) {
 		if (!node->content) {
-			printf("Warning: Skipping NULL content node\n");
 			node = node->next;
 			continue;
 		}
@@ -299,23 +360,10 @@ static void print_direct(t_data *data, t_dll *list)
 void output(t_data *data, t_dll *list)
 {
 	if (list->head == NULL) {
-		printf("null output\n");
 		return;
 	}
 	
-	if (!data->arg.not_sort) {		
-		if (data->arg.sort_time || (data->arg.access_time && !data->arg.long_format))
-			dll_bubble_sort(list->head, list->tail, compareTime);
-		else if (data->arg.access_time && data->arg.sort_time && data->arg.long_format)
-			dll_bubble_sort(list->head, list->tail, compareTime);
-		else if (data->arg.sort_size)
-			dll_bubble_sort(list->head, list->tail, compareSize);
-		else
-			dll_bubble_sort(list->head, list->tail, compareName);
-	}
-
-	if (data->arg.reverse)
-		dll_revert(list);
+	sort_inside_dir(data, list);
 
 	if (data->arg.recurisve)
 		print_recursive(data, list);

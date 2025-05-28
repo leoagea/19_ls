@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 17:40:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/28 17:50:10 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,12 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		}
 		else if (arg.human_readable) {
 			append = get_human_readable_size(node->info->size_bytes);
+			if (!append) {
+				append = ft_strdup("0");
+			}
 			appendStr(node->format, append);
-			free(append);
+			if (append)
+				free(append);
 		} 
 		else
 			appendStr(node->format, tmp);
@@ -172,7 +176,8 @@ void formatOther(t_arg arg, t_ls *node, t_format *format)
 	}
 	appendStr(node->format, node->name);
 
-	int space = format->max_name - node->info->name_len + 1;
+	size_t name_len = (node->info) ? node->info->name_len : ft_strlen(node->name);
+	int space = format->max_name - name_len + 1;
 	for (int i = 0; i < space; i++)
 		appendChar(node->format, ' ');
 }
@@ -180,7 +185,6 @@ void formatOther(t_arg arg, t_ls *node, t_format *format)
 void formatOutput(t_format *format, t_ls *node, t_arg arg)
 {
 	if (!node) {
-		printf("Error: Null node passed to formatOutput\n");
 		return;
 	}
 
@@ -192,8 +196,6 @@ void formatOutput(t_format *format, t_ls *node, t_arg arg)
 		// 	return;
 		// }
 		if (!node->info) {
-			printf("Error: Null info in node passed to "
-				   "formatOutput\n");
 			return;
 		}
 		formatLongFormat(arg, node, format);
