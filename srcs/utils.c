@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 18:31:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/28 13:50:53 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,17 @@ void help(void)
 	ft_printf(1, RFLAG);
 	ft_printf(1, TFLAG);
 	ft_printf(1, LFLAG);
+	ft_printf(1, EXTFLAG);
+	ft_printf(1, SIZEFLAG);
+	ft_printf(1, FFLAG);
+	ft_printf(1, GFLAG);
+	ft_printf(1, SLASHFLAG);
+	ft_printf(1, ONEEFLAG);
+	ft_printf(1, COMMAFLAG);
+	ft_printf(1, MFLAG);
+	ft_printf(1, UFLAG);
+	ft_printf(1, DFLAG);
+	ft_printf(1, HFLAG);
 	ft_printf(1, EXIT);
 }
 

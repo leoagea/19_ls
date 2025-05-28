@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 17:37:11 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/28 13:32:27 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int parseArg(int ac, char **av, t_data *data)
 				return EXIT_CLEAN;
 			} else if (ft_strncmp(av[i], "--version", INT_MAX) == 0) {
 				ft_printf(1, "ft_ls version 1.0\n");
+				ft_printf(1, "\nWritten by L. Agea for school 19.\n");
 				return EXIT_CLEAN;
 			}
 		}
