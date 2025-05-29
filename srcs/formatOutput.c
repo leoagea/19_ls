@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/28 17:50:10 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:34:37 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void getFormatLen(t_ls *node, t_format **format)
 	(*format)->max_link = MAX((*format)->max_link, node->info->nlink_len);
 	(*format)->max_size_bytes =
 		MAX((*format)->max_size_bytes, node->info->size_bytes_len);
-	// printf("name len: %zu\n", node->info->name_len);
 	(*format)->max_name = MAX((*format)->max_name, node->info->name_len);
 	(*format)->max_block_size =
 		MAX((*format)->max_block_size, node->info->block_size_len);
@@ -158,12 +157,6 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 
 	appendStr(node->format, node->info->time);
 	appendChar(node->format, ' ');
-
-	// appendStr(node->format, node->name);
-	// if (node->is_symbolic){
-	// 	appendStr(node->format, " -> ");
-	// 	appendStr(node->format, node->info->sym_name);
-	// }
 }
 
 void formatOther(t_arg arg, t_ls *node, t_format *format)
@@ -189,12 +182,6 @@ void formatOutput(t_format *format, t_ls *node, t_arg arg)
 	}
 
 	if (arg.long_format) {
-		// // debug_printFormatStruct(node->format_info);
-		// if (!node->format_info) {
-		// 	printf("Error: Null format_info in node passed to "
-		// 		   "formatOutput\n");
-		// 	return;
-		// }
 		if (!node->info) {
 			return;
 		}

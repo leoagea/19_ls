@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 15:07:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:35:05 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static void freeInfoStruct(t_info *info)
 		freeStr(&info->group_name);
 	if (info->user_name)
 		freeStr(&info->user_name);
-	// if (info->time)
-	// 	freeStr(&info->time);
 }
 
 void freeArgStruct(t_arg *argList)
@@ -48,7 +46,6 @@ void freeArgStruct(t_arg *argList)
 
 void freeLsNode(void *content)
 {
-	// printf("free ls node\n");
 	t_ls *node = (t_ls *)content;
 
 	if (node->info) {
@@ -67,13 +64,6 @@ void freeLsNode(void *content)
 	}
 	if (node->subdir) {
 		if (node->subdir->head) {
-			// t_node *sub = node->subdir->head;
-			// t_ls *tmp = sub->content;
-			// printf("free subdir %s\n", tmp->relative_path);
-			// if (tmp->format_info) {
-			// 	// printf("free format subdir\n");
-			// 	freeFormatStruct(&tmp->format_info);
-			// }
 			dll_free(node->subdir, freeLsNode);
 			free(node->subdir);
 			node->subdir = NULL;
@@ -102,14 +92,8 @@ void freeVoid(void **content)
 
 void freeList(void *content)
 {
-	// printf("free list\n");
 	t_dll  *list = (t_dll *)content;
 	t_node *node = list->head;
-	// t_ls *ls = node->content;
-	// if (ls->format_info){
-	// 	// printf("free format\n");
-	// 	freeFormatStruct(&ls->format_info);
-	// }
 	while (node != NULL) {
 		t_node *next = node->next;
 		freeLsNode(node->content);

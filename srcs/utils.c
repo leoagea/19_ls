@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/28 17:53:47 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:48:23 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,26 +204,13 @@ size_t calculate_columns(t_ls **files, size_t arr_len, size_t screen_width, bool
 	}
 
     size_t optimal_cols = max_cols;
-    // size_t rows = (count + max_cols - 1) / max_cols;
-	// printf("Initial columns: %zu, rows: %zu\n", optimal_cols, rows);
-
-    // Try reducing columns if it gives more balanced output
-    // while (optimal_cols > 1) {
-    //     size_t new_rows = (count + (optimal_cols-1) - 1) / (optimal_cols-1);
-    //     if (new_rows > rows + 1)
-    //         break;
-    //     optimal_cols--;
-    //     rows = new_rows;
-    // }
-
-	// printf("Optimal columns: %zu, rows: %zu\n", optimal_cols, rows);
     return optimal_cols;
 }
 
 void addPadding(size_t len)
 {
 	for (size_t i = 0; i < len; i++) {
-		printf(" ");
+		ft_printf(1, " ");
 	}
 }
 
@@ -244,18 +231,47 @@ char *get_human_readable_size(size_t size)
 	ft_memset(result, 0, 32);
 	
 	if (unit_index == 0) {
-        snprintf(result, 32, "%zu", size);
+        char *num = ft_itoa(size);
+        if (!num) {
+            free(result);
+            return NULL;
+        }
+        ft_strlcpy(result, num, 32);
+        free(num);
     }
     else if (human_size < 10){
-		human_size = round(human_size * 10) / 10.0;
-        snprintf(result, 32, "%.1f%s", human_size, units[unit_index]);
-	}
-    else if (human_size < 100){
-		human_size = (int)(human_size + 0.5);
-        snprintf(result, 32, "%.0f%s", human_size, units[unit_index]);
+		human_size = (int)(human_size * 10 + 0.5) / 10.0;
+		
+        int int_part = (int)human_size;
+        char *int_str = ft_itoa(int_part);
+        if (!int_str) {
+            free(result);
+            return NULL;
+        }
+        int decimal = (int)((human_size - int_part) * 10 + 0.5);
+        char *dec_str = ft_itoa(decimal);
+        if (!dec_str) {
+            free(int_str);
+            free(result);
+            return NULL;
+        }
+        ft_strlcpy(result, int_str, 32);
+        ft_strlcat(result, ".", 32);
+        ft_strlcat(result, dec_str, 32);
+        ft_strlcat(result, units[unit_index], 32);
+        free(int_str);
+        free(dec_str);
 	}
 	else {
-		snprintf(result, 32, "%.0f%s", human_size, units[unit_index]);
+		human_size = (int)(human_size + 0.5);
+        char *num = ft_itoa((int)human_size);
+        if (!num) {
+            free(result);
+            return NULL;
+        }
+        ft_strlcpy(result, num, 32);
+        ft_strlcat(result, units[unit_index], 32);
+        free(num);
 	}
     
     return result;

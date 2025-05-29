@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/28 18:01:25 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:35:11 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,6 @@ static void retrieveMajorMinor(t_info **ls, struct stat info)
 
 int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 {
-	// printf("retrieveAllInfo called for node: %s\n", node->name);
 	t_info *info_tmp = malloc(sizeof(t_info));
 	initInfoStruct(info_tmp);
 

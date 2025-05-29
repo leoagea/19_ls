@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/28 18:06:35 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:31:48 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,16 @@ static void print_column(t_data *data, t_dll *list)
 	}
     size_t rows = (arr_len + columns - 1) / columns;
 	
-    // Calculate column widths
     size_t *col_widths = malloc(columns * sizeof(size_t));
     if (!col_widths) {
 		free(arr);
-		printf("\n");
+		ft_printf(1, "\n");
         return;
     }
 
 	size_t *siz_widths = NULL;
 	if (is_block_size) {
-		// printf("is_block_size\n");
+		
 		siz_widths = malloc(columns * sizeof(size_t));
 		if (!siz_widths) {
 			free(col_widths);
@@ -113,7 +112,7 @@ static void print_column(t_data *data, t_dll *list)
 		for (size_t col = 0; col < columns; col++) {
 			siz_widths[col] = 0;
 			for (size_t row = 0; row < rows; row++) {
-				size_t idx; //= row * columns + col;
+				size_t idx;
 				if (data->arg.horizontal)
 					idx = row * columns + col;
 				else
@@ -126,23 +125,24 @@ static void print_column(t_data *data, t_dll *list)
 			}
 		}
 	}
-
-    // Calculate column widths
-    for (size_t col = 0; col < columns; col++) {
-        col_widths[col] = 0;
-        for (size_t row = 0; row < rows; row++) {
-            size_t idx; //= row * columns + col;
+		
+	for (size_t col = 0; col < columns; col++) {
+		col_widths[col] = 0;
+		for (size_t row = 0; row < rows; row++) {
+			size_t idx; 
 			if (data->arg.horizontal)
-                idx = row * columns + col;
-            else
-                idx = col * rows + row;
-            if (idx < arr_len) {
-                size_t len = strlen(arr[idx]->name);
-                if (len > col_widths[col])
+				idx = row * columns + col;
+			else
+				idx = col * rows + row;
+			if (idx < arr_len) {
+				size_t len = strlen(arr[idx]->name);
+				if (len > col_widths[col])
 					col_widths[col] = len;
-            }
-        }
-    }
+			}
+		}
+	}
+
+
 
 	for (size_t row = 0; row < rows; row++) {
 		for (size_t col = 0; col < columns; col++) {
@@ -161,29 +161,29 @@ static void print_column(t_data *data, t_dll *list)
 						addPadding(padding);
 					}
 					if (data->arg.block_size && !data->arg.human_readable)
-						printf("%d ", arr[idx]->info->block_size);
+						ft_printf(1, "%d ", arr[idx]->info->block_size);
 					else if (data->arg.human_readable) {
 						if (arr[idx]->type == DIRECTORY)
-							printf("%s ", "0");
+							ft_printf(1, "%s ", "0");
 						else if (arr[idx]->type == REGFILE && arr[idx]->info->size_bytes == 0)
-							printf("%s ", "0");
+							ft_printf(1, "%s ", "0");
 						else if (arr[idx]->type == REGFILE && arr[idx]->info->size_bytes > 0){
 							char *human_readable = get_human_readable_size(arr[idx]->info->size_bytes);
-							printf("%s ", human_readable);
+							ft_printf(1, "%s ", human_readable);
 							free(human_readable);
 						}
 						else
-							printf("%s ", "0");
+							ft_printf(1, "%s ", "0");
 					}
 				}
-				printf("%s%s%s  ", color, arr[idx]->name, reset);
+				ft_printf(1, "%s%s%s  ", color, arr[idx]->name, reset);
 				padding = col_widths[col] - strlen(arr[idx]->name);
 				if (padding > 0) {
 					addPadding(padding);
 				}
 			}
 		}
-		printf("\n");
+		ft_printf(1, "\n");
 	}
 
     free(col_widths);
@@ -262,7 +262,6 @@ void print_recursive(t_data *data, t_dll *list)
 	}
 	dll_init(printsubdir);
 
-	// Print current directory contents
 	if (data->arg.long_format && data->is_tty) {
 		
 		int total_blocks = calculateTotalBlocks(list);
@@ -284,7 +283,7 @@ void print_recursive(t_data *data, t_dll *list)
 			if (node->content) {
 				t_ls *ls = node->content;
 				print_format(data, ls);
-				printf("\n");
+				ft_printf(1, "\n");
 			}
 			node = node->next;
 		}
@@ -293,8 +292,7 @@ void print_recursive(t_data *data, t_dll *list)
 	} else {
 		print_column(data, list);
 	}
-
-	// Collect subdirectories
+	
 	t_node *node = list->head;
 	while (node) {
 		if (node->content) {
@@ -313,7 +311,6 @@ void print_recursive(t_data *data, t_dll *list)
 		node = node->next;
 	}
 
-	// Handle subdirectories recursively
 	handle_subdirs(data, printsubdir);
 
 	dll_free(printsubdir, freeSubdir);
@@ -341,7 +338,6 @@ static void print_direct(t_data *data, t_dll *list)
 	}
 
 	t_node *node = list->head;
-	// t_node *head = list->head;
 	while (node != NULL) {
 		if (!node->content) {
 			node = node->next;
@@ -353,8 +349,6 @@ static void print_direct(t_data *data, t_dll *list)
 		ft_printf(1, "\n");
 		node = node->next;
 	}
-	// t_ls *head_ls = head->content;
-	// freeFormatStruct(&head_ls->format_info);
 }
 
 void output(t_data *data, t_dll *list)
@@ -373,13 +367,4 @@ void output(t_data *data, t_dll *list)
 		else
 			print_column(data, list);
 	}
-
-	// t_node *node = list->head;
-	// t_ls *ls = node->content;
-	// if (ls->format_info) {
-	// 	printf("free format info\n");
-	// 	freeFormatStruct(&ls->format_info);
-	// 	ls->format_info = NULL;
-	// }
-	// print_column(data, list);
 }
