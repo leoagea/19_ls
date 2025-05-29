@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 13:35:11 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:27:44 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ static void extractTime(t_arg arg, struct stat info, char *str)
 		return;
 	}
 
-	// char *time_str = malloc(13 * sizeof(char));
-	// if (!time_str)
-	// 	return NULL;
 	char *time_str = str;
 	ft_memset(time_str, 0, 13);
 
@@ -62,7 +59,6 @@ t_xattr *create_xattr_node(const char *path, const char *attr_name)
 	if (!node)
 		return (NULL);
 
-	// Initialize node
 	node->name = ft_strdup(attr_name);
 	node->next = NULL;
 
@@ -142,12 +138,11 @@ static void retrieveMajorMinor(t_info **ls, struct stat info)
 	major = major(info.st_rdev);
 	minor = minor(info.st_rdev);
 
-	// Check for overflow
 	if (major > 4095) {
-		major = 4095; // Cap at maximum
+		major = 4095;
 	}
 	if (minor > 1048575) {
-		minor = 1048575; // Cap at maximum
+		minor = 1048575;
 	}
 
 	char *major_str = ft_itoa(major);
@@ -189,12 +184,6 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 		info_tmp->size_thousands = (info_tmp->size_bytes_len - 1) / 3;
 		info_tmp->size_bytes_len += info_tmp->size_thousands;
 	} else if (data->arg.human_readable) {
-		// if (node->type == DIRECTORY){
-		// 	info_tmp->size_bytes_len = 1;
-		// }
-		// else if (node->type == REGFILE && info_tmp->size_bytes == 0){
-		// 	info_tmp->size_bytes_len = 1;
-		// }
 		if ((node->type == REGFILE || node->type == DIRECTORY) && info_tmp->size_bytes > 0) {
 			char *human_readable = get_human_readable_size(info_tmp->size_bytes);
 			if (!human_readable) {
@@ -204,8 +193,6 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 			info_tmp->size_bytes_len = ft_strlen(human_readable);
 			free(human_readable);
 		}
-		// else
-		// 	info_tmp->size_bytes_len = 1;
 	}
 
 	if (node->type == DIRECTORY && data->arg.slash) {

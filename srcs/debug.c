@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 15:06:22 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:29:13 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void debug_print_argList(t_arg argList)
 void debug_print_dirent(struct dirent *entry)
 {
 	ft_printf(1, "type: %d	name: %s", entry->d_type, entry->d_name);
-	// ft_printf(1, "name len: \n", entry->d_namlen);
 }
 
 void debug_printFormatStruct(t_format *format)
@@ -77,12 +76,10 @@ void debug_printNodeLs(t_ls *node)
 	ft_printf(1, "directory: %b\n", node->is_dir);
 	ft_printf(1, "format: %s\n", node->format);
 	debug_printInfoStruct(node->info);
-	// debug_printFormatStruct(node->format_info);
 	if (node->subdir && node->subdir->head != NULL) {
 		ft_printf(1, "subdir: \n");
 		t_node *sub = node->subdir->head;
 		while (sub != NULL) {
-			// debug_printNodeLs(sub->content);
 			sub = sub->next;
 		}
 	} else

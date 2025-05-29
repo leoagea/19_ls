@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 13:48:23 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:26:40 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,7 @@ t_ls **list_to_stringarray(t_dll *list)
 	while (node != NULL) {
 		t_ls *ls = node->content;
 		if (ls) {
-			arr[i] = ls; // Assuming you want to store the t_ls pointers directly
-			// arr[i] = ft_strdup(ls->name);
-			// if (!arr[i]) {
-			// 	for (size_t j = 0; j < i; j++)
-			// 		free(arr[j]);
-			// 	free(arr);
-			// 	return NULL;
-			// }
+			arr[i] = ls;
 			i++;
 		}
 		node = node->next;
@@ -173,7 +166,6 @@ t_ls **list_to_stringarray(t_dll *list)
 
 size_t calculate_columns(t_ls **files, size_t arr_len, size_t screen_width, bool is_block_size)
 {
-	// (void) is_block_size; // Unused parameter, can be removed if not needed
 	size_t count = arr_len;
 	if (count == 0)
 		return 0;

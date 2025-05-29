@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 13:31:48 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:29:21 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ static void print_column(t_data *data, t_dll *list)
 
 	for (size_t row = 0; row < rows; row++) {
 		for (size_t col = 0; col < columns; col++) {
-			size_t idx; // = row * columns + col;
+			size_t idx; 
 			if (data->arg.horizontal)
 				idx = row * columns + col;
 			else

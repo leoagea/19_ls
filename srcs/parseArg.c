@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/28 13:32:27 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:28:22 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int parseArg(int ac, char **av, t_data *data)
 	t_arg *argList = &data->arg;
 	int	   i = 0;
 
-	// Parse all options
 	while (++i < ac && av[i][0] == '-') {
 		int j = 0;
 

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 13:35:05 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:28:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void freeList(void *content)
 	while (node != NULL) {
 		t_node *next = node->next;
 		freeLsNode(node->content);
-		// free(node->content);
 		free(node);
 		node = next;
 	}

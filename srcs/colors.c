@@ -36,7 +36,6 @@ void init_colors(t_data *data)
 		return;
 	}
 
-	// Initialize with default values
 	parse_ls_colors(ls_colors, &data->colors);
 }
 
