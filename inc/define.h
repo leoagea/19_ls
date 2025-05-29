@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 22:54:22 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 19:47:02 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 20:31:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@
 
 #ifdef __APPLE__
 #	define st_mtime						   st_mtimespec.tv_sec
-#	define CALC_BLOCKS(blocks)				   block
+#	define st_atime						   st_atimespec.tv_sec
+#	define st_atim				   		   st_atimespec
+#	define st_mtim				   		   st_mtimespec
+#	define CALC_BLOCKS(blocks)				   blocks
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size, 0, XATTR_NOFOLLOW)
 #	define LIST_XATTR(path, list, size)	   listxattr(path, list, size, XATTR_NOFOLLOW)
 #	define LINUX 0
@@ -27,7 +30,8 @@
 #	define CALC_BLOCKS(blocks)				   (blocks / 2)
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size)
 #	define LIST_XATTR(path, list, size)	   listxattr(path, list, size)
-#   define LINUX 1
+#	define LINUX 1
+#	include <sys/sysmacros.h> // major, minor
 #endif
 
 #define ENV_LSCOLORS "LS_COLORS"
