@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:27:44 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:36:59 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,19 +161,51 @@ static void retrieveMajorMinor(t_info **ls, struct stat info)
 	freeStr(&minor_str);
 }
 
-int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
+static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info *info_tmp)
 {
-	t_info *info_tmp = malloc(sizeof(t_info));
-	initInfoStruct(info_tmp);
+	info_tmp->nlink = info.st_nlink;
 
-	struct stat info;
-	if (node->is_symbolic ? lstat(node->relative_path, &info)
-						  : stat(node->relative_path, &info) == -1) {
-		free(info_tmp);
-		return (ft_printf(2, "ls: cannot access '%s': %s\n", node->relative_path, strerror(errno)),
-				EXIT_FAILURE);
+	struct passwd *pwd = getpwuid(info.st_uid);
+	struct group  *grp = getgrgid(info.st_gid);
+	if (pwd && grp) {
+		info_tmp->user_id = pwd->pw_uid;
+		info_tmp->user_id_len = ft_intlen(info_tmp->user_id);
+		info_tmp->user_name = ft_strdup(pwd->pw_name);
+
+		info_tmp->group_id = grp->gr_gid;
+		info_tmp->group_id_len = ft_intlen(info_tmp->group_id);
+		info_tmp->group_name = ft_strdup(grp->gr_name);
+	} else {
+		info_tmp->user_name = ft_strdup("unknown");
+		info_tmp->group_name = ft_strdup("unknown");
 	}
 
+	info_tmp->nlink_len = ft_intlen(info_tmp->nlink);
+
+	info_tmp->user_name_len = ft_strlen(info_tmp->user_name);
+	info_tmp->group_name_len = ft_strlen(info_tmp->group_name);
+
+	if (node->type == BLKFILE || node->type == CHARFILE) {
+		retrieveMajorMinor(&info_tmp, info);
+		info_tmp->size_bytes_len = ft_strlen(info_tmp->major);
+	}
+
+	if (LIST_XATTR(node->relative_path, NULL, 0) > 0) {
+		info_tmp->perm[9] = '@';
+
+		if (data->arg.extended_attributes) {
+			node->xattr_list = malloc(sizeof(t_dll));
+			if (!node->xattr_list)
+				return (EXIT_FAILURE);
+			dll_init(node->xattr_list);
+			get_file_xattr(node, node->relative_path);
+		}
+	}
+	return EXIT_SUCCESS;
+}
+
+static int extractSizeInfo(t_data *data, t_ls *node, struct stat info, t_info *info_tmp)
+{
 	info_tmp->block_size = CALC_BLOCKS((int)info.st_blocks);
 
 	info_tmp->block_size_len = ft_intlen(info_tmp->block_size);
@@ -194,6 +226,23 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 			free(human_readable);
 		}
 	}
+	return EXIT_SUCCESS;
+}
+
+int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
+{
+	t_info *info_tmp = malloc(sizeof(t_info));
+	initInfoStruct(info_tmp);
+
+	struct stat info;
+	if (node->is_symbolic ? lstat(node->relative_path, &info)
+						  : stat(node->relative_path, &info) == -1) {
+		free(info_tmp);
+		return (ft_printf(2, "ls: cannot access '%s': %s\n", node->relative_path, strerror(errno)),
+				EXIT_FAILURE);
+	}
+
+	extractSizeInfo(data, node, info, info_tmp);
 
 	if (node->type == DIRECTORY && data->arg.slash) {
 		char *tmp = ft_strjoin(node->name, "/");
@@ -209,47 +258,10 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 	extractPerm(info_tmp->perm, info.st_mode);
 
 	if (data->arg.long_format) {
-		info_tmp->nlink = info.st_nlink;
-
-		struct passwd *pwd = getpwuid(info.st_uid);
-		struct group  *grp = getgrgid(info.st_gid);
-		if (pwd && grp) {
-			info_tmp->user_id = pwd->pw_uid;
-			info_tmp->user_id_len = ft_intlen(info_tmp->user_id);
-			info_tmp->user_name = ft_strdup(pwd->pw_name);
-
-			info_tmp->group_id = grp->gr_gid;
-			info_tmp->group_id_len = ft_intlen(info_tmp->group_id);
-			info_tmp->group_name = ft_strdup(grp->gr_name);
-		} else {
-			info_tmp->user_name = ft_strdup("unknown");
-			info_tmp->group_name = ft_strdup("unknown");
-		}
-
-		info_tmp->nlink_len = ft_intlen(info_tmp->nlink);
-
-		info_tmp->user_name_len = ft_strlen(info_tmp->user_name);
-		info_tmp->group_name_len = ft_strlen(info_tmp->group_name);
-
-		if (node->type == BLKFILE || node->type == CHARFILE) {
-			retrieveMajorMinor(&info_tmp, info);
-			info_tmp->size_bytes_len = ft_strlen(info_tmp->major);
-		}
-
-		if (LIST_XATTR(node->relative_path, NULL, 0) > 0) {
-			info_tmp->perm[9] = '@';
-
-			if (data->arg.extended_attributes) {
-				node->xattr_list = malloc(sizeof(t_dll));
-				if (!node->xattr_list)
-					return (EXIT_FAILURE);
-				dll_init(node->xattr_list);
-				get_file_xattr(node, node->relative_path);
-			}
-		}
-	} else {
-		info_tmp->name_len = ft_strlen(node->name) + 1;
+		extractLongFormat(data, node, info, info_tmp);	
 	}
+
+	info_tmp->name_len = ft_strlen(node->name) + 1;
 
 	node->info = info_tmp;
 
