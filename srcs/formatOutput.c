@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:55:55 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 19:48:32 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,37 @@ static void appendType(char *format, int type)
 	}
 }
 
+static void appendSize(t_arg arg, t_ls *node)
+{
+	if (node->type == BLKFILE || node->type == CHARFILE)
+		appendStr(node->format, node->info->major);
+	else {
+		char *tmp = ft_itoa(node->info->size_bytes);
+		if (!tmp) {
+			tmp = ft_strdup("0");
+		}
+		char *append = NULL;
+		if (arg.comma) {
+			append = int_to_str_sep(node, tmp);
+			if (!append) {
+				append = ft_strdup("0");
+			}
+			appendStr(node->format, append);
+			free(append);
+		} else if (arg.human_readable) {
+			append = get_human_readable_size(node->info->size_bytes);
+			if (!append) {
+				append = ft_strdup("0");
+			}
+			appendStr(node->format, append);
+			if (append)
+				free(append);
+		} else
+			appendStr(node->format, tmp);
+		free(tmp);
+	}
+}
+
 void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 {
 	if (arg.block_size) {
@@ -127,34 +158,11 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		appendStr(node->format, node->info->group_name);
 	}
 
+	if (arg.extended_attributes && LINUX)
+		appendStr(node->format, " ?");
+	
 	fillInSpace(node->format, format->max_size_bytes, node->info->size_bytes_len);
-	if (node->type == BLKFILE || node->type == CHARFILE)
-		appendStr(node->format, node->info->major);
-	else {
-		char *tmp = ft_itoa(node->info->size_bytes);
-		if (!tmp) {
-			tmp = ft_strdup("0");
-		}
-		char *append = NULL;
-		if (arg.comma) {
-			append = int_to_str_sep(node, tmp);
-			if (!append) {
-				append = ft_strdup("0");
-			}
-			appendStr(node->format, append);
-			free(append);
-		} else if (arg.human_readable) {
-			append = get_human_readable_size(node->info->size_bytes);
-			if (!append) {
-				append = ft_strdup("0");
-			}
-			appendStr(node->format, append);
-			if (append)
-				free(append);
-		} else
-			appendStr(node->format, tmp);
-		free(tmp);
-	}
+	appendSize(arg, node);
 	appendChar(node->format, ' ');
 
 	appendStr(node->format, node->info->time);

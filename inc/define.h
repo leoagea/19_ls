@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 22:54:22 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/28 13:50:47 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 19:47:02 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@
 #	define CALC_BLOCKS(blocks)				   block
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size, 0, XATTR_NOFOLLOW)
 #	define LIST_XATTR(path, list, size)	   listxattr(path, list, size, XATTR_NOFOLLOW)
+#	define LINUX 0
 #elif __linux__
 #	define CALC_BLOCKS(blocks)				   (blocks / 2)
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size)
 #	define LIST_XATTR(path, list, size)	   listxattr(path, list, size)
+#   define LINUX 1
 #endif
 
 #define ENV_LSCOLORS "LS_COLORS"
