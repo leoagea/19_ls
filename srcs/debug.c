@@ -31,7 +31,7 @@ void debug_print_argList(t_arg argList)
 	ft_printf(2, "\toneline: %b\n", argList.oneline);
 	ft_printf(2, "\tcomma: %b\n", argList.slash);
 	ft_printf(2, "\thorizontal: %b\n", argList.horizontal);
-	
+
 	ft_printf(2, "\tall_path: \n");
 	int i = 0;
 	while (argList.all_path[i] != NULL) {

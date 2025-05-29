@@ -14,7 +14,7 @@
 
 static void sort_inside_dir(t_data *data, t_dll *list)
 {
-	if (!data->arg.not_sort) {		
+	if (!data->arg.not_sort) {
 		if (data->arg.sort_time || (data->arg.access_time && !data->arg.long_format))
 			dll_bubble_sort(list->head, list->tail, compareTime);
 		else if (data->arg.access_time && data->arg.sort_time && data->arg.long_format)
@@ -77,30 +77,29 @@ void print_format(t_data *data, t_ls *ls)
 
 static void print_column(t_data *data, t_dll *list)
 {
-    t_ls **arr = list_to_stringarray(list);
-    if (!arr) {
-        return;
-    }
+	t_ls **arr = list_to_stringarray(list);
+	if (!arr) {
+		return;
+	}
 
-	bool is_block_size = data->arg.block_size;
-    size_t arr_len = ft_arr_len((void **)arr);
-    size_t columns = calculate_columns(arr, arr_len, data->w.ws_col, is_block_size);
+	bool   is_block_size = data->arg.block_size;
+	size_t arr_len = ft_arr_len((void **)arr);
+	size_t columns = calculate_columns(arr, arr_len, data->w.ws_col, is_block_size);
 	if (columns == 0) {
 		free(arr);
 		return;
 	}
-    size_t rows = (arr_len + columns - 1) / columns;
-	
-    size_t *col_widths = malloc(columns * sizeof(size_t));
-    if (!col_widths) {
+	size_t rows = (arr_len + columns - 1) / columns;
+
+	size_t *col_widths = malloc(columns * sizeof(size_t));
+	if (!col_widths) {
 		free(arr);
 		ft_printf(1, "\n");
-        return;
-    }
+		return;
+	}
 
 	size_t *siz_widths = NULL;
 	if (is_block_size) {
-		
 		siz_widths = malloc(columns * sizeof(size_t));
 		if (!siz_widths) {
 			free(col_widths);
@@ -108,7 +107,7 @@ static void print_column(t_data *data, t_dll *list)
 			return;
 		}
 		ft_memset(siz_widths, 0, columns * sizeof(size_t));
-		
+
 		for (size_t col = 0; col < columns; col++) {
 			siz_widths[col] = 0;
 			for (size_t row = 0; row < rows; row++) {
@@ -125,11 +124,11 @@ static void print_column(t_data *data, t_dll *list)
 			}
 		}
 	}
-		
+
 	for (size_t col = 0; col < columns; col++) {
 		col_widths[col] = 0;
 		for (size_t row = 0; row < rows; row++) {
-			size_t idx; 
+			size_t idx;
 			if (data->arg.horizontal)
 				idx = row * columns + col;
 			else
@@ -142,21 +141,19 @@ static void print_column(t_data *data, t_dll *list)
 		}
 	}
 
-
-
 	for (size_t row = 0; row < rows; row++) {
 		for (size_t col = 0; col < columns; col++) {
 			size_t idx; // = row * columns + col;
 			if (data->arg.horizontal)
-                idx = row * columns + col;
-            else
-                idx = col * rows + row;
+				idx = row * columns + col;
+			else
+				idx = col * rows + row;
 			if (idx < arr_len) {
 				char *color = data->is_tty ? get_color_from_env(arr[idx], data) : "";
 				char *reset = data->is_tty ? COLOR_RESET : "";
-				int padding = 0;
-				if (is_block_size){
-					padding = siz_widths[col] - arr[idx]->info->block_size_len;	
+				int	  padding = 0;
+				if (is_block_size) {
+					padding = siz_widths[col] - arr[idx]->info->block_size_len;
 					if (padding > 0) {
 						addPadding(padding);
 					}
@@ -167,12 +164,12 @@ static void print_column(t_data *data, t_dll *list)
 							ft_printf(1, "%s ", "0");
 						else if (arr[idx]->type == REGFILE && arr[idx]->info->size_bytes == 0)
 							ft_printf(1, "%s ", "0");
-						else if (arr[idx]->type == REGFILE && arr[idx]->info->size_bytes > 0){
-							char *human_readable = get_human_readable_size(arr[idx]->info->size_bytes);
+						else if (arr[idx]->type == REGFILE && arr[idx]->info->size_bytes > 0) {
+							char *human_readable =
+								get_human_readable_size(arr[idx]->info->size_bytes);
 							ft_printf(1, "%s ", human_readable);
 							free(human_readable);
-						}
-						else
+						} else
 							ft_printf(1, "%s ", "0");
 					}
 				}
@@ -186,7 +183,7 @@ static void print_column(t_data *data, t_dll *list)
 		ft_printf(1, "\n");
 	}
 
-    free(col_widths);
+	free(col_widths);
 	free(arr);
 	if (siz_widths) {
 		free(siz_widths);
@@ -231,14 +228,13 @@ static void print_oneline(t_data *data, t_dll *list)
 		if (human_readable) {
 			ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
 			free(human_readable);
-		}
-		else {
+		} else {
 			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
 		}
 	} else {
 		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
 	}
-	
+
 	t_node *node = list->head;
 	while (node) {
 		t_ls *ls = node->content;
@@ -263,21 +259,19 @@ void print_recursive(t_data *data, t_dll *list)
 	dll_init(printsubdir);
 
 	if (data->arg.long_format && data->is_tty) {
-		
 		int total_blocks = calculateTotalBlocks(list);
 		if (data->arg.human_readable) {
 			char *human_readable = get_human_readable_size(total_blocks * 1024);
 			if (human_readable) {
 				ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
 				free(human_readable);
-			}
-			else {
+			} else {
 				ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
 			}
 		} else {
 			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
 		}
-		
+
 		t_node *node = list->head;
 		while (node) {
 			if (node->content) {
@@ -292,7 +286,7 @@ void print_recursive(t_data *data, t_dll *list)
 	} else {
 		print_column(data, list);
 	}
-	
+
 	t_node *node = list->head;
 	while (node) {
 		if (node->content) {
@@ -329,8 +323,7 @@ static void print_direct(t_data *data, t_dll *list)
 		if (human_readable) {
 			ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
 			free(human_readable);
-		}
-		else {
+		} else {
 			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
 		}
 	} else {
@@ -356,7 +349,7 @@ void output(t_data *data, t_dll *list)
 	if (list->head == NULL) {
 		return;
 	}
-	
+
 	sort_inside_dir(data, list);
 
 	if (data->arg.recurisve)

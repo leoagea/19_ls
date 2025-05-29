@@ -45,11 +45,9 @@ void getFormatLen(t_ls *node, t_format **format)
 	(*format)->max_group = MAX((*format)->max_group, node->info->group_name_len);
 	(*format)->max_user = MAX((*format)->max_user, node->info->user_name_len);
 	(*format)->max_link = MAX((*format)->max_link, node->info->nlink_len);
-	(*format)->max_size_bytes =
-		MAX((*format)->max_size_bytes, node->info->size_bytes_len);
+	(*format)->max_size_bytes = MAX((*format)->max_size_bytes, node->info->size_bytes_len);
 	(*format)->max_name = MAX((*format)->max_name, node->info->name_len);
-	(*format)->max_block_size =
-		MAX((*format)->max_block_size, node->info->block_size_len);
+	(*format)->max_block_size = MAX((*format)->max_block_size, node->info->block_size_len);
 	(*format)->max_uid = MAX((*format)->max_uid, node->info->user_id_len);
 	(*format)->max_gid = MAX((*format)->max_gid, node->info->group_id_len);
 }
@@ -59,7 +57,7 @@ static void fillInSpace(char *str, int max_len, int len)
 	int i = -1;
 	int spaces = max_len - len + 1;
 
-	if (len == max_len ){
+	if (len == max_len) {
 		appendChar(str, ' ');
 		return;
 	}
@@ -70,33 +68,33 @@ static void fillInSpace(char *str, int max_len, int len)
 static void appendType(char *format, int type)
 {
 	switch (type) {
-	case DIRECTORY:
-		appendChar(format, 'd');
-		break;
-	case REGFILE:
-		appendChar(format, '-');
-		break;
-	case LINK:
-		appendChar(format, 'l');
-		break;
-	case FIFO:
-		appendChar(format, 'p');
-		break;
-	case SOCKET:
-		appendChar(format, 's');
-		break;
-	case CFS:
-		appendChar(format, 'n');
-		break;
-	case CHARFILE:
-		appendChar(format, 'c');
-		break;
-	case BLKFILE:
-		appendChar(format, 'b');
-		break;
-	default:
-		appendChar(format, 'u');
-		break;
+		case DIRECTORY:
+			appendChar(format, 'd');
+			break;
+		case REGFILE:
+			appendChar(format, '-');
+			break;
+		case LINK:
+			appendChar(format, 'l');
+			break;
+		case FIFO:
+			appendChar(format, 'p');
+			break;
+		case SOCKET:
+			appendChar(format, 's');
+			break;
+		case CFS:
+			appendChar(format, 'n');
+			break;
+		case CHARFILE:
+			appendChar(format, 'c');
+			break;
+		case BLKFILE:
+			appendChar(format, 'b');
+			break;
+		default:
+			appendChar(format, 'u');
+			break;
 	}
 }
 
@@ -132,15 +130,14 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	fillInSpace(node->format, format->max_size_bytes, node->info->size_bytes_len);
 	if (node->type == BLKFILE || node->type == CHARFILE)
 		appendStr(node->format, node->info->major);
-	else{
+	else {
 		char *tmp = ft_itoa(node->info->size_bytes);
 		char *append = NULL;
 		if (arg.comma) {
 			append = int_to_str_sep(node, tmp);
 			appendStr(node->format, append);
 			free(append);
-		}
-		else if (arg.human_readable) {
+		} else if (arg.human_readable) {
 			append = get_human_readable_size(node->info->size_bytes);
 			if (!append) {
 				append = ft_strdup("0");
@@ -148,8 +145,7 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 			appendStr(node->format, append);
 			if (append)
 				free(append);
-		} 
-		else
+		} else
 			appendStr(node->format, tmp);
 		free(tmp);
 	}
@@ -162,15 +158,14 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 void formatOther(t_arg arg, t_ls *node, t_format *format)
 {
 	if (arg.block_size) {
-		fillInSpace(node->format_block, format->max_block_size,
-					node->info->block_size_len);
+		fillInSpace(node->format_block, format->max_block_size, node->info->block_size_len);
 		appendInt(node->format_block, node->info->block_size);
 		appendChar(node->format_block, ' ');
 	}
 	appendStr(node->format, node->name);
 
 	size_t name_len = (node->info) ? node->info->name_len : ft_strlen(node->name);
-	int space = format->max_name - name_len + 1;
+	int	   space = format->max_name - name_len + 1;
 	for (int i = 0; i < space; i++)
 		appendChar(node->format, ' ');
 }

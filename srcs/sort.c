@@ -23,15 +23,15 @@ int compareTime(void *a, void *b)
 {
 	t_ls *node_a = a;
 	t_ls *node_b = b;
-	
-    if (node_a->info->time_info != node_b->info->time_info){
-        return (node_b->info->time_info - node_a->info->time_info);
+
+	if (node_a->info->time_info != node_b->info->time_info) {
+		return (node_b->info->time_info - node_a->info->time_info);
 	}
 
-    if (node_a->info->time_nsec != node_b->info->time_nsec){
-        return (node_b->info->time_nsec - node_a->info->time_nsec);
+	if (node_a->info->time_nsec != node_b->info->time_nsec) {
+		return (node_b->info->time_nsec - node_a->info->time_nsec);
 	}
-        
+
 	return compareName(a, b);
 }
 

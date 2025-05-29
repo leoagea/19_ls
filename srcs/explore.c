@@ -14,7 +14,7 @@
 
 static int directory(t_data *data)
 {
-	int i = 0;
+	int		  i = 0;
 	t_format *format = malloc(sizeof(t_format));
 	initFormatStruct(format);
 	while (data->arg.all_path[i] != NULL) {
@@ -41,13 +41,13 @@ static int directory(t_data *data)
 			if (node->content == NULL) {
 				return EXIT_FAILURE;
 			}
-	
+
 			t_ls *ls = node->content;
 			formatOutput(format, ls, data->arg);
 			node = node->next;
 		}
 	}
-	
+
 	if (format) {
 		freeFormatStruct(&format);
 	}
@@ -61,22 +61,20 @@ int explore_loop(t_data *data)
 {
 	int i = 0;
 
-	ft_bubble_sort_string_arr(data->arg.all_path,
-							  ft_arr_len((void **)data->arg.all_path));
+	ft_bubble_sort_string_arr(data->arg.all_path, ft_arr_len((void **)data->arg.all_path));
 	if (data->arg.directory)
 		return directory(data);
-		
+
 	if (data->arg.reverse) {
 		ft_arr_revert((void **)data->arg.all_path);
 	}
-
 
 	while (data->arg.all_path[i] != NULL) {
 		t_dll *list = malloc(sizeof(t_dll));
 		dll_init(list);
 		dll_insert_tail(list, data->list);
-		if (exploreDirectories(data, data->list->tail->content,
-							   data->arg.all_path[i]) == EXIT_FAILURE) {
+		if (exploreDirectories(data, data->list->tail->content, data->arg.all_path[i]) ==
+			EXIT_FAILURE) {
 			return EXIT_FAILURE;
 		}
 		i++;
@@ -129,9 +127,8 @@ static void checkEntryType(t_ls *node, struct dirent *entry)
 
 int handleSymlink(t_ls *node)
 {
-	char *link_path = node->relative_path[0] == '/'
-						  ? ft_strdup(node->relative_path)
-						  : ft_join_path(".", node->relative_path);
+	char *link_path = node->relative_path[0] == '/' ? ft_strdup(node->relative_path)
+													: ft_join_path(".", node->relative_path);
 
 	if (!link_path) {
 		perror("malloc");
@@ -144,12 +141,11 @@ int handleSymlink(t_ls *node)
 		return EXIT_FAILURE;
 	}
 
-	ssize_t len = readlink(link_path, node->info->sym_name,
-						   sizeof(node->info->sym_name) - 1);
+	ssize_t len = readlink(link_path, node->info->sym_name, sizeof(node->info->sym_name) - 1);
 	if (len == -1) {
 		free(link_path);
-		ft_printf(2, "ls: cannot read symbolic link '%s': %s\n",
-					node->relative_path, strerror(errno));
+		ft_printf(2, "ls: cannot read symbolic link '%s': %s\n", node->relative_path,
+				  strerror(errno));
 		return EXIT_FAILURE;
 	}
 	free(link_path);
@@ -165,8 +161,7 @@ int processEntry(t_data *data, t_ls *node, t_format **format)
 		return retrieveAllInfo(data, node, format);
 
 	if (node->is_dir && data->arg.recurisve &&
-		(ft_strncmp(".", node->name, INT_MAX) != 0 &&
-		 ft_strncmp("..", node->name, INT_MAX) != 0)) {
+		(ft_strncmp(".", node->name, INT_MAX) != 0 && ft_strncmp("..", node->name, INT_MAX) != 0)) {
 		t_dll *sub = malloc(sizeof(t_dll));
 		if (!sub) {
 			freeLsNode(node);
@@ -209,7 +204,8 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 		node->name = ft_strdup(entry->d_name);
 		node->lower_name = string_to_lower(node->name);
-		node->relative_path = path[ft_strlen(path) - 1] == '/' ? ft_strjoin(path, entry->d_name) : ft_join_path(path, entry->d_name);
+		node->relative_path = path[ft_strlen(path) - 1] == '/' ? ft_strjoin(path, entry->d_name)
+															   : ft_join_path(path, entry->d_name);
 
 		checkEntryType(node, entry);
 
@@ -237,6 +233,6 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 	if (format) {
 		freeFormatStruct(&format);
 	}
-	
+
 	return EXIT_SUCCESS;
 }

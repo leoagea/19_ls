@@ -35,7 +35,7 @@ void init_colors(t_data *data)
 		data->use_color = false;
 		return;
 	}
-	
+
 	// Initialize with default values
 	parse_ls_colors(ls_colors, &data->colors);
 }
@@ -48,28 +48,28 @@ char *get_color_from_env(t_ls *ls, t_data *data)
 	const char *code = NULL;
 
 	switch (ls->type) {
-	case DIRECTORY:
-		code = data->colors.di;
-		break;
-	case LINK:
-		code = data->colors.ln;
-		break;
-	case SOCKET:
-		code = data->colors.so;
-		break;
-	case FIFO:
-		code = data->colors.pi;
-		break;
-	case BLKFILE:
-		code = data->colors.bd;
-		break;
-	case CHARFILE:
-		code = data->colors.cd;
-		break;
-	case REGFILE:
-		if (ls->info && ls->info->perm[2] == 'x')
-			code = data->colors.ex;
-		break;
+		case DIRECTORY:
+			code = data->colors.di;
+			break;
+		case LINK:
+			code = data->colors.ln;
+			break;
+		case SOCKET:
+			code = data->colors.so;
+			break;
+		case FIFO:
+			code = data->colors.pi;
+			break;
+		case BLKFILE:
+			code = data->colors.bd;
+			break;
+		case CHARFILE:
+			code = data->colors.cd;
+			break;
+		case REGFILE:
+			if (ls->info && ls->info->perm[2] == 'x')
+				code = data->colors.ex;
+			break;
 	}
 
 	if (code) {

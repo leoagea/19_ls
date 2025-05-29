@@ -99,7 +99,7 @@ typedef struct s_info {
 	char   major[33];
 	size_t size_thousands;
 	time_t time_info;
-	long time_nsec;
+	long   time_nsec;
 
 	// Len Info
 	size_t nlink_len;
@@ -115,16 +115,16 @@ typedef struct s_info {
 typedef struct s_ls {
 	char *relative_path;
 	char *name;
-	char  *lower_name;
+	char *lower_name;
 	int	  type;
 	bool  is_symbolic;
 	bool  is_dir;
 	char  format[256];
 	char  format_block[32];
 
-	t_info	 *info;
-	t_dll	 *subdir;
-	t_dll	 *xattr_list;
+	t_info *info;
+	t_dll  *subdir;
+	t_dll  *xattr_list;
 } t_ls;
 
 typedef struct s_subdir {
@@ -141,7 +141,7 @@ typedef struct s_data {
 	t_color_map	   colors;
 	bool		   use_color;
 	bool		   is_tty;
-	int 		   return_val;
+	int			   return_val;
 } t_data;
 
 #endif

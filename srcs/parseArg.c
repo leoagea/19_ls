@@ -44,7 +44,7 @@ static int getAllPath(int ac, char **av, t_arg *argList, int i)
 int parseArg(int ac, char **av, t_data *data)
 {
 	t_arg *argList = &data->arg;
-	int i = 0;
+	int	   i = 0;
 
 	// Parse all options
 	while (++i < ac && av[i][0] == '-') {
@@ -65,92 +65,92 @@ int parseArg(int ac, char **av, t_data *data)
 			char option = av[i][j];
 
 			switch (option) {
-			case 'a':
-				argList->all = true;
-				break;
+				case 'a':
+					argList->all = true;
+					break;
 
-			case 'r':
-				argList->reverse = true;
-				break;
+				case 'r':
+					argList->reverse = true;
+					break;
 
-			case 't':
-				argList->sort_time = true;
-				break;
+				case 't':
+					argList->sort_time = true;
+					break;
 
-			case 'R':
-				argList->recurisve = true;
-				break;
+				case 'R':
+					argList->recurisve = true;
+					break;
 
-			case 'l':
-				argList->long_format = true;
-				break;
+				case 'l':
+					argList->long_format = true;
+					break;
 
-			case '@':
-				argList->extended_attributes = true;
-				break;
+				case '@':
+					argList->extended_attributes = true;
+					break;
 
-			case 'S':
-				if (argList->sort_time)
+				case 'S':
+					if (argList->sort_time)
+						argList->sort_time = false;
+					argList->sort_size = true;
+					break;
+
+				case 's':
+					argList->block_size = true;
+					break;
+
+				case 'f':
+					argList->not_sort = true;
+					argList->all = true;
 					argList->sort_time = false;
-				argList->sort_size = true;
-				break;
+					argList->sort_size = false;
+					argList->reverse = false;
+					data->use_color = false;
+					break;
 
-			case 's':
-				argList->block_size = true;
-				break;
+				case 'g':
+					argList->no_name = true;
+					argList->long_format = true;
+					break;
 
-			case 'f':
-				argList->not_sort = true;
-				argList->all = true;
-				argList->sort_time = false;
-				argList->sort_size = false;
-				argList->reverse = false;
-				data->use_color = false;
-				break;
+				case 'n':
+					argList->long_format = true;
+					argList->id = true;
+					break;
 
-			case 'g':
-				argList->no_name = true;
-				argList->long_format = true;
-				break;
+				case 'p':
+					argList->slash = true;
+					break;
 
-			case 'n':
-				argList->long_format = true;
-				argList->id = true;
-				break;
+				case '1':
+					argList->oneline = true;
+					break;
 
-			case 'p':
-				argList->slash = true;
-				break;
+				case ',':
+					setlocale(LC_ALL, "");
+					argList->comma = true;
+					break;
 
-			case '1':
-				argList->oneline = true;
-				break;
+				case 'm':
+					argList->horizontal = true;
+					break;
 
-			case ',':
-				setlocale(LC_ALL, "");
-				argList->comma = true;
-				break;
+				case 'u':
+					argList->access_time = true;
+					break;
 
-			case 'm':
-				argList->horizontal = true;
-				break;
-			
-			case 'u':
-				argList->access_time = true;
-				break;
+				case 'd':
+					argList->directory = true;
+					break;
 
-			case 'd':
-				argList->directory = true;
-				break;
-				
-			case 'h':
-				argList->human_readable = true;
-				break;
+				case 'h':
+					argList->human_readable = true;
+					break;
 
-			default:
-				usage(option);
-				return EXIT_FAILURE;
-				break;
+				default:
+					usage(option);
+					return EXIT_FAILURE;
+					break;
 			}
 		}
 	}

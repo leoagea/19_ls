@@ -32,16 +32,16 @@
 #include <sys/ioctl.h> // ioctl
 #include <sys/xattr.h>
 #include <sys/sysmacros.h> // major, minor
-#include <locale.h> // setlocale
-#include <math.h> // roundf
+#include <locale.h>		   // setlocale
+#include <math.h>		   // roundf
 
 /*#############################################################################
 # Init functions
 #############################################################################*/
 
-void initArgStruct(t_arg *argStruct);
-void initFormatStruct(t_format *format);
-void initInfoStruct(t_info *info);
+void	  initArgStruct(t_arg *argStruct);
+void	  initFormatStruct(t_format *format);
+void	  initInfoStruct(t_info *info);
 t_ls	 *mallocLs();
 t_subdir *mallocSubdir(void);
 
@@ -79,8 +79,8 @@ int exploreDirectories(t_data *data, t_dll *list, char *path);
 # RetrieveInfo functions
 #############################################################################*/
 
-int retrieveAllInfo(t_data *data, t_ls *node, t_format **format);
-void	  extractPerm(char *perm, int mode);
+int	 retrieveAllInfo(t_data *data, t_ls *node, t_format **format);
+void extractPerm(char *perm, int mode);
 
 /*#############################################################################
 # FormatOutput functions
@@ -114,26 +114,26 @@ char *get_color_from_env(t_ls *ls, t_data *data);
 # Sort functions
 #############################################################################*/
 
-int		  compareName(void *a, void *b);
-int		  compareTime(void *a, void *b);
-int		  compareSubdirName(void *a, void *b);
-int		  compareSize(void *a, void *b);
+int compareName(void *a, void *b);
+int compareTime(void *a, void *b);
+int compareSubdirName(void *a, void *b);
+int compareSize(void *a, void *b);
 
 /*#############################################################################
 # Utils functions
 #############################################################################*/
 
-void	  usage(char invalidOption);
-void	  help(void);
-int		  calculateTotalBlocks(t_dll *list);
-char	 *get_color_for_file(t_ls *ls);
-char	 *int_to_str_sep(t_ls *node, char *num);
-char     *string_to_lower(char *str);
-int		  get_max_len(t_dll *list);
+void   usage(char invalidOption);
+void   help(void);
+int	   calculateTotalBlocks(t_dll *list);
+char  *get_color_for_file(t_ls *ls);
+char  *int_to_str_sep(t_ls *node, char *num);
+char  *string_to_lower(char *str);
+int	   get_max_len(t_dll *list);
 t_ls **list_to_stringarray(t_dll *list);
 size_t calculate_columns(t_ls **files, size_t arr_len, size_t screen_width, bool is_block_size);
-void addPadding(size_t len);
-char *get_human_readable_size(size_t size);
+void   addPadding(size_t len);
+char  *get_human_readable_size(size_t size);
 
 /*#############################################################################
 # Free functions

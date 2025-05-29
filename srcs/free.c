@@ -59,7 +59,7 @@ void freeLsNode(void *content)
 	if (node->relative_path) {
 		freeStr(&node->relative_path);
 	}
-	if (node->lower_name){
+	if (node->lower_name) {
 		freeStr(&node->lower_name);
 	}
 	if (node->subdir) {
@@ -67,8 +67,7 @@ void freeLsNode(void *content)
 			dll_free(node->subdir, freeLsNode);
 			free(node->subdir);
 			node->subdir = NULL;
-		}
-		else
+		} else
 			free(node->subdir);
 	}
 	free(node);
