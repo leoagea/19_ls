@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 18:14:11 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 20:27:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 #include <grp.h>	   //getgrgid
 #include <sys/ioctl.h> // ioctl
 #include <sys/xattr.h>
-#include <sys/sysmacros.h> // major, minor
 #include <locale.h>		   // setlocale
 #include <math.h>		   // roundf
 

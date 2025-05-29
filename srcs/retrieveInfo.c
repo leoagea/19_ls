@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:59:06 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 20:24:13 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,7 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 	info_tmp->time_info = (data->arg.access_time) ? info.st_atime : info.st_mtime;
 	struct timespec time_spec = (data->arg.access_time) ? info.st_atim : info.st_mtim;
 	info_tmp->time_nsec = time_spec.tv_nsec; // For nanosecond precision
+	
 	extractTime(data->arg, info, info_tmp->time);
 
 	extractPerm(info_tmp->perm, info.st_mode);

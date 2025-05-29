@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 19:48:32 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 20:27:20 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	appendType(node->format, node->type);
 
 	appendStr(node->format, node->info->perm);
+	if (!LINUX && node->info->perm[9] == '\0')
+		appendChar(node->format, ' ');
 	fillInSpace(node->format, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
 
