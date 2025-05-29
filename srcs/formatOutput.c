@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 13:34:37 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:55:55 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,15 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		appendStr(node->format, node->info->major);
 	else {
 		char *tmp = ft_itoa(node->info->size_bytes);
+		if (!tmp) {
+			tmp = ft_strdup("0");
+		}
 		char *append = NULL;
 		if (arg.comma) {
 			append = int_to_str_sep(node, tmp);
+			if (!append) {
+				append = ft_strdup("0");
+			}
 			appendStr(node->format, append);
 			free(append);
 		} else if (arg.human_readable) {

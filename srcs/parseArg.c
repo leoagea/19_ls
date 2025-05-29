@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:28:22 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:49:17 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ static int getAllPath(int ac, char **av, t_arg *argList, int i)
 			tmp = ft_strjoin(argList->path, av[i]);
 			free(argList->path);
 		}
+		if (!tmp) {
+			perror("malloc");
+			return EXIT_FAILURE;
+		}
 		argList->path = ft_strjoin(tmp, " ");
 		if (tmp)
 			free(tmp);
@@ -34,8 +38,16 @@ static int getAllPath(int ac, char **av, t_arg *argList, int i)
 			return EXIT_FAILURE;
 		argList->all_path[0] = ft_strdup(DEFAULT_PATH);
 		argList->all_path[1] = NULL;
+		if (!argList->all_path[0]) {
+			perror("malloc");
+			return EXIT_FAILURE;
+		}
 	} else {
 		argList->all_path = ft_split(argList->path, ' ');
+		if (!argList->all_path) {
+			perror("malloc");
+			return EXIT_FAILURE;
+		}
 	}
 
 	return EXIT_SUCCESS;

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 13:34:24 by lagea            ###   ########.fr       */
+/*   Updated: 2025/05/29 15:53:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ int processEntry(t_data *data, t_ls *node, t_format **format)
 		node->subdir = sub;
 		if (exploreDirectories(data, node->subdir, node->relative_path) == EXIT_FAILURE) {
 			dll_free(sub, freeLsNode);
+			data->return_val = 1;
 			return EXIT_FAILURE;
 		}
 	}
@@ -190,6 +191,11 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 	}
 
 	t_format *format = malloc(sizeof(t_format));
+	if (!format) {
+		closedir(dir);
+		perror("malloc");
+		return EXIT_FAILURE;
+	}
 	initFormatStruct(format);
 	struct dirent *entry;
 	while ((entry = readdir(dir)) != NULL) {
@@ -198,8 +204,8 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 		t_ls *node = mallocLs();
 		if (!node) {
-			closedir(dir);
-			return EXIT_FAILURE;
+			perror("malloc");
+			continue;
 		}
 
 		node->name = ft_strdup(entry->d_name);
@@ -207,6 +213,12 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		node->relative_path = path[ft_strlen(path) - 1] == '/' ? ft_strjoin(path, entry->d_name)
 															   : ft_join_path(path, entry->d_name);
 
+		if (!node->name || !node->lower_name || !node->relative_path) {
+			freeLsNode(node);
+			perror("malloc");
+			continue;
+		}
+		
 		checkEntryType(node, entry);
 
 		dll_insert_tail(node, list);
