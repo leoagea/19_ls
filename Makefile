@@ -15,7 +15,6 @@ LDFLAGS  = -lm
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 
 DEBUG_FLAGS   := -g -fsanitize=address
-RELEASE_FLAGS := -O3 -DNDEBUG
 BUILD_MODE_FILE = $(OBJ_DIR)/.build_mode
 
 ###############################################################################
@@ -95,15 +94,6 @@ debug:
 	fi
 	@$(MAKE) all
 
-release: CFLAGS := $(RELEASE_FLAGS)
-release:
-	@if [ ! -f $(BUILD_MODE_FILE) ] || [ "$$(cat $(BUILD_MODE_FILE))" != "release" ]; then \
-		$(MAKE) fclean; \
-		mkdir -p $(OBJ_DIR); \
-		echo "release" > $(BUILD_MODE_FILE); \
-	fi
-	@$(MAKE) all
-
 help:
 	@echo "Available targets:"
 	@echo "  all      : Build $(TARGET)"
@@ -135,4 +125,4 @@ tests: all
 ###############################################################################
 # Phony Targets
 ###############################################################################
-.PHONY: all clean fclean re test tests debug release help
+.PHONY: all clean fclean re test tests debug help
