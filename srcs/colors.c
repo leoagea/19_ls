@@ -6,6 +6,8 @@ static void parse_ls_colors(char *ls_colors, t_color_map *colors)
 	if (!token) {
 		return;
 	}
+
+	char **tmp = token;
 	while (*token) {
 		if (ft_strncmp(*token, "di=", 3) == 0)
 			colors->di = ft_strdup(*(token) + 3);
@@ -23,6 +25,7 @@ static void parse_ls_colors(char *ls_colors, t_color_map *colors)
 			colors->cd = ft_strdup(*(token) + 3);
 		token++;
 	}
+	free2Array(tmp);
 }
 
 void init_colors(t_data *data)
