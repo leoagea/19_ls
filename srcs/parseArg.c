@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 17:44:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 18:08:35 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ static int getAllPath(int ac, char **av, t_data *data, t_arg *argList, int i)
 		while (argList->all_paths[j]) {
 			int type = checkType(data, argList->all_paths[j]);
 			if (type == UNKNOWN) {
-				ft_printf(2, "ls: cannot access '%s': No such file or directory\n", argList->all_paths[j]);
 			} else {
 				t_input *node = mallocInput();
 				if (!node) {
