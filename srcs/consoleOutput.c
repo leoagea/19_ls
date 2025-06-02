@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 19:06:13 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/03 00:07:45 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void print_xattr(t_dll *xattr_list)
 		attr = current->content;
 		int tmp = (int)attr->value_size;
 		if (attr)
-			ft_printf(1, "\t%s\t%d\n", attr->name, tmp);
+			ft_printf(1, "\t%s\t%d", attr->name, tmp);
 		current = current->next;
 	}
 	dll_free(xattr_list, freeXattr);

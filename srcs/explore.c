@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 17:48:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/03 00:06:42 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,6 @@ static void output_loop(t_data *data)
 {
 	static t_input *list;
 	list = data->arg.input_list;
-	int i = 0;
 	
 	t_node *node = data->list->head;
 	while (node != NULL) {
@@ -252,7 +251,6 @@ static void output_loop(t_data *data)
 		if (node == NULL)
 			break;
 		ft_printf(1, "\n");
-		i++;
 	}
 }
 
