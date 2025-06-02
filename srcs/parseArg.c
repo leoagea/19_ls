@@ -6,13 +6,30 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:49:17 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 17:44:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
-static int getAllPath(int ac, char **av, t_arg *argList, int i)
+static int checkType(t_data *data, char *path)
+{
+	struct stat info;
+	if (lstat(path, &info) == -1) {
+			ft_printf(2, "ls: cannot access '%s': %s\n", path, strerror(errno));
+			data->return_val = 2;
+			return UNKNOWN;
+	}
+	if (S_ISREG(info.st_mode) || S_ISLNK(info.st_mode) || S_ISCHR(info.st_mode) ||
+	    S_ISBLK(info.st_mode) || S_ISFIFO(info.st_mode) || S_ISSOCK(info.st_mode))
+		return REGFILE;
+	else if (S_ISDIR(info.st_mode))
+		return DIRECTORY;
+	else
+		return UNKNOWN;
+}
+
+static int getAllPath(int ac, char **av, t_data *data, t_arg *argList, int i)
 {
 	while (i < ac) {
 		char *tmp = NULL;
@@ -33,21 +50,56 @@ static int getAllPath(int ac, char **av, t_arg *argList, int i)
 	}
 
 	if (!argList->path) {
-		argList->all_path = malloc(2 * sizeof(char *));
-		if (!argList->all_path)
-			return EXIT_FAILURE;
-		argList->all_path[0] = ft_strdup(DEFAULT_PATH);
-		argList->all_path[1] = NULL;
-		if (!argList->all_path[0]) {
+		t_input *input = mallocInput();
+		input->name = ft_strdup(DEFAULT_PATH);
+		if (!input->name) {
 			perror("malloc");
+			free(input);
 			return EXIT_FAILURE;
 		}
+		input->type = DIRECTORY;
+		argList->input_list = input;
 	} else {
-		argList->all_path = ft_split(argList->path, ' ');
-		if (!argList->all_path) {
+		argList->all_paths = ft_split(argList->path, ' ');
+		if (!argList->all_paths) {
 			perror("malloc");
 			return EXIT_FAILURE;
 		}
+		
+		ft_bubble_sort_string_arr(argList->all_paths, ft_arr_len((void **)argList->all_paths));
+		
+		if (argList->reverse) {
+			ft_arr_revert((void **)argList->all_paths);
+		}
+		
+		argList->all_paths_len = ft_arr_len((void **)argList->all_paths);
+		int j = 0;
+		t_input *current = argList->input_list;
+		t_input *head = current;
+		while (argList->all_paths[j]) {
+			int type = checkType(data, argList->all_paths[j]);
+			if (type == UNKNOWN) {
+				ft_printf(2, "ls: cannot access '%s': No such file or directory\n", argList->all_paths[j]);
+			} else {
+				t_input *node = mallocInput();
+				if (!node) {
+					perror("malloc");
+					return EXIT_FAILURE;
+				}
+				node->name = ft_strdup(argList->all_paths[j]);
+				node->type = type;
+				if (!head) {
+					head = node;
+					current = node;
+				}
+				else {
+					current->next = node;
+					current = node;
+				}
+			}
+			j++;
+		}
+		argList->input_list = head;
 	}
 
 	return EXIT_SUCCESS;
@@ -179,7 +231,7 @@ int parseArg(int ac, char **av, t_data *data)
 	}
 
 	// Retrieve all path
-	if (getAllPath(ac, av, argList, i) == EXIT_FAILURE)
+	if (getAllPath(ac, av, data, argList, i) == EXIT_FAILURE)
 		return EXIT_FAILURE;
 
 	return EXIT_SUCCESS;

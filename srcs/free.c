@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:20:05 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:28:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 15:41:20 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,13 @@ void freeArgStruct(t_arg *argList)
 	if (argList->path) {
 		freeStr(&argList->path);
 	}
-	if (argList->all_path) {
-		free2Array(argList->all_path);
-		argList->all_path = NULL;
+	if (argList->all_paths) {
+		free2Array(argList->all_paths);
+		argList->all_paths = NULL;
+	}
+	if (argList->input_list) {
+		freeInputStruct(argList->input_list);
+		argList->input_list = NULL;
 	}
 }
 
@@ -144,6 +148,7 @@ void freeAll(t_data *data)
 	freeArgStruct(&data->arg);
 	freeColorMap(&data->colors);
 	dll_free(data->list, freeList);
+	dll_free(data->file_list, freeLsNode);
 }
 
 void freeSubdir(void *content)
@@ -156,4 +161,15 @@ void freeSubdir(void *content)
 	if (subdir->lower_name)
 		freeStr(&subdir->lower_name);
 	free(subdir);
+}
+
+void freeInputStruct(t_input *start)
+{
+	while (start) {
+		t_input *next = start->next;
+		if (start->name)
+			freeStr(&start->name);
+		free(start);
+		start = next;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 20:27:20 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 14:48:32 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,9 +193,8 @@ void formatOutput(t_format *format, t_ls *node, t_arg arg)
 	}
 
 	if (arg.long_format) {
-		if (!node->info) {
+		if (!node->info)
 			return;
-		}
 		formatLongFormat(arg, node, format);
 	} else
 		formatOther(arg, node, format);

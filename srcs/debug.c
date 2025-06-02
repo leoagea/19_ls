@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:29:13 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 17:17:31 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void debug_print_argList(t_arg argList)
 
 	ft_printf(2, "\tall_path: \n");
 	int i = 0;
-	while (argList.all_path[i] != NULL) {
-		ft_printf(2, "\t\t'%s'\n", argList.all_path[i]);
+	while (argList.all_paths[i] != NULL) {
+		ft_printf(2, "\t\t'%s'\n", argList.all_paths[i]);
 		i++;
 	}
 }
@@ -110,4 +110,19 @@ void debug_print_terminal_size(struct winsize *w)
 	ft_printf(1, "ws_row: %d\n", w->ws_row);
 	ft_printf(1, "ws_xpixel: %d\n", w->ws_xpixel);
 	ft_printf(1, "ws_ypixel: %d\n", w->ws_ypixel);
+}
+
+void debug_print_input_list(t_input *input_list)
+{
+	if (!input_list) {
+		ft_printf(1, "Input list is NULL\n");
+		return;
+	}
+
+	ft_printf(1, "Input list:\n");
+	t_input *node = input_list;
+	while (node != NULL) {
+		ft_printf(1, "Name: %s, Type: %d\n", node->name, node->type);
+		node = node->next;
+	}
 }

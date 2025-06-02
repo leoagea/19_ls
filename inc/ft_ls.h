@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 20:27:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 16:39:48 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	  initFormatStruct(t_format *format);
 void	  initInfoStruct(t_info *info);
 t_ls	 *mallocLs();
 t_subdir *mallocSubdir(void);
+t_input *mallocInput(void);
 
 /*#############################################################################
 # Debug functions
@@ -56,6 +57,7 @@ void debug_printNodeLs(t_ls *node);
 void debug_print_subdir(void *content);
 void debug_print_colors_map(t_color_map *colors);
 void debug_print_terminal_size(struct winsize *w);
+void debug_print_input_list(t_input *input_list);
 
 /*#############################################################################
 # ParseArg functions
@@ -99,8 +101,9 @@ void formatOutput(t_format *format, t_ls *node, t_arg arg);
 
 // void    output(t_dll *list, t_arg arg);
 void print_format(t_data *data, t_ls *ls);
-void output(t_data *data, t_dll *list);
 void print_recursive(t_data *data, t_dll *list);
+void output(t_data *data, t_dll *list);
+void outputListFiles(t_data *data, t_dll *list);
 
 /*#############################################################################
 # Colors functions
@@ -149,5 +152,6 @@ void freeXattr(void *content);
 void freeColorMap(t_color_map *colors);
 void freeAll(t_data *data);
 void freeSubdir(void *content);
+void freeInputStruct(t_input *start);
 
 #endif

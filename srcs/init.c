@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:54:12 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/26 15:07:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 16:46:21 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void initArgStruct(t_arg *argStruct)
 {
 	ft_memset(argStruct, 0, sizeof(t_arg));
 	argStruct->path = NULL;
-	argStruct->all_path = NULL;
+	argStruct->all_paths = NULL;
 }
 
 void initFormatStruct(t_format *format)
@@ -59,4 +59,15 @@ t_subdir *mallocSubdir(void)
 	subdir->path = NULL;
 	subdir->subdir_list = NULL;
 	return subdir;
+}
+
+t_input *mallocInput(void)
+{
+	t_input *node = malloc(sizeof(t_input));
+	if (!node) 
+		return NULL;
+	node->name = NULL;
+	node->type = 0;
+	node->next = NULL;
+	return node;
 }

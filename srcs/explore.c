@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:53:29 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 17:48:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static int directory(t_data *data)
 	int		  i = 0;
 	t_format *format = malloc(sizeof(t_format));
 	initFormatStruct(format);
-	while (data->arg.all_path[i] != NULL) {
+	while (data->arg.all_paths[i] != NULL) {
 		t_ls *node = mallocLs();
 		if (!node) {
 			return EXIT_FAILURE;
 		}
-		node->name = ft_strdup(data->arg.all_path[i]);
-		node->relative_path = ft_strdup(data->arg.all_path[i]);
+		node->name = ft_strdup(data->arg.all_paths[i]);
+		node->relative_path = ft_strdup(data->arg.all_paths[i]);
 		node->is_dir = true;
 		node->type = DIRECTORY;
 		dll_insert_tail(node, data->list);
@@ -57,50 +57,6 @@ static int directory(t_data *data)
 	return EXIT_SUCCESS;
 }
 
-int explore_loop(t_data *data)
-{
-	int i = 0;
-
-	ft_bubble_sort_string_arr(data->arg.all_path, ft_arr_len((void **)data->arg.all_path));
-	if (data->arg.directory)
-		return directory(data);
-
-	if (data->arg.reverse) {
-		ft_arr_revert((void **)data->arg.all_path);
-	}
-
-	while (data->arg.all_path[i] != NULL) {
-		t_dll *list = malloc(sizeof(t_dll));
-		dll_init(list);
-		dll_insert_tail(list, data->list);
-		if (exploreDirectories(data, data->list->tail->content, data->arg.all_path[i]) ==
-			EXIT_FAILURE) {
-			return EXIT_FAILURE;
-		}
-		i++;
-	}
-
-	size_t len = dll_size(data->list);
-	i = 0;
-	t_node *node = data->list->head;
-	while (node != NULL) {
-		t_dll *dll = node->content;
-		if (!dll || dll->head == NULL) {
-			node = node->next;
-			continue;
-		}
-		if (len > 1 || data->arg.recurisve)
-			ft_printf(1, "%s:\n", data->arg.all_path[i]);
-		output(data, dll);
-		node = node->next;
-		if (node == NULL)
-			break;
-		ft_printf(1, "\n");
-		i++;
-	}
-	return EXIT_SUCCESS;
-}
-
 static void checkEntryType(t_ls *node, struct dirent *entry)
 {
 	if (entry->d_type == DT_DIR) {
@@ -123,6 +79,29 @@ static void checkEntryType(t_ls *node, struct dirent *entry)
 		node->type = SOCKET;
 	else
 		node->type = UNKNOWN;
+}
+
+static void checkFileType(t_ls *node, struct stat *path_stat)
+{
+	if (S_ISDIR(path_stat->st_mode)) {
+		node->type = DIRECTORY;
+		node->is_dir = true;
+	} else if (S_ISREG(path_stat->st_mode)) {
+		node->type = REGFILE;
+	} else if (S_ISLNK(path_stat->st_mode)) {
+		node->type = LINK;
+		node->is_symbolic = true;
+	} else if (S_ISCHR(path_stat->st_mode)) {
+		node->type = CHARFILE;
+	} else if (S_ISBLK(path_stat->st_mode)) {
+		node->type = BLKFILE;
+	} else if (S_ISFIFO(path_stat->st_mode)) {
+		node->type = FIFO;
+	} else if (S_ISSOCK(path_stat->st_mode)) {
+		node->type = SOCKET;
+	} else {
+		node->type = UNKNOWN;
+	}
 }
 
 int handleSymlink(t_ls *node)
@@ -248,3 +227,123 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 
 	return EXIT_SUCCESS;
 }
+
+static void output_loop(t_data *data)
+{
+	static t_input *list;
+	list = data->arg.input_list;
+	int i = 0;
+	
+	t_node *node = data->list->head;
+	while (node != NULL) {
+		t_dll *dll = node->content;
+		if (!dll || dll->head == NULL) {
+			node = node->next;
+			continue;
+		}
+		if (data->arg.all_paths_len > 1 || data->arg.recurisve){
+			while (list && list->type != DIRECTORY && list->next)
+				list = list->next;
+			ft_printf(1, "%s:\n",list->name);
+			list = list->next;
+		}
+		output(data, dll);
+		node = node->next;
+		if (node == NULL)
+			break;
+		ft_printf(1, "\n");
+		i++;
+	}
+}
+
+static int exploreFile(t_data *data, t_dll *list, char *path, t_format **format)
+{
+	t_ls *node = mallocLs();
+	if (!node) {
+		perror("malloc");
+		return EXIT_FAILURE;
+	}
+
+	node->name = ft_strdup(path);
+	node->lower_name = string_to_lower(node->name);
+	node->relative_path = ft_strdup(path);
+	if (!node->name || !node->relative_path || !node->lower_name) {
+		freeLsNode(node);
+		perror("malloc");
+		return EXIT_FAILURE;
+	}
+
+	node->is_dir = false;
+
+	struct stat path_stat;
+	if (lstat(path, &path_stat) == -1) {
+		return EXIT_FAILURE;
+	}
+	
+	checkFileType(node, &path_stat);
+
+	dll_insert_tail(node, list);
+	
+	if (processEntry(data, node, format) == EXIT_FAILURE) {
+		freeLsNode(node);
+		return EXIT_FAILURE;
+	}
+	
+	return EXIT_SUCCESS;	
+}
+
+int explore_loop(t_data *data)
+{
+	if (data->arg.directory)
+		return directory(data);
+
+	t_format *format = malloc(sizeof(t_format));
+	if (!format) {
+		perror("malloc");
+		return EXIT_FAILURE;
+	}
+	
+	initFormatStruct(format);
+	t_input *input = data->arg.input_list;
+	while (input != NULL) {
+		if (input->type == DIRECTORY){
+			t_dll *list = malloc(sizeof(t_dll));
+			dll_init(list);
+			dll_insert_tail(list, data->list);
+			
+			if (exploreDirectories(data, data->list->tail->content, input->name) ==
+				EXIT_FAILURE) {
+				freeFormatStruct(&format);
+				return EXIT_FAILURE;
+			}
+		}
+		else if (input->type == REGFILE) {
+			if (exploreFile(data, data->file_list, input->name, &format) == EXIT_FAILURE) {
+				freeFormatStruct(&format);
+				return EXIT_FAILURE;
+			}
+		}
+		
+		input = input->next;
+	}
+	
+	t_node *node = data->file_list->head;
+	while (node != NULL) {
+		if (node->content == NULL) {
+			return EXIT_FAILURE;
+		}
+
+		t_ls *ls = node->content;
+		formatOutput(format, ls, data->arg);
+		node = node->next;
+	}
+	if (format) {
+		freeFormatStruct(&format);
+	}
+	
+	outputListFiles(data, data->file_list);
+	output_loop(data);
+
+	return EXIT_SUCCESS;
+}
+

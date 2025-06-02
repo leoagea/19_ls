@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:56 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/27 17:36:12 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 17:44:16 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ typedef struct s_xattr {
 	struct s_xattr *next;		// Next attribute
 } t_xattr;
 
+typedef struct s_input {
+	char *name;
+	int type;
+	struct s_input *next;
+} t_input;
+
 typedef struct s_arg {
 	bool all;				  //-a
 	bool reverse;			  //-r
@@ -69,8 +75,10 @@ typedef struct s_arg {
 	bool directory;			  //-d
 	bool human_readable;	  //-h
 
-	char  *path;
-	char **all_path;
+	char	*path;
+	char 	**all_paths;
+	size_t all_paths_len;
+	t_input *input_list;
 } t_arg;
 
 typedef struct s_format {
@@ -136,6 +144,7 @@ typedef struct s_subdir {
 
 typedef struct s_data {
 	t_dll		  *list;
+	t_dll		  *file_list;
 	t_arg		   arg;
 	struct winsize w;
 	t_color_map	   colors;

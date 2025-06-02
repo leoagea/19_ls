@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 15:29:21 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 14:56:31 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,6 +344,26 @@ static void print_direct(t_data *data, t_dll *list)
 	}
 }
 
+static void print_fileline(t_data *data, t_dll *list)
+{
+	if (!list || !list->head) {
+		return;
+	}
+
+	t_node *node = list->head;
+	while (node != NULL) {
+		if (!node->content) {
+			node = node->next;
+			continue;
+		}
+
+		t_ls *ls = node->content;
+		print_format(data, ls);
+		ft_printf(1, "\n");
+		node = node->next;
+	}
+}
+
 void output(t_data *data, t_dll *list)
 {
 	if (list->head == NULL) {
@@ -360,4 +380,21 @@ void output(t_data *data, t_dll *list)
 		else
 			print_column(data, list);
 	}
+}
+
+void outputListFiles(t_data *data, t_dll *list)
+{
+	if (list->head == NULL) {
+		return;
+	}
+
+	sort_inside_dir(data, list);
+
+
+	if (data->arg.long_format || !data->is_tty || data->arg.oneline)
+		print_fileline(data, list);
+	else
+		print_column(data, list);
+	
+	ft_printf(1, "\n");
 }

@@ -10,7 +10,7 @@ NC     := \033[0m
 # Compiler & Flags
 ###############################################################################
 CC       = gcc
-CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP
+CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP #-fsanitize=address -g
 LDFLAGS  = -lm 
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 
