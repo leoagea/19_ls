@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 14:56:31 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 19:06:13 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ static void sort_inside_dir(t_data *data, t_dll *list)
 {
 	if (!data->arg.not_sort) {
 		if (data->arg.sort_time || (data->arg.access_time && !data->arg.long_format))
-			dll_bubble_sort(list->head, list->tail, compareTime);
+			dll_quick_sort(list, compareTime);
 		else if (data->arg.access_time && data->arg.sort_time && data->arg.long_format)
-			dll_bubble_sort(list->head, list->tail, compareTime);
+			dll_quick_sort(list, compareTime);
 		else if (data->arg.sort_size)
-			dll_bubble_sort(list->head, list->tail, compareSize);
+			dll_quick_sort(list, compareSize);
 		else
-			dll_bubble_sort(list->head, list->tail, compareName);
+			dll_quick_sort(list, compareName);
 	}
 
 	if (data->arg.reverse)
@@ -196,7 +196,7 @@ static void handle_subdirs(t_data *data, t_dll *printsubdir)
 	if (!printsubdir->head)
 		return;
 
-	dll_bubble_sort(printsubdir->head, printsubdir->tail, compareSubdirName);
+	dll_quick_sort(printsubdir, compareSubdirName);
 	if (data->arg.reverse)
 		dll_revert(printsubdir);
 
