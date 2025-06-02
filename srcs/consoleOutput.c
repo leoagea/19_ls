@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/03 00:07:45 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/02 23:05:09 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,10 +204,6 @@ static void handle_subdirs(t_data *data, t_dll *printsubdir)
 	while (current) {
 		t_subdir *tmp = current->content;
 		if (tmp && tmp->subdir_list) {
-			if (tmp->subdir_list->size == 0) {
-				current = current->next;
-				continue;
-			}
 			ft_printf(1, "\n%s:\n", tmp->path);
 			sort_inside_dir(data, tmp->subdir_list);
 			print_recursive(data, tmp->subdir_list);
@@ -216,32 +212,37 @@ static void handle_subdirs(t_data *data, t_dll *printsubdir)
 	}
 }
 
-static void print_oneline(t_data *data, t_dll *list)
+static void print_direct(t_data *data, t_dll *list)
 {
-	if (!list || !list->head) {
+	if (!list) {
 		return;
 	}
 
-	int total_blocks = calculateTotalBlocks(list);
-	if (data->arg.human_readable) {
-		char *human_readable = get_human_readable_size(total_blocks * 1024);
-		if (human_readable) {
-			ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
-			free(human_readable);
+	if (data->arg.block_size || data->arg.human_readable || data->arg.long_format) {
+		int total_blocks = calculateTotalBlocks(list);
+		if (data->arg.human_readable) {
+			char *human_readable = get_human_readable_size(total_blocks * 1024);
+			if (human_readable) {
+				ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
+				free(human_readable);
+			} else {
+				ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
+			}
 		} else {
 			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
 		}
-	} else {
-		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
 	}
 
 	t_node *node = list->head;
-	while (node) {
-		t_ls *ls = node->content;
-		if (ls) {
-			print_format(data, ls);
-			ft_printf(1, "\n");
+	while (node != NULL) {
+		if (!node->content) {
+			node = node->next;
+			continue;
 		}
+
+		t_ls *ls = node->content;
+		print_format(data, ls);
+		ft_printf(1, "\n");
 		node = node->next;
 	}
 }
@@ -282,7 +283,7 @@ void print_recursive(t_data *data, t_dll *list)
 			node = node->next;
 		}
 	} else if (!data->is_tty || data->arg.oneline) {
-		print_oneline(data, list);
+		print_direct(data, list);
 	} else {
 		print_column(data, list);
 	}
@@ -309,39 +310,6 @@ void print_recursive(t_data *data, t_dll *list)
 
 	dll_free(printsubdir, freeSubdir);
 	free(printsubdir);
-}
-
-static void print_direct(t_data *data, t_dll *list)
-{
-	if (!list) {
-		return;
-	}
-
-	int total_blocks = calculateTotalBlocks(list);
-	if (data->arg.human_readable) {
-		char *human_readable = get_human_readable_size(total_blocks * 1024);
-		if (human_readable) {
-			ft_printf(1, "%s %s\n", TOTAL_BLOCKS, human_readable);
-			free(human_readable);
-		} else {
-			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
-		}
-	} else {
-		ft_printf(1, "%s %d\n", TOTAL_BLOCKS, total_blocks);
-	}
-
-	t_node *node = list->head;
-	while (node != NULL) {
-		if (!node->content) {
-			node = node->next;
-			continue;
-		}
-
-		t_ls *ls = node->content;
-		print_format(data, ls);
-		ft_printf(1, "\n");
-		node = node->next;
-	}
 }
 
 static void print_fileline(t_data *data, t_dll *list)
