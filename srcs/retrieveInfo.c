@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 20:24:13 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/03 22:23:38 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,12 +243,6 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 	}
 
 	extractSizeInfo(data, node, info, info_tmp);
-
-	if (node->type == DIRECTORY && data->arg.slash) {
-		char *tmp = ft_strjoin(node->name, "/");
-		free(node->name);
-		node->name = tmp;
-	}
 
 	info_tmp->time_info = (data->arg.access_time) ? info.st_atime : info.st_mtime;
 	struct timespec time_spec = (data->arg.access_time) ? info.st_atim : info.st_mtim;

@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 23:05:09 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/03 22:22:34 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ void print_format(t_data *data, t_ls *ls)
 			ft_printf(1, " -> %s", ls->info->sym_name);
 		}
 
+		if (data->arg.slash && ls->type == DIRECTORY) {
+			ft_printf(1, "/");
+		}
+		
 		if (ls->xattr_list && ls->xattr_list->head) {
 			ft_printf(1, "\n");
 			print_xattr(ls->xattr_list);
@@ -72,6 +76,8 @@ void print_format(t_data *data, t_ls *ls)
 
 	} else {
 		ft_printf(1, "%s%s%s", color, ls->format, reset);
+		if (data->arg.slash && ls->type == DIRECTORY) 
+			ft_printf(1, "/");
 	}
 }
 
@@ -173,7 +179,11 @@ static void print_column(t_data *data, t_dll *list)
 							ft_printf(1, "%s ", "0");
 					}
 				}
-				ft_printf(1, "%s%s%s  ", color, arr[idx]->name, reset);
+				ft_printf(1, "%s%s%s", color, arr[idx]->name, reset);
+				if (data->arg.slash && arr[idx]->type == DIRECTORY) {
+					ft_printf(1, "/");
+				}
+				ft_printf(1, "  ");
 				padding = col_widths[col] - strlen(arr[idx]->name);
 				if (padding > 0) {
 					addPadding(padding);
