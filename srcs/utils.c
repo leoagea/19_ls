@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 16:39:15 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/03 22:42:39 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,21 @@ char *string_to_lower(char *str)
 {
 	size_t len = ft_strlen(str);
 	char  *lower_str = malloc(len + 1);
+	ft_memset(lower_str, 0, len + 1);
 	if (!lower_str)
 		return NULL;
 
-	for (int i = 0; str[i]; i++) {
-		lower_str[i] = ft_tolower(str[i]);
+	size_t i = 0, j = 0;
+	if (LINUX){
+		while (i < len && str[i] == '.') {
+			i++;
+		}
 	}
-	lower_str[len] = '\0';
+	for (; str[i]; i++) {
+		lower_str[j] = ft_tolower(str[i]);
+		j++;
+	}
+	lower_str[j] = '\0';
 
 	return lower_str;
 }
