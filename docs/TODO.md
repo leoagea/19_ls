@@ -1,6 +1,6 @@
 **TO DO**
 
-Sorting algo:
-	- ~~first bubble for testing~~
-	- second check if quick or merge is better to optimize
+Fix:
+	-h arrondi 
 
+Check setuid, setgid, stickybit pdf eval
