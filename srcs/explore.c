@@ -6,24 +6,25 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/03 00:06:42 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/03 22:06:33 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_ls.h"
 
 static int directory(t_data *data)
-{
-	int		  i = 0;
+{	
 	t_format *format = malloc(sizeof(t_format));
 	initFormatStruct(format);
-	while (data->arg.all_paths[i] != NULL) {
+	
+	t_input *current = data->arg.input_list;
+	while (current != NULL) {
 		t_ls *node = mallocLs();
 		if (!node) {
 			return EXIT_FAILURE;
 		}
-		node->name = ft_strdup(data->arg.all_paths[i]);
-		node->relative_path = ft_strdup(data->arg.all_paths[i]);
+		node->name = ft_strdup(current->name);
+		node->relative_path = ft_strdup(current->name);
 		node->is_dir = true;
 		node->type = DIRECTORY;
 		dll_insert_tail(node, data->list);
@@ -32,20 +33,18 @@ static int directory(t_data *data)
 			dll_free(data->list, freeLsNode);
 			return EXIT_FAILURE;
 		}
-		i++;
+		current = current->next;
 	}
 
-	{
-		t_node *node = data->list->head;
-		while (node != NULL) {
-			if (node->content == NULL) {
-				return EXIT_FAILURE;
-			}
-
-			t_ls *ls = node->content;
-			formatOutput(format, ls, data->arg);
-			node = node->next;
+	t_node *node = data->list->head;
+	while (node != NULL) {
+		if (node->content == NULL) {
+			return EXIT_FAILURE;
 		}
+
+		t_ls *ls = node->content;
+		formatOutput(format, ls, data->arg);
+		node = node->next;
 	}
 
 	if (format) {
