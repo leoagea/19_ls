@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/03 22:23:38 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/04 22:08:14 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,35 @@ static void extractTime(t_arg arg, struct stat info, char *str)
 
 void extractPerm(char *perm, int mode)
 {
+	// Onwer permissions
 	perm[0] = (mode & S_IRUSR) ? 'r' : '-';
 	perm[1] = (mode & S_IWUSR) ? 'w' : '-';
-	perm[2] = (mode & S_IXUSR) ? 'x' : '-';
+ 	if (mode & S_ISUID) {
+        perm[2] = (mode & S_IXUSR) ? 's' : 'S';
+    } else {
+        perm[2] = (mode & S_IXUSR) ? 'x' : '-';
+    }
+	
+	// Group permissions
 	perm[3] = (mode & S_IRGRP) ? 'r' : '-';
 	perm[4] = (mode & S_IWGRP) ? 'w' : '-';
-	perm[5] = (mode & S_IXGRP) ? 'x' : '-';
+    if (mode & S_ISGID) {
+        /* setgid bit is on */
+        perm[5] = (mode & S_IXGRP) ? 's' : 'S';
+    } else {
+        perm[5] = (mode & S_IXGRP) ? 'x' : '-';
+    }
+
+	// Other permissions
 	perm[6] = (mode & S_IROTH) ? 'r' : '-';
 	perm[7] = (mode & S_IWOTH) ? 'w' : '-';
-	perm[8] = (mode & S_IXOTH) ? 'x' : '-';
+    if (mode & S_ISVTX) {
+        /* sticky bit is on */
+        perm[8] = (mode & S_IXOTH) ? 't' : 'T';
+    } else {
+        perm[8] = (mode & S_IXOTH) ? 'x' : '-';
+    }
+	
 	perm[9] = '\0';
 }
 

@@ -3,4 +3,4 @@
 Fix:
 	-h arrondi 
 
-Check setuid, setgid, stickybit pdf eval
+Test setuid, setgid, stickybit linux ecole
