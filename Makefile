@@ -107,6 +107,10 @@ help:
 	@echo "  fclean   : Remove all generated files"
 	@echo "  re       : Rebuild everything"
 
+setup:
+	chmod +x setup.sh
+	./setup.sh
+
 ###############################################################################
 # Tests Rules
 ###############################################################################
