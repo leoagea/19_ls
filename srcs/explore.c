@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/03 22:06:33 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 14:17:11 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,7 @@ static void output_loop(t_data *data)
 		t_dll *dll = node->content;
 		if (!dll || dll->head == NULL) {
 			node = node->next;
+			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, 0);
 			continue;
 		}
 		if (data->arg.all_paths_len > 1 || data->arg.recurisve){
@@ -302,6 +303,7 @@ int explore_loop(t_data *data)
 	
 	initFormatStruct(format);
 	t_input *input = data->arg.input_list;
+	// debug_print_input_list(data->arg.input_list);
 	while (input != NULL) {
 		if (input->type == DIRECTORY){
 			t_dll *list = malloc(sizeof(t_dll));
@@ -338,8 +340,10 @@ int explore_loop(t_data *data)
 		freeFormatStruct(&format);
 	}
 	
-	outputListFiles(data, data->file_list);
-	output_loop(data);
+	if (data->file_list->size != 0)
+		outputListFiles(data, data->file_list);
+	if (data->list->size != 0)
+		output_loop(data);
 
 	return EXIT_SUCCESS;
 }

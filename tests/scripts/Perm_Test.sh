@@ -64,7 +64,16 @@ echo -e "\n${GREEN}Testing with my ls:${RESET}"
 echo "My ls -l output:"
 ./myls -l
 
-: '
+
+echo -e "\n${RED}Diff between real ls and my ls:${RESET}"
+diff_output=$(diff <(ls -l) <(./myls -l))
+if [ -z "$diff_output" ]; then
+    echo -e "${GREEN}No differences found. My ls works correctly!${RESET}"
+else
+    echo -e "${RED}Differences found:${RESET}"
+    echo "$diff_output"
+fi
+
 echo -e "\n${BLUE}Testing individual files with real ls:${RESET}"
 ls -l setuid_file
 ls -l setgid_file
@@ -78,7 +87,16 @@ echo -e "\n${GREEN}Testing individual files with my ls:${RESET}"
 ./myls -l sticky_dir
 ./myls -l setuid_setgid_file
 ./myls -l all_bits_dir
-'
+
+echo -e "\n${RED}Diff between real ls and my ls:${RESET}"
+diff_output=$(diff <(ls -l setuid_file) <(./myls -l setuid_file))
+if [ -z "$diff_output" ]; then
+    echo -e "${GREEN}No differences found for setuid_file. My ls works correctly!${RESET}"
+else
+    echo -e "${RED}Differences found for setuid_file:${RESET}"
+    echo "$diff_output"
+fi
+
 # Clean up
 cleanup() {
     cd - > /dev/null 2>&1

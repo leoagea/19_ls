@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/03 22:52:14 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 14:16:48 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 static void sort_inside_dir(t_data *data, t_dll *list)
 {
+	if (!list || !list->head)
+		return;
+
 	if (!data->arg.not_sort) {
 		if (data->arg.sort_time || (data->arg.access_time && !data->arg.long_format))
 			dll_quick_sort(list, compareTime);
@@ -32,6 +35,7 @@ static void sort_inside_dir(t_data *data, t_dll *list)
 static void print_total_blocks(t_data *data, t_dll *list)
 {
 	int total_blocks = calculateTotalBlocks(list);
+	// printf("total = %d\n", total_blocks);
 	if (data->arg.human_readable) {
 		char *human_readable = get_human_readable_size(total_blocks * 1024);
 		if (human_readable) {
@@ -99,6 +103,7 @@ void print_format(t_data *data, t_ls *ls)
 
 static void print_column(t_data *data, t_dll *list)
 {
+	print_total_blocks(data, list);
 	t_ls **arr = list_to_stringarray(list);
 	if (!arr) {
 		return;
@@ -163,7 +168,6 @@ static void print_column(t_data *data, t_dll *list)
 		}
 	}
 
-	print_total_blocks(data, list);
 	for (size_t row = 0; row < rows; row++) {
 		for (size_t col = 0; col < columns; col++) {
 			size_t idx; 
@@ -241,9 +245,6 @@ static void handle_subdirs(t_data *data, t_dll *printsubdir)
 
 static void print_direct(t_data *data, t_dll *list)
 {
-	if (!list) {
-		return;
-	}
 
 	if (data->arg.block_size || data->arg.human_readable || data->arg.long_format) {
 		print_total_blocks(data, list);
@@ -265,10 +266,6 @@ static void print_direct(t_data *data, t_dll *list)
 
 void print_recursive(t_data *data, t_dll *list)
 {
-	if (!list) {
-		return;
-	}
-
 	t_dll *printsubdir = malloc(sizeof(t_dll));
 	if (!printsubdir) {
 		return;
@@ -319,10 +316,6 @@ void print_recursive(t_data *data, t_dll *list)
 
 static void print_fileline(t_data *data, t_dll *list)
 {
-	if (!list || !list->head) {
-		return;
-	}
-
 	t_node *node = list->head;
 	while (node != NULL) {
 		if (!node->content) {
@@ -339,10 +332,6 @@ static void print_fileline(t_data *data, t_dll *list)
 
 void output(t_data *data, t_dll *list)
 {
-	if (list->head == NULL) {
-		return;
-	}
-
 	sort_inside_dir(data, list);
 
 	if (data->arg.recurisve)
@@ -357,17 +346,13 @@ void output(t_data *data, t_dll *list)
 
 void outputListFiles(t_data *data, t_dll *list)
 {
-	if (list->head == NULL) {
-		return;
-	}
-
 	sort_inside_dir(data, list);
-
 
 	if (data->arg.long_format || !data->is_tty || data->arg.oneline)
 		print_fileline(data, list);
-	else
+	else{
 		print_column(data, list);
+		ft_printf(1, "\n");
+	}
 	
-	ft_printf(1, "\n");
 }

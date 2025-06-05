@@ -111,7 +111,7 @@ setup:
 	chmod +x setup.sh
 	./setup.sh
 
-setup-scripts:
+setup-scripts: all
 	@echo "Setting up scripts..."
 	@cp ft_ls tests/myls
 	@chmod +x tests/scripts/*.sh
