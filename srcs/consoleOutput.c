@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 14:16:48 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 14:29:57 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ void print_format(t_data *data, t_ls *ls)
 
 static void print_column(t_data *data, t_dll *list)
 {
-	print_total_blocks(data, list);
+	if (data->arg.block_size)
+		print_total_blocks(data, list);
 	t_ls **arr = list_to_stringarray(list);
 	if (!arr) {
 		return;
