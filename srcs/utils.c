@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/03 22:42:39 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 16:27:34 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,7 @@ char *get_human_readable_size(size_t size)
 		free(int_str);
 		free(dec_str);
 	} else {
-		human_size = (int)(human_size + 0.5);
+		human_size = ceil(human_size);
 		char *num = ft_itoa((int)human_size);
 		if (!num) {
 			free(result);

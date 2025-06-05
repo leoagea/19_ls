@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 16:39:48 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 16:28:27 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #include <sys/ioctl.h> // ioctl
 #include <sys/xattr.h>
 #include <locale.h>		   // setlocale
-#include <math.h>		   // roundf
+#include <math.h>		   // ceil
 
 /*#############################################################################
 # Init functions
