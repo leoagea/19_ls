@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 16:28:27 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 17:16:50 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void appendChar(char *str, char c);
 void appendInt(char *str, int num);
 void getFormatLen(t_ls *node, t_format **format);
 void formatLongFormat(t_arg arg, t_ls *node, t_format *format);
-void formatOther(t_arg arg, t_ls *node, t_format *format);
+void formatOther(t_arg arg, t_ls *node);
 void formatOutput(t_format *format, t_ls *node, t_arg arg);
 
 /*#############################################################################

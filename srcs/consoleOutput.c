@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 14:29:57 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 17:14:59 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,9 @@ static void print_column(t_data *data, t_dll *list)
 				if (data->arg.slash && arr[idx]->type == DIRECTORY) {
 					ft_printf(1, "/");
 				}
+				if (data->arg.comma && col < columns - 1) {
+					ft_printf(1, ",");
+				}
 				ft_printf(1, "  ");
 				padding = col_widths[col] - strlen(arr[idx]->name);
 				if (padding > 0) {
@@ -263,6 +266,36 @@ static void print_direct(t_data *data, t_dll *list)
 		ft_printf(1, "\n");
 		node = node->next;
 	}
+}
+
+static void print_comma(t_data *data, t_dll *list)
+{
+	if (data->arg.block_size) {
+		print_total_blocks(data, list);
+	}
+
+	t_node *node = list->head;
+	size_t line_length = 0;
+	while (node != NULL) {
+		if (!node->content) {
+			node = node->next;
+			continue;
+		}
+
+		t_ls *ls = node->content;
+		if (line_length + ft_strlen(ls->name) + 2 > data->w.ws_col) {
+			ft_printf(1, "\n");
+			line_length = 0;
+		}
+		if (data->arg.block_size)
+			ft_printf(1, "%s", ls->format_block);
+		print_format(data, ls);
+		line_length += ft_strlen(ls->name) + 2;
+		if (node->next)
+			ft_printf(1, ", ");
+		node = node->next;
+	}
+	ft_printf(1, "\n");
 }
 
 void print_recursive(t_data *data, t_dll *list)
@@ -340,6 +373,8 @@ void output(t_data *data, t_dll *list)
 	else {
 		if (data->arg.long_format || !data->is_tty || data->arg.oneline)
 			print_direct(data, list);
+		else if (data->arg.comma)
+			print_comma(data, list);
 		else
 			print_column(data, list);
 	}
@@ -352,8 +387,12 @@ void outputListFiles(t_data *data, t_dll *list)
 	if (data->arg.long_format || !data->is_tty || data->arg.oneline)
 		print_fileline(data, list);
 	else{
-		print_column(data, list);
-		ft_printf(1, "\n");
+		if (data->arg.comma)
+			print_comma(data, list);
+		else{
+			print_column(data, list);
+			ft_printf(1, "\n");
+		}
 	}
 	
 }

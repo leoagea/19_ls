@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 14:48:32 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 17:52:51 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,27 +143,32 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		appendChar(node->format, ' ');
 	fillInSpace(node->format, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
-
+	appendChar(node->format, ' ');
+	
 	if (!arg.no_name && !arg.id) {
-		fillInSpace(node->format, format->max_user, node->info->user_name_len);
 		appendStr(node->format, node->info->user_name);
+		fillInSpace(node->format, format->max_user, node->info->user_name_len);
 	} else if (arg.id) {
-		fillInSpace(node->format, format->max_uid, node->info->user_id_len);
 		appendInt(node->format, node->info->user_id);
+		fillInSpace(node->format, format->max_uid, node->info->user_id_len);
 	}
-
+	// appendChar(node->format, ' ');
+	
 	if (arg.id) {
-		fillInSpace(node->format, format->max_gid, node->info->group_id_len);
 		appendInt(node->format, node->info->group_id);
+		fillInSpace(node->format, format->max_gid, node->info->group_id_len);
 	} else {
-		fillInSpace(node->format, format->max_group, node->info->group_name_len);
 		appendStr(node->format, node->info->group_name);
+		fillInSpace(node->format, format->max_group, node->info->group_name_len);
 	}
 
 	if (arg.extended_attributes && LINUX)
-		appendStr(node->format, " ?");
+	{
+		appendStr(node->format, "?");
+		appendChar(node->format, ' ');	
+	}
 	
-	fillInSpace(node->format, format->max_size_bytes, node->info->size_bytes_len);
+	fillInSpace(node->format, format->max_size_bytes - 1, node->info->size_bytes_len);
 	appendSize(arg, node);
 	appendChar(node->format, ' ');
 
@@ -171,19 +176,13 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	appendChar(node->format, ' ');
 }
 
-void formatOther(t_arg arg, t_ls *node, t_format *format)
+void formatOther(t_arg arg, t_ls *node)
 {
 	if (arg.block_size) {
-		fillInSpace(node->format_block, format->max_block_size, node->info->block_size_len);
 		appendInt(node->format_block, node->info->block_size);
 		appendChar(node->format_block, ' ');
 	}
 	appendStr(node->format, node->name);
-
-	size_t name_len = (node->info) ? node->info->name_len : ft_strlen(node->name);
-	int	   space = format->max_name - name_len + 1;
-	for (int i = 0; i < space; i++)
-		appendChar(node->format, ' ');
 }
 
 void formatOutput(t_format *format, t_ls *node, t_arg arg)
@@ -197,5 +196,5 @@ void formatOutput(t_format *format, t_ls *node, t_arg arg)
 			return;
 		formatLongFormat(arg, node, format);
 	} else
-		formatOther(arg, node, format);
+		formatOther(arg, node);
 }
