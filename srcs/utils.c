@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 16:27:34 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/06 14:27:40 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void usage(char invalidOption)
 {
-	ft_printf(2, "ls: invalid option -- %c\n", invalidOption);
-	ft_printf(2, "usage: ls [-alrtR] [file ...]\n");
+	ft_printf(2, "ls: invalid option -- '%c'\n", invalidOption);
 	ft_printf(2, "Try 'ls --help' for more information.\n");
 }
 
 void help(void)
 {
+	ft_printf(1, USAGE);
 	ft_printf(1, DESCIPTION);
 	ft_printf(1, OPTIONS);
 	ft_printf(1, AFLAG);

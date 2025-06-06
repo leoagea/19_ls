@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 22:54:22 by lagea             #+#    #+#             */
-/*   Updated: 2025/05/29 20:32:44 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/06 14:27:24 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # Text
 #############################################################################*/
 
+#define USAGE "Usage: ls [-alrtR] [file ...]\n"
 #define DESCIPTION \
 	"\
 List information about the FILEs (the current directory by default).\n\

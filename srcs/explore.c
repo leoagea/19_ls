@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 14:17:11 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/06 14:23:43 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 	DIR *dir = opendir(path);
 	if (!dir) {
 		ft_printf(2, "ls: cannot open directory '%s': %s\n", path, strerror(errno));
-		return (data->return_val = 2, EXIT_SUCCESS);
+		return (data->return_val = 2, EXIT_CLEAN);
 	}
 
 	t_format *format = malloc(sizeof(t_format));
@@ -310,8 +310,11 @@ int explore_loop(t_data *data)
 			dll_init(list);
 			dll_insert_tail(list, data->list);
 			
-			if (exploreDirectories(data, data->list->tail->content, input->name) ==
-				EXIT_FAILURE) {
+			size_t succ = exploreDirectories(data, data->list->tail->content, input->name);
+			if (succ == EXIT_FAILURE || succ == EXIT_CLEAN) {
+				if (succ == EXIT_CLEAN && data->list->size != 0) {
+					dll_delete_tail(data->list);
+				}
 				freeFormatStruct(&format);
 				return EXIT_FAILURE;
 			}
