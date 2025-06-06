@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 22:54:22 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/06 14:27:24 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/06 17:08:53 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,17 @@
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size, 0, XATTR_NOFOLLOW)
 #	define LIST_XATTR(path, list, size)	   listxattr(path, list, size, XATTR_NOFOLLOW)
 #	define LINUX 0
+# 	define ACL_CHAR '@'
 #elif __linux__
 #	define CALC_BLOCKS(blocks)				   (blocks / 2)
 #	define GET_XATTR(path, name, value, size) getxattr(path, name, value, size)
 #	define LIST_XATTR(path, list, size)	   listxattr(path, list, size)
 #	define LINUX 1
 #	include <sys/sysmacros.h> // major, minor
+#	define ACL_CHAR '+'
 #endif
 
+#define _GNU_SOURCE
 #define ENV_LSCOLORS "LS_COLORS"
 #define TOTAL_BLOCKS "total"
 #define DEFAULT_PATH "."

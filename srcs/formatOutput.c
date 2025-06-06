@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 17:52:51 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/06 17:09:13 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,8 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	appendStr(node->format, node->info->perm);
 	if (!LINUX && node->info->perm[9] == '\0')
 		appendChar(node->format, ' ');
+	else if (LINUX && format->has_acl && node->info->perm[9] != ACL_CHAR)
+		appendChar(node->format, ' ');
 	fillInSpace(node->format, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
 	appendChar(node->format, ' ');
@@ -160,12 +162,6 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 	} else {
 		appendStr(node->format, node->info->group_name);
 		fillInSpace(node->format, format->max_group, node->info->group_name_len);
-	}
-
-	if (arg.extended_attributes && LINUX)
-	{
-		appendStr(node->format, "?");
-		appendChar(node->format, ' ');	
 	}
 	
 	fillInSpace(node->format, format->max_size_bytes - 1, node->info->size_bytes_len);

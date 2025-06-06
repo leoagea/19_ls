@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 18:36:22 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/06 16:38:06 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@
 #include <sys/xattr.h>
 #include <locale.h>		   // setlocale
 #include <math.h>		   // ceil
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/acl.h>
 
 /*#############################################################################
 # Init functions

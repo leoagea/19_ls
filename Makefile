@@ -11,7 +11,7 @@ NC     := \033[0m
 ###############################################################################
 CC       = gcc
 CFLAGS   = -Wall -Wextra -Werror -O2 -MMD -MP #-fsanitize=address -g
-LDFLAGS  = -lm 
+LDFLAGS  = -lm -lacl
 # -MMD and -MP tell the compiler to generate .d (dependency) files for each .c
 
 DEBUG_FLAGS   := -g -fsanitize=address
@@ -124,7 +124,7 @@ test: all
 	@echo "Running tests with args: $(ARGS)"
 	@ASAN_OPTIONS=detect_leaks=0 ./$(TARGET) $(ARGS)
 
-tests: all
+tests: all setup-scripts
 	@cd tests && bash run_tests.sh
 
 ###############################################################################

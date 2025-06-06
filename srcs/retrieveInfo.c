@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/04 22:08:14 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/06 17:12:25 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,27 @@ static void retrieveMajorMinor(t_info **ls, struct stat info)
 	freeStr(&minor_str);
 }
 
-static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info *info_tmp)
+static int has_ACL(const char *path)
+{
+    acl_t acl = acl_get_file(path, ACL_TYPE_ACCESS);
+    if (acl == NULL) {
+        return 0;
+    }
+
+    int entry_count = 0;
+    acl_entry_t entry;
+    int entry_id = ACL_FIRST_ENTRY;
+    
+    while (acl_get_entry(acl, entry_id, &entry) == 1) {
+        entry_count++;
+        entry_id = ACL_NEXT_ENTRY;
+    }
+
+    acl_free(acl);
+    return entry_count > 3;
+}
+
+static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info *info_tmp, t_format **format)
 {
 	info_tmp->nlink = info.st_nlink;
 
@@ -210,9 +230,13 @@ static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info 
 		info_tmp->size_bytes_len = ft_strlen(info_tmp->major);
 	}
 
+	int has_acl = has_ACL(node->relative_path);
+    if (has_acl) {
+        info_tmp->perm[9] = ACL_CHAR;
+		(*format)->has_acl = true;
+    }
+	
 	if (LIST_XATTR(node->relative_path, NULL, 0) > 0) {
-		info_tmp->perm[9] = '@';
-
 		if (data->arg.extended_attributes) {
 			node->xattr_list = malloc(sizeof(t_dll));
 			if (!node->xattr_list)
@@ -220,6 +244,9 @@ static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info 
 			dll_init(node->xattr_list);
 			get_file_xattr(node, node->relative_path);
 		}
+		if (!LINUX && !has_acl) {
+            info_tmp->perm[9] = '@';
+        }
 	}
 	return EXIT_SUCCESS;
 }
@@ -273,7 +300,7 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 	extractPerm(info_tmp->perm, info.st_mode);
 
 	if (data->arg.long_format) {
-		extractLongFormat(data, node, info, info_tmp);	
+		extractLongFormat(data, node, info, info_tmp, format);	
 	}
 
 	info_tmp->name_len = ft_strlen(node->name) + 1;
