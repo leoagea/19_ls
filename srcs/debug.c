@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:36:26 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 17:17:31 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 18:36:01 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,18 @@ void debug_print_input_list(t_input *input_list)
 	while (node != NULL) {
 		ft_printf(1, "Name: %s, Type: %d\n", node->name, node->type);
 		node = node->next;
+	}
+}
+
+void debug_print_arr(char **arr)
+{
+	if (!arr) {
+		ft_printf(1, "Array is NULL\n");
+		return;
+	}
+
+	ft_printf(1, "Array contents:\n");
+	for (int i = 0; arr[i] != NULL; i++) {
+		ft_printf(1, "Index %d: %s\n", i, arr[i]);
 	}
 }

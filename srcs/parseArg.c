@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:30:57 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/02 18:08:35 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/06 13:18:59 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,19 @@ static int getAllPath(int ac, char **av, t_data *data, t_arg *argList, int i)
 			return EXIT_FAILURE;
 		}
 		
-		ft_bubble_sort_string_arr(argList->all_paths, ft_arr_len((void **)argList->all_paths));
-		
-		if (argList->reverse) {
-			ft_arr_revert((void **)argList->all_paths);
-		}
-		
+		// debug_print_arr(argList->all_paths);
 		argList->all_paths_len = ft_arr_len((void **)argList->all_paths);
+		
+		if (argList->sort_size)
+			ft_bubble_sort_arr(argList->all_paths, argList->all_paths_len, sizeof(char *), compareTimeArg);
+		else if (argList->sort_time) 
+			ft_bubble_sort_arr(argList->all_paths, argList->all_paths_len, sizeof(char *), compareTimeArg);
+		else 
+			ft_bubble_sort_string_arr(argList->all_paths, argList->all_paths_len);
+		
+		if (argList->reverse)
+			ft_arr_revert((void **)argList->all_paths);
+		
 		int j = 0;
 		t_input *current = argList->input_list;
 		t_input *head = current;

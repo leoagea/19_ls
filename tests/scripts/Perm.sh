@@ -6,6 +6,25 @@ GREEN=$(tput setaf 2)
 BLUE=$(tput setaf 4)
 RESET=$(tput sgr0)
 
+# Initialize counters
+total_tests=0
+successful_tests=0
+
+# Function to check diff and update counters
+check_diff() {
+    local diff_output=$1
+    local test_name=$2
+    ((total_tests++))
+    
+    if [ -z "$diff_output" ]; then
+        echo -e "${GREEN}No differences found for $test_name. My ls works correctly!${RESET}"
+        ((successful_tests++))
+    else
+        echo -e "${RED}Differences found for $test_name:${RESET}"
+        echo "$diff_output"
+    fi
+}
+
 echo -e "\n${RED}Special Bits Test${RESET}\n"
 
 # Get the directory where the script is located
@@ -64,37 +83,35 @@ echo -e "\n${GREEN}Testing with my ls:${RESET}"
 echo "My ls -l output:"
 ./myls -l
 
-
 echo -e "\n${RED}Diff between real ls and my ls:${RESET}"
 diff_output=$(diff <(ls -l) <(./myls -l))
-if [ -z "$diff_output" ]; then
-    echo -e "${GREEN}No differences found. My ls works correctly!${RESET}"
-else
-    echo -e "${RED}Differences found:${RESET}"
-    echo "$diff_output"
-fi
+check_diff "$diff_output" "basic ls -l"
 
-echo -e "\n${BLUE}Testing individual files with real ls:${RESET}"
-ls -l setuid_file
-ls -l setgid_file
-ls -l sticky_dir
-ls -l setuid_setgid_file
-ls -l all_bits_dir
-
-echo -e "\n${GREEN}Testing individual files with my ls:${RESET}"
-./myls -l setuid_file
-./myls -l setgid_file
-./myls -l sticky_dir
-./myls -l setuid_setgid_file
-./myls -l all_bits_dir
-
-echo -e "\n${RED}Diff between real ls and my ls:${RESET}"
+# Replace individual file diff checks with:
+echo -e "\n${RED}Testing individual files:${RESET}"
 diff_output=$(diff <(ls -l setuid_file) <(./myls -l setuid_file))
-if [ -z "$diff_output" ]; then
-    echo -e "${GREEN}No differences found for setuid_file. My ls works correctly!${RESET}"
+check_diff "$diff_output" "setuid_file"
+
+diff_output=$(diff <(ls -l setgid_file) <(./myls -l setgid_file))
+check_diff "$diff_output" "setgid_file"
+
+diff_output=$(diff <(ls -l sticky_dir) <(./myls -l sticky_dir))
+check_diff "$diff_output" "sticky_dir"
+
+diff_output=$(diff <(ls -l setuid_setgid_file) <(./myls -l setuid_setgid_file))
+check_diff "$diff_output" "setuid_setgid_file"
+
+diff_output=$(diff <(ls -l all_bits_dir) <(./myls -l all_bits_dir))
+check_diff "$diff_output" "all_bits_dir"
+
+# Add test summary before cleanup
+echo -e "\n${BLUE}Test Summary:${RESET}"
+echo -e "Total tests: $total_tests"
+echo -e "Successful tests: $successful_tests"
+if [ $total_tests -eq $successful_tests ]; then
+    echo -e "${GREEN}All tests passed successfully!${RESET}"
 else
-    echo -e "${RED}Differences found for setuid_file:${RESET}"
-    echo "$diff_output"
+    echo -e "${RED}Some tests failed ($((total_tests - successful_tests)) failures)${RESET}"
 fi
 
 # Clean up

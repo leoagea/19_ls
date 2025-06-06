@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:21:54 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 17:16:50 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/05 18:36:22 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void debug_print_subdir(void *content);
 void debug_print_colors_map(t_color_map *colors);
 void debug_print_terminal_size(struct winsize *w);
 void debug_print_input_list(t_input *input_list);
+void debug_print_arr(char **arr);
 
 /*#############################################################################
 # ParseArg functions
@@ -120,6 +121,8 @@ int compareName(void *a, void *b);
 int compareTime(void *a, void *b);
 int compareSubdirName(void *a, void *b);
 int compareSize(void *a, void *b);
+int compareTimeArg(const void *a, const void *b);
+int compareSizeArg(const void *a, const void *b);
 
 /*#############################################################################
 # Utils functions
