@@ -17,7 +17,7 @@ TEST_DIR="/tmp/ls_test_flags"
 mkdir -p "$TEST_DIR"
 cp ../myls "$TEST_DIR/myls"
 cd "$TEST_DIR"
-
+ls -l
 # All flags to test
 FLAGS=(
     "a" "r" "t" "R" "l" "S"
@@ -74,7 +74,7 @@ check_diff() {
 test_single_flag() {
     local flag=$1
     echo -e "\n${YELLOW}Testing -$flag${RESET}"
-    diff_output=$(diff <(ls -$ls_flag 2>/dev/null) <(./myls -$flag 2>/dev/null))
+    diff_output=$(diff <(ls -$flag 2>/dev/null) <(./myls -$flag 2>/dev/null))
     check_diff "$diff_output" "ls -$flag"
 }
 
@@ -90,6 +90,11 @@ test_flag_combination() {
 main() {
     echo -e "${BLUE}Starting comprehensive flag tests${RESET}"
     setup_test_env
+
+    echo -e "\n${BLUE}Testing with real ls:\n${RESET}"
+    ls -a
+    echo -e "\n${BLUE}Testing with myls:\n${RESET}"
+    ./myls -a
 
     # Test individual flags
     for flag in "${FLAGS[@]}"; do

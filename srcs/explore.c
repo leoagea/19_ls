@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/09 14:42:42 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/09 18:25:46 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ int processEntry(t_data *data, t_ls *node, t_format **format)
 		}
 		else if (succ == EXIT_CLEAN) {
 			dll_free(sub, freeLsNode);
+			free(sub);
 			node->subdir = NULL;
 			return EXIT_CLEAN;
 		}
@@ -320,7 +321,9 @@ int explore_loop(t_data *data)
 			size_t succ = exploreDirectories(data, data->list->tail->content, input->name);
 			if (succ == EXIT_FAILURE || succ == EXIT_CLEAN) {
 				if (succ == EXIT_CLEAN && data->list->size != 0) {
+					t_dll *tmp = data->list->tail->content;
 					dll_delete_tail(data->list);
+					free(tmp);
 				}
 				freeFormatStruct(&format);
 				return EXIT_FAILURE;
