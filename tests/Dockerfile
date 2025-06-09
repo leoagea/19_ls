@@ -16,6 +16,7 @@ RUN echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 ENV TERM=xterm-256color
 
+COPY scripts/docker/root/*.sh .
 COPY scripts/docker/*.sh .
 RUN chmod +x *.sh
 

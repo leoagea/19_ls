@@ -20,6 +20,8 @@ mkdir -p "$TEST_DIR"
 cp myls "$TEST_DIR/myls"
 cd "$TEST_DIR"
 
+ls -l
+
 # Test cases arrays
 BASIC_TESTS=(
     "l"                     # Basic long format

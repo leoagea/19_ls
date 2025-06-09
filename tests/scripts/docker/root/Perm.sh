@@ -17,7 +17,7 @@ successful_tests=0
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 TEST_DIR="/tmp/ls_test_types"
 mkdir -p "$TEST_DIR"
-cp ../myls "$TEST_DIR/myls"
+cp myls "$TEST_DIR/myls"
 cd "$TEST_DIR"
 
 # Test cases arrays
@@ -109,7 +109,7 @@ test_combined() {
 
 # Main testing sequence
 main() {
-    echo -e "${BLUE}Starting file types tests${RESET}"
+    echo -e "${BLUE}Starting perm file tests${RESET}"
     setup_test_env
     
     # Test basic features

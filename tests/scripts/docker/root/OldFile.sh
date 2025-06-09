@@ -109,7 +109,7 @@ test_combined() {
 
 # Main testing sequence
 main() {
-    echo -e "${BLUE}Starting file types tests${RESET}"
+    echo -e "${BLUE}Starting old file tests${RESET}"
     setup_test_env
     
     # Test basic features
