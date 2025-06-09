@@ -7,7 +7,7 @@ BLUE=$(tput setaf 4)
 YELLOW=$(tput setaf 3)
 RESET=$(tput sgr0)
 
-echo -e "\n${RED}Size Format Test (-h flag)${RESET}\n"
+echo -e "\n${RED}File Types Test${RESET}\n"
 
 # Initialize counters
 total_tests=0
@@ -15,51 +15,57 @@ successful_tests=0
 
 # Test environment setup
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
-TEST_DIR="/tmp/ls_test_size"
+TEST_DIR="/tmp/ls_test_types"
 mkdir -p "$TEST_DIR"
 cp ../myls "$TEST_DIR/myls"
 cd "$TEST_DIR"
 
 # Test cases arrays
-SIZE_TESTS=(
-    "lh"                    # Basic human readable
-    "lah"                   # All files with human readable
-    "lhs"                   # Human readable with block size
+BASIC_TESTS=(
+    "l"                     # Basic long format
+    "la"                    # Show hidden files
 )
 
-FILE_SPECIFIC_TESTS=(
-    "lh empty_file"        # Test with empty file
-    "lh huge_file"         # Test with huge file
-    "lh symlink_file"      # Test with symlink
+FILETYPE_TESTS=(
+    "l testchar"           # Character device
+    "l testblock"          # Block device
+    "l testpipe"           # Named pipe
+    "l testsock"           # Unix socket
+    "l testlink"           # Symbolic link
 )
 
 COMBINED_TESTS=(
-    "lh empty_file small_file medium_file"     # Multiple files
-    "lhr"                                      # Reverse with human readable
-    "lht"                                      # Time sort with human readable
+    "la testchar testblock testpipe"    # Multiple special files
+    "lR"                                # Recursive with special files
 )
 
 # Function to create test environment
 setup_test_env() {
     echo -e "\n${BLUE}Creating test environment...${RESET}"
     
-    # Empty file (0B)
-    touch empty_file
-
-    # Small file (1K)
-    dd if=/dev/zero of=small_file bs=1K count=1 2>/dev/null
-
-    # Medium file (10M)
-    dd if=/dev/zero of=medium_file bs=1M count=10 2>/dev/null
-
-    # Large file (100M)
-    dd if=/dev/zero of=large_file bs=1M count=100 2>/dev/null
-
-    # Huge file (1.5G)
-    dd if=/dev/zero of=huge_file bs=1M count=1500 2>/dev/null
-
-    # Create symbolic link
-    ln -s large_file symlink_file
+    # Create regular files
+    echo "content" > regular_file
+    
+    # Create a named pipe (FIFO)
+    mkfifo testpipe
+    
+    # Create special files (needs root)
+    if [ "$EUID" -eq 0 ]; then
+        mknod testchar c 1 3    # Major number 1, minor number 3 for null device
+        mknod testblock b 8 0   # Major number 8, minor number 0 for first SCSI disk
+    else
+        echo "${YELLOW}Warning: Not running as root, skipping device files creation${RESET}"
+    fi
+    
+    # Create a Unix domain socket
+    python3 -c "import socket; s = socket.socket(socket.AF_UNIX); s.bind('testsock')"
+    
+    # Create a symbolic link
+    ln -s regular_file testlink
+    
+    # Create directories
+    mkdir testdir
+    mkdir -p nested/dir/structure
 }
 
 # Function to check diff and update counters
@@ -77,23 +83,23 @@ check_diff() {
     fi
 }
 
-# Function to test size formatting
-test_size() {
+# Function to test basic features
+test_basic() {
     local test_case=$1
     echo -e "\n${YELLOW}Testing ls -$test_case${RESET}"
     diff_output=$(diff <(ls -$test_case 2>/dev/null) <(./myls -$test_case 2>/dev/null))
     check_diff "$diff_output" "ls -$test_case"
 }
 
-# Function to test specific files
-test_specific_file() {
+# Function to test specific file types
+test_filetype() {
     local test_case=$1
     echo -e "\n${YELLOW}Testing ls -$test_case${RESET}"
     diff_output=$(diff <(ls -$test_case 2>/dev/null) <(./myls -$test_case 2>/dev/null))
     check_diff "$diff_output" "ls -$test_case"
 }
 
-# Function to test combined flags
+# Function to test combined scenarios
 test_combined() {
     local test_case=$1
     echo -e "\n${YELLOW}Testing ls -$test_case${RESET}"
@@ -103,29 +109,23 @@ test_combined() {
 
 # Main testing sequence
 main() {
-    echo -e "${BLUE}Starting size format tests${RESET}"
+    echo -e "${BLUE}Starting file types tests${RESET}"
     setup_test_env
     
-    echo -e "\nTest with real ls command:"
-    ls -lhs
-    echo -e "\nTest with myls command:"
-    ./myls -lhs
-
-    
-    # Test size formatting
-    echo -e "\n${BLUE}Testing basic size formatting${RESET}"
-    for test in "${SIZE_TESTS[@]}"; do
-        test_size "$test"
+    # Test basic features
+    echo -e "\n${BLUE}Testing basic features${RESET}"
+    for test in "${BASIC_TESTS[@]}"; do
+        test_basic "$test"
     done
     
-    # Test specific files
-    echo -e "\n${BLUE}Testing specific files${RESET}"
-    for test in "${FILE_SPECIFIC_TESTS[@]}"; do
-        test_specific_file "$test"
+    # Test file types
+    echo -e "\n${BLUE}Testing specific file types${RESET}"
+    for test in "${FILETYPE_TESTS[@]}"; do
+        test_filetype "$test"
     done
     
-    # Test combined flags
-    echo -e "\n${BLUE}Testing combined flags${RESET}"
+    # Test combined scenarios
+    echo -e "\n${BLUE}Testing combined scenarios${RESET}"
     for test in "${COMBINED_TESTS[@]}"; do
         test_combined "$test"
     done

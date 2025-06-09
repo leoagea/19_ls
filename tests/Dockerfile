@@ -16,7 +16,7 @@ RUN echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 ENV TERM=xterm-256color
 
-COPY scripts/ACL_ExtAttr.sh .
+COPY scripts/docker/*.sh .
 RUN chmod +x *.sh
 
 COPY scripts/run_scripts.sh .

@@ -1,4 +1,6 @@
 #!/bin/bash
 
-./Filetypes.sh
+# ./Filetypes.sh
 # ./OldFile.sh
+# ./Perm_Test.sh
+# ./ACL_ExtAttr.sh
