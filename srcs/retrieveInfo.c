@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:18:08 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/06 17:12:25 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/09 13:08:21 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info 
 	}
 
 	int has_acl = has_ACL(node->relative_path);
-    if (has_acl) {
+    if (has_acl && !node->is_symbolic) {
         info_tmp->perm[9] = ACL_CHAR;
 		(*format)->has_acl = true;
     }

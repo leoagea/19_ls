@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:44:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/05 17:14:59 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/09 16:27:29 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void sort_inside_dir(t_data *data, t_dll *list)
 static void print_total_blocks(t_data *data, t_dll *list)
 {
 	int total_blocks = calculateTotalBlocks(list);
-	// printf("total = %d\n", total_blocks);
+
 	if (data->arg.human_readable) {
 		char *human_readable = get_human_readable_size(total_blocks * 1024);
 		if (human_readable) {
@@ -103,6 +103,7 @@ void print_format(t_data *data, t_ls *ls)
 
 static void print_column(t_data *data, t_dll *list)
 {
+	// printf("print_column called\n");
 	if (data->arg.block_size)
 		print_total_blocks(data, list);
 	t_ls **arr = list_to_stringarray(list);
@@ -228,9 +229,6 @@ static void print_column(t_data *data, t_dll *list)
 
 static void handle_subdirs(t_data *data, t_dll *printsubdir)
 {
-	if (!printsubdir->head)
-		return;
-
 	dll_quick_sort(printsubdir, compareSubdirName);
 	if (data->arg.reverse)
 		dll_revert(printsubdir);
@@ -249,11 +247,26 @@ static void handle_subdirs(t_data *data, t_dll *printsubdir)
 
 static void print_direct(t_data *data, t_dll *list)
 {
-
-	if (data->arg.block_size || data->arg.human_readable || data->arg.long_format) {
+	// printf("print_direct called\n");
+	if (data->arg.block_size || data->arg.long_format) {
 		print_total_blocks(data, list);
 	}
-
+	
+	size_t max_block_len = 0;
+	if (data->arg.block_size){
+		t_node *tmp = list->head;
+		while (tmp != NULL) {
+			t_ls *ls = tmp->content;
+			if (ls && ls->info) {
+				size_t block_len = ft_strlen(ls->format_block);
+				if (block_len > max_block_len) {
+					max_block_len = block_len;
+				}
+			}
+			tmp = tmp->next;
+		}
+	}
+	
 	t_node *node = list->head;
 	while (node != NULL) {
 		if (!node->content) {
@@ -262,6 +275,14 @@ static void print_direct(t_data *data, t_dll *list)
 		}
 
 		t_ls *ls = node->content;
+		if (ls->format_block[0] != '\0'){
+			size_t padding = ft_strlen(ls->format_block);
+			while (padding < max_block_len) {
+				ft_printf(1, " ");
+				padding++;
+			}
+			ft_printf(1, "%s ", ls->format_block);
+		}
 		print_format(data, ls);
 		ft_printf(1, "\n");
 		node = node->next;
@@ -299,7 +320,8 @@ static void print_comma(t_data *data, t_dll *list)
 }
 
 void print_recursive(t_data *data, t_dll *list)
-{
+{	
+	// printf("print_recursive called\n");
 	t_dll *printsubdir = malloc(sizeof(t_dll));
 	if (!printsubdir) {
 		return;

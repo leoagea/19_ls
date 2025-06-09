@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 00:09:36 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/06 17:09:13 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/09 16:26:54 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,11 +131,21 @@ static void appendSize(t_arg arg, t_ls *node)
 
 void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 {
-	if (arg.block_size) {
-		fillInSpace(node->format, format->max_block_size, node->info->block_size_len);
+	if (arg.block_size && !arg.human_readable) {
+		fillInSpace(node->format, format->max_block_size - 1, node->info->block_size_len);
 		appendInt(node->format, node->info->block_size);
 		appendChar(node->format, ' ');
 	}
+	else if (arg.block_size && arg.human_readable) {
+		char *human_readable = get_human_readable_size(node->info->block_size * 1024);
+		if (human_readable) {
+			appendStr(node->format_block, human_readable);
+			free(human_readable);
+		} else {
+			appendInt(node->format, node->info->block_size);
+		}
+	}
+	
 	appendType(node->format, node->type);
 
 	appendStr(node->format, node->info->perm);
@@ -145,21 +155,24 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		appendChar(node->format, ' ');
 	fillInSpace(node->format, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
-	appendChar(node->format, ' ');
 	
 	if (!arg.no_name && !arg.id) {
+		appendChar(node->format, ' ');
 		appendStr(node->format, node->info->user_name);
 		fillInSpace(node->format, format->max_user, node->info->user_name_len);
 	} else if (arg.id) {
-		appendInt(node->format, node->info->user_id);
 		fillInSpace(node->format, format->max_uid, node->info->user_id_len);
+		appendInt(node->format, node->info->user_id);
 	}
 	// appendChar(node->format, ' ');
 	
 	if (arg.id) {
-		appendInt(node->format, node->info->group_id);
 		fillInSpace(node->format, format->max_gid, node->info->group_id_len);
+		appendInt(node->format, node->info->group_id);
+		appendChar(node->format, ' ');
 	} else {
+		if (arg.no_name)
+			appendChar(node->format, ' ');
 		appendStr(node->format, node->info->group_name);
 		fillInSpace(node->format, format->max_group, node->info->group_name_len);
 	}
@@ -175,8 +188,17 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 void formatOther(t_arg arg, t_ls *node)
 {
 	if (arg.block_size) {
-		appendInt(node->format_block, node->info->block_size);
-		appendChar(node->format_block, ' ');
+		if (arg.human_readable) {
+			char *human_readable = get_human_readable_size(node->info->block_size * 1024);
+			if (human_readable) {
+				appendStr(node->format_block, human_readable);
+				free(human_readable);
+			} else {
+				appendInt(node->format_block, node->info->block_size);
+			}
+		} else{
+			appendInt(node->format_block, node->info->block_size);
+		}
 	}
 	appendStr(node->format, node->name);
 }

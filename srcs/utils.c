@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:23:49 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/06 14:27:40 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/09 15:29:16 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ char *string_to_lower(char *str)
 		return NULL;
 
 	size_t i = 0, j = 0;
+
+	 if (str[0] == '.' && (str[1] == '\0' || (str[1] == '.' && str[2] == '\0'))) {
+        ft_strlcpy(lower_str, str, len + 1);
+        return lower_str;
+    }
+	
 	if (LINUX){
 		while (i < len && str[i] == '.') {
 			i++;
@@ -239,7 +245,7 @@ char *get_human_readable_size(size_t size)
 		ft_strlcpy(result, num, 32);
 		free(num);
 	} else if (human_size < 10) {
-		human_size = (int)(human_size * 10 + 0.5) / 10.0;
+		human_size = ceil(human_size * 10) / 10.0;
 
 		int	  int_part = (int)human_size;
 		char *int_str = ft_itoa(int_part);

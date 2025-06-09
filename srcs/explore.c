@@ -6,7 +6,7 @@
 /*   By: lagea < lagea@student.s19.be >             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 19:52:02 by lagea             #+#    #+#             */
-/*   Updated: 2025/06/06 14:23:43 by lagea            ###   ########.fr       */
+/*   Updated: 2025/06/09 14:42:42 by lagea            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,10 +147,17 @@ int processEntry(t_data *data, t_ls *node, t_format **format)
 		}
 		dll_init(sub);
 		node->subdir = sub;
-		if (exploreDirectories(data, node->subdir, node->relative_path) == EXIT_FAILURE) {
+		size_t succ = exploreDirectories(data, node->subdir, node->relative_path);
+		if (succ == EXIT_FAILURE) {
 			dll_free(sub, freeLsNode);
+			node->subdir = NULL;
 			data->return_val = 1;
 			return EXIT_FAILURE;
+		}
+		else if (succ == EXIT_CLEAN) {
+			dll_free(sub, freeLsNode);
+			node->subdir = NULL;
+			return EXIT_CLEAN;
 		}
 	}
 
@@ -198,7 +205,7 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 		}
 		
 		checkEntryType(node, entry);
-
+		
 		dll_insert_tail(node, list);
 
 		processEntry(data, node, &format);
