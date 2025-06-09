@@ -53,45 +53,44 @@ int compareSize(void *a, void *b)
 
 int compareTimeArg(const void *a, const void *b)
 {
-    const char *path_a = *(const char **)a;
-    const char *path_b = *(const char **)b;
+	const char *path_a = *(const char **)a;
+	const char *path_b = *(const char **)b;
 
-    if (!path_a || !path_b) {
-        return 0;
-    }
+	if (!path_a || !path_b) {
+		return 0;
+	}
 
-    struct stat info_a;
-    struct stat info_b;
-    if (lstat(path_b, &info_b) == -1 || lstat(path_a, &info_a) == -1) {
-        return 0;
-    }
+	struct stat info_a;
+	struct stat info_b;
+	if (lstat(path_b, &info_b) == -1 || lstat(path_a, &info_a) == -1) {
+		return 0;
+	}
 
-    if (info_a.st_mtime != info_b.st_mtime) {
-        return info_b.st_mtime - info_a.st_mtime;
-    }
-    
-    struct timespec time_spec_a = info_a.st_mtim;
-    struct timespec time_spec_b = info_b.st_mtim;
-    if (time_spec_a.tv_nsec != time_spec_b.tv_nsec) {
-        return time_spec_b.tv_nsec - time_spec_a.tv_nsec;
-    }
-    
-    return ft_strncmp(path_a, path_b, INT_MAX);
+	if (info_a.st_mtime != info_b.st_mtime) {
+		return info_b.st_mtime - info_a.st_mtime;
+	}
+
+	struct timespec time_spec_a = info_a.st_mtim;
+	struct timespec time_spec_b = info_b.st_mtim;
+	if (time_spec_a.tv_nsec != time_spec_b.tv_nsec) {
+		return time_spec_b.tv_nsec - time_spec_a.tv_nsec;
+	}
+
+	return ft_strncmp(path_a, path_b, INT_MAX);
 }
 
 int compareSizeArg(const void *a, const void *b)
 {
-	char  *path_a = *(void **)a;
-	char  *path_b = *(void **)b;
-	
+	char *path_a = *(void **)a;
+	char *path_b = *(void **)b;
+
 	if (!path_a || !path_b) {
 		return 0;
 	}
-	
+
 	struct stat info_a;
 	struct stat info_b;
-	if (lstat(path_a, &info_a) == -1 ||
-	    lstat(path_b, &info_b) == -1) {
+	if (lstat(path_a, &info_a) == -1 || lstat(path_b, &info_b) == -1) {
 		return 0;
 	}
 

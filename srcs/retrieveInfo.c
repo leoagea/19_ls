@@ -41,32 +41,32 @@ void extractPerm(char *perm, int mode)
 	// Onwer permissions
 	perm[0] = (mode & S_IRUSR) ? 'r' : '-';
 	perm[1] = (mode & S_IWUSR) ? 'w' : '-';
- 	if (mode & S_ISUID) {
-        perm[2] = (mode & S_IXUSR) ? 's' : 'S';
-    } else {
-        perm[2] = (mode & S_IXUSR) ? 'x' : '-';
-    }
-	
+	if (mode & S_ISUID) {
+		perm[2] = (mode & S_IXUSR) ? 's' : 'S';
+	} else {
+		perm[2] = (mode & S_IXUSR) ? 'x' : '-';
+	}
+
 	// Group permissions
 	perm[3] = (mode & S_IRGRP) ? 'r' : '-';
 	perm[4] = (mode & S_IWGRP) ? 'w' : '-';
-    if (mode & S_ISGID) {
-        /* setgid bit is on */
-        perm[5] = (mode & S_IXGRP) ? 's' : 'S';
-    } else {
-        perm[5] = (mode & S_IXGRP) ? 'x' : '-';
-    }
+	if (mode & S_ISGID) {
+		/* setgid bit is on */
+		perm[5] = (mode & S_IXGRP) ? 's' : 'S';
+	} else {
+		perm[5] = (mode & S_IXGRP) ? 'x' : '-';
+	}
 
 	// Other permissions
 	perm[6] = (mode & S_IROTH) ? 'r' : '-';
 	perm[7] = (mode & S_IWOTH) ? 'w' : '-';
-    if (mode & S_ISVTX) {
-        /* sticky bit is on */
-        perm[8] = (mode & S_IXOTH) ? 't' : 'T';
-    } else {
-        perm[8] = (mode & S_IXOTH) ? 'x' : '-';
-    }
-	
+	if (mode & S_ISVTX) {
+		/* sticky bit is on */
+		perm[8] = (mode & S_IXOTH) ? 't' : 'T';
+	} else {
+		perm[8] = (mode & S_IXOTH) ? 'x' : '-';
+	}
+
 	perm[9] = '\0';
 }
 
@@ -183,25 +183,26 @@ static void retrieveMajorMinor(t_info **ls, struct stat info)
 
 static int has_ACL(const char *path)
 {
-    acl_t acl = acl_get_file(path, ACL_TYPE_ACCESS);
-    if (acl == NULL) {
-        return 0;
-    }
+	acl_t acl = acl_get_file(path, ACL_TYPE_ACCESS);
+	if (acl == NULL) {
+		return 0;
+	}
 
-    int entry_count = 0;
-    acl_entry_t entry;
-    int entry_id = ACL_FIRST_ENTRY;
-    
-    while (acl_get_entry(acl, entry_id, &entry) == 1) {
-        entry_count++;
-        entry_id = ACL_NEXT_ENTRY;
-    }
+	int			entry_count = 0;
+	acl_entry_t entry;
+	int			entry_id = ACL_FIRST_ENTRY;
 
-    acl_free(acl);
-    return entry_count > 3;
+	while (acl_get_entry(acl, entry_id, &entry) == 1) {
+		entry_count++;
+		entry_id = ACL_NEXT_ENTRY;
+	}
+
+	acl_free(acl);
+	return entry_count > 3;
 }
 
-static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info *info_tmp, t_format **format)
+static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info *info_tmp,
+							 t_format **format)
 {
 	info_tmp->nlink = info.st_nlink;
 
@@ -231,11 +232,11 @@ static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info 
 	}
 
 	int has_acl = has_ACL(node->relative_path);
-    if (has_acl && !node->is_symbolic) {
-        info_tmp->perm[9] = ACL_CHAR;
+	if (has_acl && !node->is_symbolic) {
+		info_tmp->perm[9] = ACL_CHAR;
 		(*format)->has_acl = true;
-    }
-	
+	}
+
 	if (LIST_XATTR(node->relative_path, NULL, 0) > 0) {
 		if (data->arg.extended_attributes) {
 			node->xattr_list = malloc(sizeof(t_dll));
@@ -245,8 +246,8 @@ static int extractLongFormat(t_data *data, t_ls *node, struct stat info, t_info 
 			get_file_xattr(node, node->relative_path);
 		}
 		if (!LINUX && !has_acl) {
-            info_tmp->perm[9] = '@';
-        }
+			info_tmp->perm[9] = '@';
+		}
 	}
 	return EXIT_SUCCESS;
 }
@@ -294,13 +295,13 @@ int retrieveAllInfo(t_data *data, t_ls *node, t_format **format)
 	info_tmp->time_info = (data->arg.access_time) ? info.st_atime : info.st_mtime;
 	struct timespec time_spec = (data->arg.access_time) ? info.st_atim : info.st_mtim;
 	info_tmp->time_nsec = time_spec.tv_nsec; // For nanosecond precision
-	
+
 	extractTime(data->arg, info, info_tmp->time);
 
 	extractPerm(info_tmp->perm, info.st_mode);
 
 	if (data->arg.long_format) {
-		extractLongFormat(data, node, info, info_tmp, format);	
+		extractLongFormat(data, node, info, info_tmp, format);
 	}
 
 	info_tmp->name_len = ft_strlen(node->name) + 1;

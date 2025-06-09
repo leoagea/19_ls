@@ -13,10 +13,10 @@
 #include "../inc/ft_ls.h"
 
 static int directory(t_data *data)
-{	
+{
 	t_format *format = malloc(sizeof(t_format));
 	initFormatStruct(format);
-	
+
 	t_input *current = data->arg.input_list;
 	while (current != NULL) {
 		t_ls *node = mallocLs();
@@ -153,8 +153,7 @@ int processEntry(t_data *data, t_ls *node, t_format **format)
 			node->subdir = NULL;
 			data->return_val = 1;
 			return EXIT_FAILURE;
-		}
-		else if (succ == EXIT_CLEAN) {
+		} else if (succ == EXIT_CLEAN) {
 			dll_free(sub, freeLsNode);
 			free(sub);
 			node->subdir = NULL;
@@ -204,9 +203,9 @@ int exploreDirectories(t_data *data, t_dll *list, char *path)
 			perror("malloc");
 			continue;
 		}
-		
+
 		checkEntryType(node, entry);
-		
+
 		dll_insert_tail(node, list);
 
 		processEntry(data, node, &format);
@@ -239,7 +238,7 @@ static void output_loop(t_data *data)
 {
 	static t_input *list;
 	list = data->arg.input_list;
-	
+
 	t_node *node = data->list->head;
 	while (node != NULL) {
 		t_dll *dll = node->content;
@@ -248,10 +247,10 @@ static void output_loop(t_data *data)
 			ft_printf(1, "%s %d\n", TOTAL_BLOCKS, 0);
 			continue;
 		}
-		if (data->arg.all_paths_len > 1 || data->arg.recurisve){
+		if (data->arg.all_paths_len > 1 || data->arg.recurisve) {
 			while (list && list->type != DIRECTORY && list->next)
 				list = list->next;
-			ft_printf(1, "%s:\n",list->name);
+			ft_printf(1, "%s:\n", list->name);
 			list = list->next;
 		}
 		output(data, dll);
@@ -285,17 +284,17 @@ static int exploreFile(t_data *data, t_dll *list, char *path, t_format **format)
 	if (lstat(path, &path_stat) == -1) {
 		return EXIT_FAILURE;
 	}
-	
+
 	checkFileType(node, &path_stat);
 
 	dll_insert_tail(node, list);
-	
+
 	if (processEntry(data, node, format) == EXIT_FAILURE) {
 		freeLsNode(node);
 		return EXIT_FAILURE;
 	}
-	
-	return EXIT_SUCCESS;	
+
+	return EXIT_SUCCESS;
 }
 
 int explore_loop(t_data *data)
@@ -308,16 +307,16 @@ int explore_loop(t_data *data)
 		perror("malloc");
 		return EXIT_FAILURE;
 	}
-	
+
 	initFormatStruct(format);
 	t_input *input = data->arg.input_list;
 	// debug_print_input_list(data->arg.input_list);
 	while (input != NULL) {
-		if (input->type == DIRECTORY){
+		if (input->type == DIRECTORY) {
 			t_dll *list = malloc(sizeof(t_dll));
 			dll_init(list);
 			dll_insert_tail(list, data->list);
-			
+
 			size_t succ = exploreDirectories(data, data->list->tail->content, input->name);
 			if (succ == EXIT_FAILURE || succ == EXIT_CLEAN) {
 				if (succ == EXIT_CLEAN && data->list->size != 0) {
@@ -328,17 +327,16 @@ int explore_loop(t_data *data)
 				freeFormatStruct(&format);
 				return EXIT_FAILURE;
 			}
-		}
-		else if (input->type == REGFILE) {
+		} else if (input->type == REGFILE) {
 			if (exploreFile(data, data->file_list, input->name, &format) == EXIT_FAILURE) {
 				freeFormatStruct(&format);
 				return EXIT_FAILURE;
 			}
 		}
-		
+
 		input = input->next;
 	}
-	
+
 	t_node *node = data->file_list->head;
 	while (node != NULL) {
 		if (node->content == NULL) {
@@ -352,7 +350,7 @@ int explore_loop(t_data *data)
 	if (format) {
 		freeFormatStruct(&format);
 	}
-	
+
 	if (data->file_list->size != 0)
 		outputListFiles(data, data->file_list);
 	if (data->list->size != 0)
@@ -360,4 +358,3 @@ int explore_loop(t_data *data)
 
 	return EXIT_SUCCESS;
 }
-

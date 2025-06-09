@@ -50,8 +50,8 @@ typedef struct s_xattr {
 } t_xattr;
 
 typedef struct s_input {
-	char *name;
-	int type;
+	char		   *name;
+	int				type;
 	struct s_input *next;
 } t_input;
 
@@ -76,8 +76,8 @@ typedef struct s_arg {
 	bool human_readable;	  //-h
 
 	char	*path;
-	char 	**all_paths;
-	size_t all_paths_len;
+	char   **all_paths;
+	size_t	 all_paths_len;
 	t_input *input_list;
 } t_arg;
 
@@ -90,7 +90,7 @@ typedef struct s_format {
 	size_t max_block_size;
 	size_t max_uid;
 	size_t max_gid;
-	bool has_acl;
+	bool   has_acl;
 } t_format;
 
 typedef struct s_info {

@@ -31,8 +31,8 @@
 #include <grp.h>	   //getgrgid
 #include <sys/ioctl.h> // ioctl
 #include <sys/xattr.h>
-#include <locale.h>		   // setlocale
-#include <math.h>		   // ceil
+#include <locale.h> // setlocale
+#include <math.h>	// ceil
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/acl.h>
@@ -46,7 +46,7 @@ void	  initFormatStruct(t_format *format);
 void	  initInfoStruct(t_info *info);
 t_ls	 *mallocLs();
 t_subdir *mallocSubdir(void);
-t_input *mallocInput(void);
+t_input	 *mallocInput(void);
 
 /*#############################################################################
 # Debug functions

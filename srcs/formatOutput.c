@@ -135,8 +135,7 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		fillInSpace(node->format, format->max_block_size - 1, node->info->block_size_len);
 		appendInt(node->format, node->info->block_size);
 		appendChar(node->format, ' ');
-	}
-	else if (arg.block_size && arg.human_readable) {
+	} else if (arg.block_size && arg.human_readable) {
 		char *human_readable = get_human_readable_size(node->info->block_size * 1024);
 		if (human_readable) {
 			appendStr(node->format_block, human_readable);
@@ -145,7 +144,7 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 			appendInt(node->format, node->info->block_size);
 		}
 	}
-	
+
 	appendType(node->format, node->type);
 
 	appendStr(node->format, node->info->perm);
@@ -155,7 +154,7 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		appendChar(node->format, ' ');
 	fillInSpace(node->format, format->max_link, node->info->nlink_len);
 	appendInt(node->format, node->info->nlink);
-	
+
 	if (!arg.no_name && !arg.id) {
 		appendChar(node->format, ' ');
 		appendStr(node->format, node->info->user_name);
@@ -165,7 +164,7 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		appendInt(node->format, node->info->user_id);
 	}
 	// appendChar(node->format, ' ');
-	
+
 	if (arg.id) {
 		fillInSpace(node->format, format->max_gid, node->info->group_id_len);
 		appendInt(node->format, node->info->group_id);
@@ -176,7 +175,7 @@ void formatLongFormat(t_arg arg, t_ls *node, t_format *format)
 		appendStr(node->format, node->info->group_name);
 		fillInSpace(node->format, format->max_group, node->info->group_name_len);
 	}
-	
+
 	fillInSpace(node->format, format->max_size_bytes - 1, node->info->size_bytes_len);
 	appendSize(arg, node);
 	appendChar(node->format, ' ');
@@ -196,7 +195,7 @@ void formatOther(t_arg arg, t_ls *node)
 			} else {
 				appendInt(node->format_block, node->info->block_size);
 			}
-		} else{
+		} else {
 			appendInt(node->format_block, node->info->block_size);
 		}
 	}

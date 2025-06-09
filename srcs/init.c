@@ -64,7 +64,7 @@ t_subdir *mallocSubdir(void)
 t_input *mallocInput(void)
 {
 	t_input *node = malloc(sizeof(t_input));
-	if (!node) 
+	if (!node)
 		return NULL;
 	node->name = NULL;
 	node->type = 0;

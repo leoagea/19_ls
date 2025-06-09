@@ -88,7 +88,7 @@ void print_format(t_data *data, t_ls *ls)
 		if (data->arg.slash && ls->type == DIRECTORY) {
 			ft_printf(1, "/");
 		}
-		
+
 		if (ls->xattr_list && ls->xattr_list->head) {
 			ft_printf(1, "\n");
 			print_xattr(ls->xattr_list);
@@ -96,7 +96,7 @@ void print_format(t_data *data, t_ls *ls)
 
 	} else {
 		ft_printf(1, "%s%s%s", color, ls->format, reset);
-		if (data->arg.slash && ls->type == DIRECTORY) 
+		if (data->arg.slash && ls->type == DIRECTORY)
 			ft_printf(1, "/");
 	}
 }
@@ -172,7 +172,7 @@ static void print_column(t_data *data, t_dll *list)
 
 	for (size_t row = 0; row < rows; row++) {
 		for (size_t col = 0; col < columns; col++) {
-			size_t idx; 
+			size_t idx;
 			if (data->arg.horizontal)
 				idx = row * columns + col;
 			else
@@ -251,9 +251,9 @@ static void print_direct(t_data *data, t_dll *list)
 	if (data->arg.block_size || data->arg.long_format) {
 		print_total_blocks(data, list);
 	}
-	
+
 	size_t max_block_len = 0;
-	if (data->arg.block_size){
+	if (data->arg.block_size) {
 		t_node *tmp = list->head;
 		while (tmp != NULL) {
 			t_ls *ls = tmp->content;
@@ -266,7 +266,7 @@ static void print_direct(t_data *data, t_dll *list)
 			tmp = tmp->next;
 		}
 	}
-	
+
 	t_node *node = list->head;
 	while (node != NULL) {
 		if (!node->content) {
@@ -275,7 +275,7 @@ static void print_direct(t_data *data, t_dll *list)
 		}
 
 		t_ls *ls = node->content;
-		if (ls->format_block[0] != '\0'){
+		if (ls->format_block[0] != '\0') {
 			size_t padding = ft_strlen(ls->format_block);
 			while (padding < max_block_len) {
 				ft_printf(1, " ");
@@ -296,7 +296,7 @@ static void print_comma(t_data *data, t_dll *list)
 	}
 
 	t_node *node = list->head;
-	size_t line_length = 0;
+	size_t	line_length = 0;
 	while (node != NULL) {
 		if (!node->content) {
 			node = node->next;
@@ -320,7 +320,7 @@ static void print_comma(t_data *data, t_dll *list)
 }
 
 void print_recursive(t_data *data, t_dll *list)
-{	
+{
 	// printf("print_recursive called\n");
 	t_dll *printsubdir = malloc(sizeof(t_dll));
 	if (!printsubdir) {
@@ -408,13 +408,12 @@ void outputListFiles(t_data *data, t_dll *list)
 
 	if (data->arg.long_format || !data->is_tty || data->arg.oneline)
 		print_fileline(data, list);
-	else{
+	else {
 		if (data->arg.comma)
 			print_comma(data, list);
-		else{
+		else {
 			print_column(data, list);
 			ft_printf(1, "\n");
 		}
 	}
-	
 }

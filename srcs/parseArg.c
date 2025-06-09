@@ -16,12 +16,12 @@ static int checkType(t_data *data, char *path)
 {
 	struct stat info;
 	if (lstat(path, &info) == -1) {
-			ft_printf(2, "ls: cannot access '%s': %s\n", path, strerror(errno));
-			data->return_val = 2;
-			return UNKNOWN;
+		ft_printf(2, "ls: cannot access '%s': %s\n", path, strerror(errno));
+		data->return_val = 2;
+		return UNKNOWN;
 	}
 	if (S_ISREG(info.st_mode) || S_ISLNK(info.st_mode) || S_ISCHR(info.st_mode) ||
-	    S_ISBLK(info.st_mode) || S_ISFIFO(info.st_mode) || S_ISSOCK(info.st_mode))
+		S_ISBLK(info.st_mode) || S_ISFIFO(info.st_mode) || S_ISSOCK(info.st_mode))
 		return REGFILE;
 	else if (S_ISDIR(info.st_mode))
 		return DIRECTORY;
@@ -65,21 +65,23 @@ static int getAllPath(int ac, char **av, t_data *data, t_arg *argList, int i)
 			perror("malloc");
 			return EXIT_FAILURE;
 		}
-		
+
 		// debug_print_arr(argList->all_paths);
 		argList->all_paths_len = ft_arr_len((void **)argList->all_paths);
-		
+
 		if (argList->sort_size)
-			ft_bubble_sort_arr(argList->all_paths, argList->all_paths_len, sizeof(char *), compareTimeArg);
-		else if (argList->sort_time) 
-			ft_bubble_sort_arr(argList->all_paths, argList->all_paths_len, sizeof(char *), compareTimeArg);
-		else 
+			ft_bubble_sort_arr(argList->all_paths, argList->all_paths_len, sizeof(char *),
+							   compareTimeArg);
+		else if (argList->sort_time)
+			ft_bubble_sort_arr(argList->all_paths, argList->all_paths_len, sizeof(char *),
+							   compareTimeArg);
+		else
 			ft_bubble_sort_string_arr(argList->all_paths, argList->all_paths_len);
-		
+
 		if (argList->reverse)
 			ft_arr_revert((void **)argList->all_paths);
-		
-		int j = 0;
+
+		int		 j = 0;
 		t_input *current = argList->input_list;
 		t_input *head = current;
 		while (argList->all_paths[j]) {
@@ -96,8 +98,7 @@ static int getAllPath(int ac, char **av, t_data *data, t_arg *argList, int i)
 				if (!head) {
 					head = node;
 					current = node;
-				}
-				else {
+				} else {
 					current->next = node;
 					current = node;
 				}

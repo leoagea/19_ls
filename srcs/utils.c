@@ -122,12 +122,12 @@ char *string_to_lower(char *str)
 
 	size_t i = 0, j = 0;
 
-	 if (str[0] == '.' && (str[1] == '\0' || (str[1] == '.' && str[2] == '\0'))) {
-        ft_strlcpy(lower_str, str, len + 1);
-        return lower_str;
-    }
-	
-	if (LINUX){
+	if (str[0] == '.' && (str[1] == '\0' || (str[1] == '.' && str[2] == '\0'))) {
+		ft_strlcpy(lower_str, str, len + 1);
+		return lower_str;
+	}
+
+	if (LINUX) {
 		while (i < len && str[i] == '.') {
 			i++;
 		}
