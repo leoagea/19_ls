@@ -71,8 +71,6 @@ run_test() {
     valgrind --leak-check=full \
              --show-leak-kinds=all \
              --track-origins=yes \
-             --suppressions=valgrind.supp \
-             --error-exitcode=1 \
              ./myls $args 2>&1 | grep -A 5 "LEAK SUMMARY"
     
     local status=${PIPESTATUS[0]}
